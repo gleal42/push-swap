@@ -1,44 +1,43 @@
 #include "push_swap.h"
 
-int	is_input_valid(char **stack_a_args)
+void	ft_sort_stacks(t_list **a, t_list **b)
 {
+	operation_sa(a);
+}
+
+void	prepare_stack_a(t_list **a, char **stack_a_args)
+{
+	t_list	*next_nbr;
+	long long	nbr;
 	int i;
 
-	if (!*stack_a_args)
-		return (0);
 	i = 0;
 	while (stack_a_args[i])
 	{
-		if (!is_integer(stack_a_args[i]))
-			return (0);
+		nbr = ft_atoi(stack_a_args[i]);
+		if (is_nbr_in_list(nbr, *a))
+		{
+			printf("Error\n");
+			exit(EXIT_FAILURE);
+		}
+		next_nbr = ft_lstnew((void *)nbr);
+		if (!next_nbr)
+			exit(EXIT_FAILURE);
+		ft_lstadd_back(a, next_nbr);
 		i++;
 	}
-	return (1);
-}
-
-t_list *prepare_stack_a(char **stack_a_args)
-{
-	int nbr;
-	t_list	*head;
-
-	if (!is_input_valid(stack_a_args))
-		return(0);	
-	printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
-	nbr = ft_atoi(stack_a_args[0]);
-	head = ft_lstnew(&nbr);
-	return (head);
-/* 	i = 0;
-	while (stack_a_args[i])
-	{
-		if (i != 0)
-	} */
 }
 
 void	push_swap(char **stack_a_args)
 {
 	t_list *a;
+	t_list *b;
 
-	a = prepare_stack_a(stack_a_args);
+	if (!is_input_valid(stack_a_args))
+		return ;
+	prepare_stack_a(&a, stack_a_args);
+	ft_print_list_long(a);
+	ft_sort_stacks(&a, &b);
 }
 
 int	main(int argc, char **argv)
