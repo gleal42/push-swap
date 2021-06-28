@@ -20,7 +20,7 @@ INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := push_swap
 SRCS := push_swap.c \
 		utils/push_swap_utils.c \
-		sort_operations/push_swap_utils.c
+		sort_operations/sort_utils.c
 OBJS := $(SRCS:.c=.o)
 
 all: libft $(NAME) 

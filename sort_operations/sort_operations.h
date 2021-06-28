@@ -3,4 +3,6 @@
 
 # include "push_swap.h"
 
+int		operation_sa(t_list **a);
+
 #endif

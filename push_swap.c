@@ -2,7 +2,9 @@
 
 void	ft_sort_stacks(t_list **a, t_list **b)
 {
+	(void)b;
 	operation_sa(a);
+	ft_print_list_long(*a);
 }
 
 void	prepare_stack_a(t_list **a, char **stack_a_args)
