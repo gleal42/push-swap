@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_utils.c                                       :+:      :+:    :+:   */
+/*   ft_stackdelone.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/27 17:17:08 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/03 16:21:36 by gleal            ###   ########.fr       */
+/*   Created: 2021/07/03 16:42:46 by gleal             #+#    #+#             */
+/*   Updated: 2021/07/03 16:43:35 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "sort_operations.h"
+#include "stacks.h"
 
-int		op_sa(t_list **a)
+void	ft_stackdelone(t_stack *stack, void (*del)(void*))
 {
-	ft_lstswap(a);
-	ft_putstr_fd("sa\n", 1);
-}
-
-int		op_sb(t_list **b)
-{
-	ft_lstswap(b);
-	ft_putstr_fd("sb\n", 1);
+	if (!stack || !del)
+		return ;
+	del(stack->nbr);
+	free(stack);
 }

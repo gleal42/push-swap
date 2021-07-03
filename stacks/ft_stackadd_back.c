@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_utils.c                                       :+:      :+:    :+:   */
+/*   ft_stackadd_back.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/27 17:17:08 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/03 16:21:36 by gleal            ###   ########.fr       */
+/*   Created: 2021/07/03 16:32:18 by gleal             #+#    #+#             */
+/*   Updated: 2021/07/03 16:34:41 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "sort_operations.h"
+#include "stacks.h"
 
-int		op_sa(t_list **a)
+void	ft_stackadd_back(t_stack **stack, t_stack *new_stack)
 {
-	ft_lstswap(a);
-	ft_putstr_fd("sa\n", 1);
-}
+	t_stack	*head;
 
-int		op_sb(t_list **b)
-{
-	ft_lstswap(b);
-	ft_putstr_fd("sb\n", 1);
+	head = *stack;
+	if (!stack || !new_stack)
+		return ;
+	if (!*stack)
+	{
+		*stack = new_stack;
+		return ;
+	}
+	while (head->next)
+		head = head->next;
+	head->next = new_stack;
 }

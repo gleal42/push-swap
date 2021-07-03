@@ -3,14 +3,14 @@
 void	ft_sort_stacks(t_list **a, t_list **b)
 {
 	(void)b;
-	operation_sa(a);
+	op_sa(a);
 	ft_print_list_long(*a);
 }
 
-void	prepare_stack_a(t_list **a, char **stack_a_args)
+void	prepare_stack_a(t_stack **a, char **stack_a_args)
 {
-	t_list	*next_nbr;
-	long long	nbr;
+	t_stack	*next_nbr;
+	int	nbr;
 	int i;
 
 	i = 0;
@@ -22,7 +22,7 @@ void	prepare_stack_a(t_list **a, char **stack_a_args)
 			printf("Error\n");
 			exit(EXIT_FAILURE);
 		}
-		next_nbr = ft_lstnew((void *)nbr);
+		next_nbr = ft_stacknew((void *)nbr);
 		if (!next_nbr)
 			exit(EXIT_FAILURE);
 		ft_lstadd_back(a, next_nbr);
@@ -32,8 +32,8 @@ void	prepare_stack_a(t_list **a, char **stack_a_args)
 
 void	push_swap(char **stack_a_args)
 {
-	t_list *a;
-	t_list *b;
+	t_stack *a;
+	t_stack *b;
 
 	if (!is_input_valid(stack_a_args))
 		return ;

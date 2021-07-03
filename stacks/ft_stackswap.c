@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_utils.c                                       :+:      :+:    :+:   */
+/*   ft_stackswap.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/27 17:17:08 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/03 16:21:36 by gleal            ###   ########.fr       */
+/*   Created: 2021/07/03 16:45:09 by gleal             #+#    #+#             */
+/*   Updated: 2021/07/03 16:45:52 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "sort_operations.h"
+#include "stacks.h"
 
-int		op_sa(t_list **a)
+void	ft_stackswap(t_stack **head)
 {
-	ft_lstswap(a);
-	ft_putstr_fd("sa\n", 1);
-}
+	t_stack *first_stack;
+	t_stack *third_stack;
 
-int		op_sb(t_list **b)
-{
-	ft_lstswap(b);
-	ft_putstr_fd("sb\n", 1);
+	if (*head == 0 || (*head)->next == 0)
+		return (0);
+	first_stack = *head;
+	third_stack = (*head)->next->next;
+	*head = (*head)->next;
+	(*head)->next = first_stack;
+	(*head)->next->next = third_stack;
+	return (0);
 }
