@@ -16,24 +16,26 @@ INCLUDE_DIRS := libft \
 				utils \
 				sort_operations \
 				stacks \
+				. \
 				includes
 INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := push_swap
 SRCS := push_swap.c \
 		utils/push_swap_utils.c \
-		sort_operations/sort_utils.c \
+		sort_operations/sort_operations.c \
 		stacks/ft_isinstack.c \
 		stacks/ft_print_stack.c \
 		stacks/ft_stackadd_back.c \
 		stacks/ft_stackadd_front.c \
 		stacks/ft_stackdelone.c \
-		stacks/ft_stackditer.c \
+		stacks/ft_stackiter.c \
 		stacks/ft_stacklast.c \
 		stacks/ft_stackmap.c \
 		stacks/ft_stacknew.c \
 		stacks/ft_stacks_clear.c \
 		stacks/ft_stacksize.c \
-		stacks/ft_stackswap.c 
+		stacks/ft_stackswap.c \
+		stacks/ft_stack_push.c
 
 OBJS := $(SRCS:.c=.o)
 

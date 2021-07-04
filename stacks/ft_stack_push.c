@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stackdelone.c                                   :+:      :+:    :+:   */
+/*   ft_stack_push.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/03 16:42:46 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/04 16:02:10 by gleal            ###   ########.fr       */
+/*   Created: 2021/07/04 16:17:51 by gleal             #+#    #+#             */
+/*   Updated: 2021/07/04 16:59:26 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stacks.h"
+# include "stacks.h"
 
-void	ft_stackdelone(t_stack *stack, void (*del)(int))
+void	ft_stack_push_from_to(t_stack **src, t_stack **dst)
 {
-	if (!stack || !del)
-		return ;
-	del(stack->nbr);
-	free(stack);
+	t_stack *temp;
+
+	temp = *src;
+	*src = (*src)->next;
+	temp->next = 0;
+	ft_stacktadd_front(dst, temp);
 }
