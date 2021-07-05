@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_stack.c                                   :+:      :+:    :+:   */
+/*   stacks_clear.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/03 16:38:46 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/04 16:36:53 by gleal            ###   ########.fr       */
+/*   Created: 2021/07/03 16:40:45 by gleal             #+#    #+#             */
+/*   Updated: 2021/07/05 20:38:50 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stacks.h"
 
-void ft_print_stack(t_stack *stack)
+void	stacks_clear(t_stack **stack, void (*del)(int))
 {
-	int i;
+	t_stack	*deleter;
 
-	i = 0;
-	while (stack)
+	if (!stack || !del || !*stack)
+		return ;
+	while (*stack)
 	{
-		printf("%d\n", stack->nbr);
-		stack = stack->next;
-		i++;
+		deleter = *stack;
+		*stack = (*stack)->next;
+		stackdelone(deleter, del);
 	}
+	*stack = 0;
 }

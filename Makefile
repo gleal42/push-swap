@@ -16,26 +16,31 @@ INCLUDE_DIRS := libft \
 				utils \
 				sort_operations \
 				stacks \
-				. \
-				includes
+				includes \
+				.
 INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := push_swap
 SRCS := push_swap.c \
 		utils/push_swap_utils.c \
-		sort_operations/sort_operations.c \
-		stacks/ft_isinstack.c \
-		stacks/ft_print_stack.c \
-		stacks/ft_stackadd_back.c \
-		stacks/ft_stackadd_front.c \
-		stacks/ft_stackdelone.c \
-		stacks/ft_stackiter.c \
-		stacks/ft_stacklast.c \
-		stacks/ft_stackmap.c \
-		stacks/ft_stacknew.c \
-		stacks/ft_stacks_clear.c \
-		stacks/ft_stacksize.c \
-		stacks/ft_stackswap.c \
-		stacks/ft_stack_push.c
+		sort_operations/sort_operations1.c \
+		sort_operations/sort_operations2.c \
+		sort_operations/sort_operations3.c \
+		stacks/isinstack.c \
+		stacks/print_stack.c \
+		stacks/stackadd_back.c \
+		stacks/stackadd_front.c \
+		stacks/stackdelone.c \
+		stacks/stackiter.c \
+		stacks/stack_last.c \
+		stacks/stack_seccond_to_last.c \
+		stacks/stackmap.c \
+		stacks/stacknew.c \
+		stacks/stacks_clear.c \
+		stacks/stack_size.c \
+		stacks/stack_swap.c \
+		stacks/stack_rotate_forward.c \
+		stacks/stack_rotate_backward.c \
+		stacks/stack_push.c
 
 OBJS := $(SRCS:.c=.o)
 

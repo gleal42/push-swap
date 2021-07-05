@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stacklast.c                                     :+:      :+:    :+:   */
+/*   stack_last.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "stacks.h"
 
-t_stack	*ft_stacklast(t_stack *lst)
+t_stack	*stack_last(t_stack *lst)
 {
 	if (!lst)
 		return (0);

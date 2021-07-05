@@ -1,24 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isinstack.c                                     :+:      :+:    :+:   */
+/*   stackmap.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/03 16:29:58 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/03 16:31:54 by gleal            ###   ########.fr       */
+/*   Created: 2021/07/03 16:48:45 by gleal             #+#    #+#             */
+/*   Updated: 2021/07/05 20:38:50 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stacks.h"
 
-int	is_nbr_in_stack(int nbr, t_stack *a)
+t_stack	*stackmap(t_stack *stack, int(*f)(int), void (*del)(int))
 {
-	while (a)
+	t_stack	*first_s;
+	t_stack	*new_s;
+
+	if (!stack || !f)
+		return (0);
+	first_s = 0;
+	while (stack)
 	{
-		if (a->nbr == nbr)
-			return (1);
-		a = a->next;
+		new_s = stacknew(f(stack->nbr));
+		if (!new_s)
+		{
+			stacks_clear(&first_s, del);
+			return (0);
+		}
+		stackadd_back(&first_s, new_s);
+		stack = stack->next;
 	}
-	return (0);
+	return (first_s);
 }

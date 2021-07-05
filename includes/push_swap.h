@@ -14,5 +14,4 @@ typedef struct s_stack
 # include "push_swap_utils.h"
 # include "sort_operations.h"
 
-
 #endif

@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stacknew.c                                      :+:      :+:    :+:   */
+/*   stack_seccond_to_last.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/03 16:35:29 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/03 16:36:20 by gleal            ###   ########.fr       */
+/*   Created: 2021/07/05 20:48:43 by gleal             #+#    #+#             */
+/*   Updated: 2021/07/05 20:56:07 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stacks.h"
 
-t_stack	*ft_stacknew(int nbr)
+t_stack	*stack_second_to_last(t_stack *lst)
 {
-	t_stack	*head;
-
-	head = (t_stack *)malloc(sizeof(t_stack));
-	if (!head)
+	if (!lst)
 		return (0);
-	head->nbr = nbr;
-	head->next = 0;
-	return (head);
+	if (!lst->next)
+		return (lst);
+	while (lst->next->next)
+		lst = lst->next;
+	return (lst);
 }

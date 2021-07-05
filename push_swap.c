@@ -2,13 +2,13 @@
 
 void	ft_sort_stacks(t_stack **a, t_stack **b)
 {
-	// op_sa(a);
-	op_pa(a, b);
-	op_pb(a, b);
-	printf("Stack A after:\n");
-	ft_print_stack(*a);
-	printf("Stack B after:\n");
-	ft_print_stack(*b);
+	printf("\nOperation Time:\n");
+
+	op_rra(a);
+	printf("\nStack A after:\n");
+	print_stack(*a);
+	printf("\nStack B after:\n");
+	print_stack(*b);
 }
 
 void	prepare_stack_a(t_stack **a, char **stack_a_args)
@@ -26,10 +26,10 @@ void	prepare_stack_a(t_stack **a, char **stack_a_args)
 			printf("Error\n");
 			exit(EXIT_FAILURE);
 		}
-		next_nbr = ft_stacknew(nbr);
+		next_nbr = stacknew(nbr);
 		if (!next_nbr)
 			exit(EXIT_FAILURE);
-		ft_stackadd_back(a, next_nbr);
+		stackadd_back(a, next_nbr);
 		i++;
 	}
 }
@@ -39,14 +39,12 @@ void	push_swap(char **stack_a_args)
 	t_stack *a;
 	t_stack *b;
 
-	a = NULL;
-	b = NULL;
 	if (!is_input_valid(stack_a_args))
 		return ;
 	prepare_stack_a(&a, stack_a_args);
 	printf("Stack A before:\n");
-	ft_print_stack(a);
-	printf("Stack B before:\n");
+	print_stack(a);
+	printf("\nStack B before:\n");
 	ft_sort_stacks(&a, &b);
 }
 

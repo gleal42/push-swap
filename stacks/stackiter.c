@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stackiter.c                                     :+:      :+:    :+:   */
+/*   stackiter.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "stacks.h"
 
-void	ft_stackiter(t_stack *stack, void (*f)(int))
+void	stackiter(t_stack *stack, void (*f)(int))
 {
 	if (!stack || !f)
 		return ;
