@@ -1,14 +1,9 @@
 #include "push_swap.h"
 
-void	ft_sort_stacks(t_stack **a, t_stack **b)
+void	ft_sort_stacks(t_stack **a, t_stack **b, int max_len)
 {
-	printf("\nOperation Time:\n");
-
-	op_rra(a);
-	printf("\nStack A after:\n");
-	print_stack(*a);
-	printf("\nStack B after:\n");
-	print_stack(*b);
+	op_pa(a, b);
+	print_both_stacks(*a, *b, max_len);
 }
 
 void	prepare_stack_a(t_stack **a, char **stack_a_args)
@@ -38,14 +33,16 @@ void	push_swap(char **stack_a_args)
 {
 	t_stack *a;
 	t_stack *b;
+	int max_len;
 
+	a = NULL;
+	b = NULL;
 	if (!is_input_valid(stack_a_args))
 		return ;
 	prepare_stack_a(&a, stack_a_args);
-	printf("Stack A before:\n");
-	print_stack(a);
-	printf("\nStack B before:\n");
-	ft_sort_stacks(&a, &b);
+	max_len = biggest_str_len(stack_a_args);
+	print_both_stacks(a, b, max_len);
+	ft_sort_stacks(&a, &b, max_len);
 }
 
 int	main(int argc, char **argv)

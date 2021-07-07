@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/06/27 17:15:26 by gleal            ###   ########.fr       */
+/*   Updated: 2021/07/07 21:28:42 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,24 @@ int	is_input_valid(char **stack_a_args)
 		i++;
 	}
 	return (1);
+}
+
+int	biggest_str_len(char **strs)
+{
+	int i;
+	int len;
+	int temp;
+
+	i = 0;
+	len = 0;
+	if (!strs)
+		return 0;
+	while (strs[i])
+	{
+		temp = ft_strlen(strs[i]);
+		if (temp > len)
+			len = temp;
+		i++;
+	}
+	return (len);
 }
