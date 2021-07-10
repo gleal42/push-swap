@@ -20,6 +20,8 @@ t_stack	*stacknew(int nbr)
 	if (!head)
 		return (0);
 	head->nbr = nbr;
+	head->pos = 0;
+	head->prev = 0;
 	head->next = 0;
 	return (head);
 }

@@ -12,11 +12,11 @@
 
 #include "stacks.h"
 
-t_stack	*stack_last(t_stack *lst)
+t_stack	*stack_last(t_stack *stack)
 {
-	if (!lst)
+	if (!stack)
 		return (0);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
+	while (stack->next)
+		stack = stack->next;
+	return (stack);
 }

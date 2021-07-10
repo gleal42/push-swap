@@ -3,7 +3,7 @@
 
 # include "push_swap.h"
 
-int	is_input_valid(char **stack_a_args);
+int	is_input_integer(char **stack_a_args);
 int	biggest_str_len(char **strs);
 
 #endif

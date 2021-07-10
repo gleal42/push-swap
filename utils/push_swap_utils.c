@@ -6,13 +6,13 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/07 21:28:42 by gleal            ###   ########.fr       */
+/*   Updated: 2021/07/10 14:34:48 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "push_swap_utils.h"
 
-int	is_input_valid(char **stack_a_args)
+int	is_input_integer(char **stack_a_args)
 {
 	int i;
 

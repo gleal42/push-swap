@@ -6,7 +6,8 @@
 typedef struct s_stack
 {
 	int			nbr;
-	int		sorted_pos;
+	int			pos;
+	struct s_stack	*prev;
 	struct s_stack	*next;
 }				t_stack;
 

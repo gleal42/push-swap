@@ -14,14 +14,17 @@
 
 void	stack_swap(t_stack **head)
 {
-	t_stack *first_stack;
+	t_stack *second_stack;
 	t_stack *third_stack;
 
 	if (*head == 0 || (*head)->next == 0)
 		return ;
-	first_stack = *head;
+	second_stack = *head;
 	third_stack = (*head)->next->next;
 	*head = (*head)->next;
-	(*head)->next = first_stack;
+	(*head)->next = second_stack;
 	(*head)->next->next = third_stack;
+	(*head)->prev = (*head)->next->prev;
+	(*head)->next->prev = *head;
+	(*head)->next->next->prev = (*head)->next;
 }
