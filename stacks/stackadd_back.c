@@ -28,4 +28,5 @@ void	stackadd_back(t_stack **stack, t_stack *new_stack)
 	while (head->next)
 		head = head->next;
 	head->next = new_stack;
+	new_stack->prev = head;
 }

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 21:17:46 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/10 17:48:52 by gleal            ###   ########.fr       */
+/*   Updated: 2021/07/11 16:05:38 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	stack_rotate_backward(t_stack **stack)
 {
 	t_stack	*first_stack;
 
+	if (*stack == NULL || (*stack)->next == NULL)
+		return ;
 	(*stack)->prev->next = *stack;
 	first_stack = (*stack)->next;
 	(*stack)->next = 0;

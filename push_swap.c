@@ -2,9 +2,11 @@
 
 void	ft_sort_stacks(t_stack **a, t_stack **b, int max_len)
 {
+	t_cmd_list *cmds;
+
 	print_both_stacks(*a, *b, max_len);
-	op_pa(a, b);
-	print_both_stacks(*a, *b, max_len);
+	init_cmd_list(&cmds);
+	//here
 }
 
 void	prepare_stack_a(t_stack **a, char **stack_a_args)

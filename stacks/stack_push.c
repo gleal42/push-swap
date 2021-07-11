@@ -6,20 +6,26 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/04 16:17:51 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/10 17:55:51 by gleal            ###   ########.fr       */
+/*   Updated: 2021/07/11 15:40:38 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "stacks.h"
 
-void	stack_push_from_to(t_stack **src, t_stack **dst)
+void	stack_push_from_to(t_stack **original, t_stack **destination)
 {
 	t_stack *temp;
 
-	temp = *src;
-	*src = (*src)->next;
-	(*src)->prev = temp->prev;
+	temp = *original;
+	*original = (*original)->next;
+	if (*original)
+	{
+		if ((*original)->next)
+			(*original)->prev = temp->prev;
+		else
+			(*original)->prev = 0;
+	}
 	temp->next = 0;
 	temp->prev = 0;
-	stacktadd_front(dst, temp);
+	stacktadd_front(destination, temp);
 }
