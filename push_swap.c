@@ -1,14 +1,5 @@
 #include "push_swap.h"
 
-void	ft_sort_stacks(t_stack **a, t_stack **b, int max_len)
-{
-	t_cmd_list *cmds;
-
-	print_both_stacks(*a, *b, max_len);
-	init_cmd_list(&cmds);
-	//here
-}
-
 void	prepare_stack_a(t_stack **a, char **stack_a_args)
 {
 	t_stack	*next_nbr;
@@ -44,15 +35,13 @@ int		ft_nbr_strs(char **strs)
 	return (i);
 }
 
-void	get_stack_info(t_stack	**a, char **stack_a_args)
+void	get_stack_info(t_stack	**a, int n)
 {
 	t_stack *first;
 	t_stack *next_min;
 	int i;
-	int n;
 
 	i = 1;
-	n = ft_nbr_strs(stack_a_args);
 	first = (*a);
 	while (i <= n)
 	{
@@ -78,15 +67,18 @@ void	push_swap(char **stack_a_args)
 	t_stack *a;
 	t_stack *b;
 	int max_len;
+	int n;
 
 	a = NULL;
 	b = NULL;
 	if (!is_input_integer(stack_a_args))
 		return ;
 	prepare_stack_a(&a, stack_a_args);
-	get_stack_info(&a, stack_a_args);
+	n = ft_nbr_strs(stack_a_args);
+	get_stack_info(&a, n);
 	max_len = biggest_str_len(stack_a_args);
-	ft_sort_stacks(&a, &b, max_len);
+	print_both_stacks(a, b, max_len);
+	ft_sort_stacks(&a, &b, max_len, n);
 }
 
 int	main(int argc, char **argv)

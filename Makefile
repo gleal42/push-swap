@@ -25,6 +25,7 @@ SRCS := push_swap.c \
 		sort_operations/sort_operations1.c \
 		sort_operations/sort_operations2.c \
 		sort_operations/sort_operations3.c \
+		sort_operations/sort_algorithm.c \
 		stacks/isinstack.c \
 		stacks/print_stacks.c \
 		stacks/stackadd_back.c \

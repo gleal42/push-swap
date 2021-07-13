@@ -6,13 +6,13 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/04 15:54:25 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/11 16:34:24 by gleal            ###   ########.fr       */
+/*   Updated: 2021/07/13 22:29:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "sort_operations.h"
 
-int		op_sa(t_stack **a, int max_len)
+int		op_sa(t_stack **a, t_stack **b, int max_len)
 {
 	stack_swap(a);
 	ft_putstr_fd("sa\n", 1);
@@ -20,7 +20,7 @@ int		op_sa(t_stack **a, int max_len)
 	return (0);
 }
 
-int		op_sb(t_stack **b, int max_len)
+int		op_sb(t_stack **a, t_stack **b, int max_len)
 {
 	stack_swap(b);
 	ft_putstr_fd("sb\n", 1);
