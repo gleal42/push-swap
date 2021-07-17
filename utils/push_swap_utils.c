@@ -6,11 +6,23 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/13 22:33:46 by gleal            ###   ########.fr       */
+/*   Updated: 2021/07/17 12:48:21 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "push_swap_utils.h"
+
+void	init_rot_b(t_cmd_list *cmds)
+{
+	cmds->ini_rot_b.rb = 0;
+	cmds->ini_rot_b.rrb = 0;
+}
+
+void	init_rot_a(t_cmd_list *cmds)
+{
+	cmds->ini_rot_a.ra = 0;
+	cmds->ini_rot_a.rra = 0;
+}
 
 void	init_cmd_list(t_cmd_list *cmds)
 {

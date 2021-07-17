@@ -6,57 +6,61 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 22:33:38 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/16 23:31:00 by gleal            ###   ########.fr       */
+/*   Updated: 2021/07/17 18:25:36 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "sort_operations.h"
 
-int		widthdraw_b_moves(t_stack **a, t_stack **b, int max_len, int n)
+
+
+t_cmd_list	widthdraw_b_moves(t_stack *a, t_stack *b, int max_len, int n)
 {
-	if (!(*b))
-		return (0);	
+	t_stack *norm;
+	t_stack *rev;
+	t_cmd_list off;
+	t_cmd_list temp;
+
+	init_rot_b(&temp);
+	if (!b)
+		return (temp);
+	while (b)
+	{
+		init_cmd_list(&temp);
+		temp.norm_a = a;
+		temp.rev_a = a;
+		b = b->next;
+	}
 }
 
 void	more_complex_algorithm(t_stack **a, t_stack **b, int max_len, int n)
 {
-	t_stack *norm;
-	t_stack *rev;
-	int ra;
-	int rra;
-	int min_moves;
-	
-	ra = 0;
-	rra = 0;
-	norm = *a;
-	rev = *a;
-	while (norm->next)
+	t_cmd_list off;
+	t_cmd_list temp;
+
+	temp.norm_a = *a;
+	temp.rev_a = *a;
+	init_rot_a(&temp);
+	while (1)
 	{
-		min_moves = widthdraw_b_moves(a, b, max_len, n);
-		if (norm->next->pos > norm->nbr + 1 || (norm->pos == n && norm->next->pos == 1))
+		init_cmd_list(&temp);
+		if (temp.ini_rot_a.ra == 0 && temp.ini_rot_a.rra == 0)
+			temp = widthdraw_b_moves(a, b, max_len, n);
 
-		if (norm->next->nbr > norm->nbr || (norm->pos == n && norm->next->pos == 1))
+		if (temp.norm_a->next->nbr > temp.norm_a->nbr || (temp.norm_a->pos == n && temp.norm_a->next->pos == 1))
 		{
-			ra++;
-			norm = norm->next;
+			temp.ini_rot_a.ra++;
+			temp.norm_a = temp.norm_a->next;
 		}
-		else
-		{
-			min_moves = 
-		}
-		if (norm->nbr == rev->nbr)
+		if (temp.norm_a->nbr == temp.rev_a->nbr)
 			break ;
-		if (rev->prev->nbr > rev->nbr || (rev->pos != 1 && rev->prev->pos == n))
+		if (temp.rev_a->prev->nbr > temp.rev_a->nbr || (temp.rev_a->pos != 1 && temp.rev_a->prev->pos == n))
 		{
-			rra++;
-			rev = rev->prev;	
+			temp.ini_rot_a.rra++;
+			temp.rev_a = temp.rev_a->prev;	
 		}
-		if (norm->nbr == rev->nbr)
+		if (temp.norm_a->nbr == temp.rev_a->nbr)
 			break ;
-		if (min_moves < 0)
-		{
-
-		}
 	}
 }
 
