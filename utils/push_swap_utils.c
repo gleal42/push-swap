@@ -6,11 +6,28 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/17 12:48:21 by gleal            ###   ########.fr       */
+/*   Updated: 2021/07/18 17:19:58 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "push_swap_utils.h"
+// min_a and max_a have to be found by analyzing stack b and checking for the position has to be updated to reflect the highest number in stack a
+
+int	is_good_position_forward(t_stack *cur, t_stack *next_one, int min_a, int max_a)
+{
+	if(next_one->nbr > cur->nbr || (cur->pos == max_a && next_one->pos == min_a))
+		return (1);
+	else
+		return (0);
+}
+
+int	is_good_position_backward(t_stack *cur, t_stack *prev_one, int min_a, int max_a)
+{
+	if (prev_one->nbr < cur->nbr || (cur->pos == min_a && prev_one->pos == max_a))
+		return (1);
+	else
+		return (0);
+}
 
 void	init_rot_b(t_cmd_list *cmds)
 {
