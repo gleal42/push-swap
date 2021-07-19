@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/18 17:19:58 by gleal            ###   ########.fr       */
+/*   Updated: 2021/07/19 20:16:06 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,19 @@ int	is_good_position_backward(t_stack *cur, t_stack *prev_one, int min_a, int ma
 		return (0);
 }
 
-void	init_rot_b(t_cmd_list *cmds)
+void	init_rot_b(t_all *all)
 {
-	cmds->ini_rot_b.rb = 0;
-	cmds->ini_rot_b.rrb = 0;
+	all->ini_rot_b.rb = 0;
+	all->ini_rot_b.rrb = 0;
 }
 
-void	init_rot_a(t_cmd_list *cmds)
+void	init_rot_a(t_all *all)
 {
-	cmds->ini_rot_a.ra = 0;
-	cmds->ini_rot_a.rra = 0;
+	all->ini_rot_a.ra = 0;
+	all->ini_rot_a.rra = 0;
 }
 
-void	init_cmd_list(t_cmd_list *cmds)
+void	init_cmd_list(t_cmds *cmds)
 {
 	cmds->sa = 0;
 	cmds->sb = 0;
