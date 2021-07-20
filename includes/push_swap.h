@@ -11,26 +11,26 @@ typedef struct s_stack
 	struct s_stack	*next;
 }				t_stack;
 
-typedef struct s_ini_rot_a
+typedef struct s_rot_a
 {
 	int			ra;
 	int			rra;
-}				t_ini_rot_a;
+}				t_rot_a;
 
-typedef struct s_ini_rot_b
+typedef struct s_rot_b
 {
 	int			rb;
 	int			rrb;
-}				t_ini_rot_b;
+}				t_rot_b;
 
-typedef struct s_cmd_list
+typedef struct s_limits_a
 {
-	t_stack 		*norm_a;
-	t_stack 		*rev_a;
-	t_stack 		*norm_b;
-	t_stack 		*rev_b;
-	t_ini_rot_a		ini_rot_a;;
-	t_ini_rot_b		ini_rot_b;;
+	int			min_a;
+	int			max_a;
+}				t_limits_a;
+
+typedef struct s_cmds
+{
 	int				sa;
 	int				sb;
 	int				ss;
@@ -42,7 +42,21 @@ typedef struct s_cmd_list
 	int				rra;
 	int				rrb;
 	int				rrr;
-}				t_cmd_list;
+	int				total;
+}				t_cmds;
+
+typedef struct s_all
+{
+	t_stack 		*forw_a;
+	t_stack 		*rev_a;
+	t_stack 		*forw_b;
+	t_stack 		*rev_b;
+	t_rot_a			ini_rot_a;;
+	t_rot_b			ini_rot_b;;
+	t_cmds			temp_cmds;
+	t_cmds			off_cmds;
+	t_limits_a		lim_a;
+}				t_all;
 
 # include "stacks.h"
 # include "push_swap_utils.h"

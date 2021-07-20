@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 22:33:38 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/19 22:16:39 by gleal            ###   ########.fr       */
+/*   Updated: 2021/07/20 23:08:33 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,10 @@ t_cmds	prepare_push_b(int ra, int rra, int rb, int rrb)
 		}
 	}
 	cmds.total = cmds.ra + cmds.rb + cmds.rr + cmds.rra + cmds.rrb + cmds.rrr;
+	return (cmds);
 }              
 
-t_cmds	find_closest_spot_for_b(t_stack  *cur_b, t_stack  *a, int rb, int rrb)
+t_cmds	find_closest_spot_for_b(t_stack  *cur_b, t_stack  *a, t_all *all)
 {
 	t_stack 		*forw_a;
 	t_stack 		*rev_a;
@@ -64,42 +65,39 @@ t_cmds	find_closest_spot_for_b(t_stack  *cur_b, t_stack  *a, int rb, int rrb)
 	t_cmds temp;
 
 	init_cmd_list(&temp);
-	if (is_good_position_forward(b, a, min_a, max_a)
-			&& is_good_position_backward(b, a->prev, min_a, max_a))
+	if (is_good_position_forward(cur_b, a, all->lim_a.min_a, all->lim_a.max_a)
+			&& is_good_position_backward(cur_b, a->prev, all->lim_a.min_a, all->lim_a.max_a))
 	{
-		off = prepare_push_b(0, 0, rb, rrb);
+		off = prepare_push_b(all->temp_cmds.ra, all->temp_cmds.rra, all->temp_cmds.rb, all->temp_cmds.rrb);
 		return (off);
 	}
+	off = prepare_push_b(all->temp_cmds.ra, all->temp_cmds.rra, all->temp_cmds.rb, all->temp_cmds.rrb);
+	return (off);
 	forw_a = a;
 	rev_a = a;
-	while (forw_a)
+/* 	while (forw_a)
 	{
 		forw_a->next;	
 		rev_a->prev;
-	}
+	} */
 }
 
-t_all	widthdraw_b_moves(t_stack *a, t_stack *b, int min_a, int max_a)
+void	widthdraw_b_moves(t_stack *a, t_stack *b, t_all *all)
 {
-	t_cmds off;
-	t_cmds temp;
-	t_stack 		*forw_b;
-	t_stack 		*rev_b;
-
-	init_rot_b(&temp);
-	init_cmd_list(&temp);
 	if (!b)
-		return (temp);
-	off = find_closest_spot_for_b(b, a, 0, 0);
-	forw_b = b->next;
-	rev_b = b->prev;
-	while (forw_b && (temp.rb < off.total || temp.rrb < off.total)) 
+		return ;
+	all->off_cmds = find_closest_spot_for_b(b, a, all);
+	all->forw_b = b->next;
+	all->rev_b = b->prev;
+	while (all->forw_b &&
+			(all->temp_cmds.rb < all->off_cmds.total
+		|| all->temp_cmds.rrb < all->off_cmds.total)) 
 	{
-		temp = find_closest_spot_for_b();
-		if (temp.total < off.total)
-			off = temp;
-		temp.rb++;
-		temp.rrb++;
+		all->temp_cmds = find_closest_spot_for_b(b, a, all);
+		if (all->temp_cmds.total < all->off_cmds.total)
+			all->off_cmds = all->temp_cmds;
+		all->temp_cmds.rb++;
+		all->temp_cmds.rrb++;
 	}
 }
 
@@ -118,17 +116,19 @@ t_all	widthdraw_b_moves(t_stack *a, t_stack *b, int min_a, int max_a)
 ** @line-line	comment
 */
 	
-void	more_complex_algorithm(t_stack **a, t_stack **b, int max_len, int n)
+void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 {
 	t_all off;
 	t_all temp;
 
-	init_rot_a(&temp);
-	while ()
+
+	temp.lim_a.min_a = 1;
+	temp.lim_a.max_a = max_a;
+	while (1)
 	{
-		init_cmd_list(&temp);
+		init_cmd_list(&(temp.temp_cmds));
 		if (temp.ini_rot_a.ra == 0 && temp.ini_rot_a.rra == 0)
-			temp = widthdraw_b_moves(a, b, min_a, max_a);
+			widthdraw_b_moves(*a, *b, &temp);
 		if (is_good_position_forward(temp.forw_a, temp.forw_a->next, 1, n))
 		{
 			temp.ini_rot_a.ra++;
@@ -143,11 +143,12 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_len, int n)
 		}
 		if (temp.forw_a->nbr == temp.rev_a->nbr)
 			break ;
-		if (/*executed commands*/)
+		off = temp;
+/* 		if (executed commands)
 		{
 			temp.forw_a = *a;
 			temp.rev_a = *a;
-		}
+		} */
 	}
 }
 
