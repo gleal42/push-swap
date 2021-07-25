@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/15 22:33:38 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/20 23:08:33 by gleal            ###   ########.fr       */
+/*   Updated: 2021/07/24 17:31:41by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,20 @@ void	widthdraw_b_moves(t_stack *a, t_stack *b, t_all *all)
 	}
 }
 
+void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
+{
+	temp->forw_b = b->next;
+	temp->rev_b = b->prev;
+	temp->temp_cmds.pa;
+	if (!b)
+		return ;
+	if (!b->next && (tobemoved->nbr > b->nbr))
+		temp->temp_cmds.rb++;
+	while (!is_good_position_forward(tobemoved, temp, stack_last(b)->pos, b->pos)
+	{
+//HERE
+	}
+}
 
 /*
 ** Combines 3 techniques to get the numbers in the right order:
@@ -126,29 +140,39 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 	temp.lim_a.max_a = max_a;
 	while (1)
 	{
-		init_cmd_list(&(temp.temp_cmds));
-		if (temp.ini_rot_a.ra == 0 && temp.ini_rot_a.rra == 0)
+		if (*b && (temp.ini_rot_a.ra == 0 && temp.ini_rot_a.rra == 0))
 			widthdraw_b_moves(*a, *b, &temp);
 		if (is_good_position_forward(temp.forw_a, temp.forw_a->next, 1, n))
 		{
 			temp.ini_rot_a.ra++;
 			temp.forw_a = temp.forw_a->next;
+			if (temp.forw_a->nbr == temp.rev_a->nbr)
+				break ;
 		}
-		if (temp.forw_a->nbr == temp.rev_a->nbr)
-			break ;
+		else
+		{
+			init_cmd_list(&(temp.temp_cmds));
+			temp.temp_cmds.ra = temp.ini_rot_a.ra;
+			push_a_moves(*b, &temp, temp.forw_a);
+		}
 		if (is_good_position_backward(temp.rev_a, temp.rev_a->prev, 1, n))
 		{
 			temp.ini_rot_a.rra++;
 			temp.rev_a = temp.rev_a->prev;	
+			if (temp.forw_a->nbr == temp.rev_a->nbr)
+				break ;
 		}
-		if (temp.forw_a->nbr == temp.rev_a->nbr)
-			break ;
-		off = temp;
-/* 		if (executed commands)
+		else
+		{
+			init_cmd_list(&(temp.temp_cmds));
+			temp.temp_cmds.rra = temp.ini_rot_a.rra;
+			push_a_moves(*b, &temp);
+		}
+		if (off.off_cmds.total < temp.ini_rot_a.ra || off.off_cmds.total < temp.ini_rot_a.rra)
 		{
 			temp.forw_a = *a;
 			temp.rev_a = *a;
-		} */
+		}
 	}
 }
 
