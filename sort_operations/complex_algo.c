@@ -57,6 +57,22 @@ t_cmds	prepare_push_b(int ra, int rra, int rb, int rrb)
 	return (cmds);
 }              
 
+void	count_total(t_all *temp)
+{
+	temp->temp_cmds.total = 0;
+	temp->temp_cmds.total += temp->temp_cmds.sa;
+	temp->temp_cmds.total += temp->temp_cmds.sb;
+	temp->temp_cmds.total += temp->temp_cmds.ss;
+	temp->temp_cmds.total += temp->temp_cmds.ra;
+	temp->temp_cmds.total += temp->temp_cmds.rb;
+	temp->temp_cmds.total += temp->temp_cmds.rr;
+	temp->temp_cmds.total += temp->temp_cmds.pa;
+	temp->temp_cmds.total += temp->temp_cmds.pb;
+	temp->temp_cmds.total += temp->temp_cmds.rra;
+	temp->temp_cmds.total += temp->temp_cmds.rrb;
+	temp->temp_cmds.total += temp->temp_cmds.rrr;
+}
+
 t_cmds	find_closest_spot_for_b(t_stack  *cur_b, t_stack  *a, t_all *all)
 {
 	t_stack 		*forw_a;
@@ -103,16 +119,37 @@ void	widthdraw_b_moves(t_stack *a, t_stack *b, t_all *all)
 
 void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 {
+	int has_rb;
+	int has_rrb;
+
+	has_rb = 0;
+	has_rrb = 0;
 	temp->forw_b = b->next;
 	temp->rev_b = b->prev;
-	temp->temp_cmds.pa;
+	temp->temp_cmds.pa++;
 	if (!b)
 		return ;
 	if (!b->next && (tobemoved->nbr > b->nbr))
-		temp->temp_cmds.rb++;
-	while (!is_good_position_forward(tobemoved, temp, stack_last(b)->pos, b->pos)
 	{
-//HERE
+		has_rb++;
+		temp->temp_cmds.rb++;
+	}
+	while (!has_rb && !has_rrb)
+	{
+		if((temp->temp_cmds.ra)-- > 0)
+			temp->temp_cmds.rr++;
+		else
+			temp->temp_cmds.rb++;
+		if((temp->temp_cmds.rra)-- > 0)
+			temp->temp_cmds.rrr++;
+		else
+			temp->temp_cmds.rrb++;
+		if (is_good_position_forward(tobemoved, temp->forw_b, stack_last(b)->pos, b->pos))
+			has_rb++;
+		if (is_good_position_backward(tobemoved, temp->rev_b, stack_last(b)->pos, b->pos))
+			has_rrb++;
+		temp->rev_b = (temp->rev_b)->prev;
+		temp->forw_b = (temp->forw_b)->next;
 	}
 }
 
@@ -166,7 +203,7 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 		{
 			init_cmd_list(&(temp.temp_cmds));
 			temp.temp_cmds.rra = temp.ini_rot_a.rra;
-			push_a_moves(*b, &temp);
+			push_a_moves(*b, &temp, temp.rev_a);
 		}
 		if (off.off_cmds.total < temp.ini_rot_a.ra || off.off_cmds.total < temp.ini_rot_a.rra)
 		{
