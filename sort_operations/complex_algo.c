@@ -124,8 +124,6 @@ void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 
 	has_rb = 0;
 	has_rrb = 0;
-	temp->forw_b = b->next;
-	temp->rev_b = b->prev;
 	temp->temp_cmds.pa++;
 	if (!b)
 		return ;
@@ -134,6 +132,8 @@ void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 		has_rb++;
 		temp->temp_cmds.rb++;
 	}
+	temp->forw_b = b->next;
+	temp->rev_b = b->prev;
 	while (!has_rb && !has_rrb)
 	{
 		if((temp->temp_cmds.ra)-- > 0)
@@ -172,14 +172,13 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 	t_all off;
 	t_all temp;
 
-
 	temp.lim_a.min_a = 1;
 	temp.lim_a.max_a = max_a;
+	temp.forw_a = *a;
+	temp.rev_a = *a;
 	while (1)
 	{
-		if (*b && (temp.ini_rot_a.ra == 0 && temp.ini_rot_a.rra == 0))
-			widthdraw_b_moves(*a, *b, &temp);
-		if (is_good_position_forward(temp.forw_a, temp.forw_a->next, 1, n))
+		if (is_good_position_forward(temp.forw_a, (temp.forw_a)->next, 1, n))
 		{
 			temp.ini_rot_a.ra++;
 			temp.forw_a = temp.forw_a->next;
@@ -205,12 +204,15 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			temp.temp_cmds.rra = temp.ini_rot_a.rra;
 			push_a_moves(*b, &temp, temp.rev_a);
 		}
-		if (off.off_cmds.total < temp.ini_rot_a.ra || off.off_cmds.total < temp.ini_rot_a.rra)
+ 		if (off.off_cmds.total < temp.ini_rot_a.ra || off.off_cmds.total < temp.ini_rot_a.rra)
 		{
+			// execute moves
 			temp.forw_a = *a;
 			temp.rev_a = *a;
-		}
+		} 
 	}
+	if (*b && (temp.ini_rot_a.ra == 0 && temp.ini_rot_a.rra == 0))
+		widthdraw_b_moves(*a, *b, &temp);
 }
 
 /* 	int rotation_direction;
