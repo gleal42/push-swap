@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/19 20:16:06 by gleal            ###   ########.fr       */
+/*   Updated: 2021/07/28 21:39:44 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	init_cmd_list(t_cmds *cmds)
 	cmds->rra = 0;
 	cmds->rrr = 0;
 	cmds->rrb = 0;
+	cmds->total = 0;
 }
 
 int	is_input_integer(char **stack_a_args)
