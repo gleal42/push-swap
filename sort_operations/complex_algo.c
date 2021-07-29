@@ -249,7 +249,7 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 		}
 		else
 		{
-			init_cmd_list(&(temp.temp_cmds));
+			init_cmd_list(&(temp.cmds));
 			temp.temp_cmds.ra = temp.ini_rot_a.ra;
 			push_a_moves(*b, &temp, temp.forw_a);
 			if (temp.cmds.total < off.cmds.total || !(off.cmds.total))
@@ -275,8 +275,9 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			execute_moves(&off.cmds, a, b, &temp.lim_a, max_a);
 			temp.forw_a = *a;
 			temp.rev_a = *a;
+			init_cmd_list(&(off.cmds));
+			init_cmd_list(&(temp.cmds));
 		} 
 	}
-	if (*b && (temp.ini_rot_a.ra == 0 && temp.ini_rot_a.rra == 0))
-		widthdraw_b_moves(*a, *b, &temp);
+	widthdraw_b_moves(*a, *b, &temp);
 }

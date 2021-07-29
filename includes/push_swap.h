@@ -54,7 +54,7 @@ typedef struct s_all
 	t_rot_a			ini_rot_a;;
 	t_rot_b			ini_rot_b;;
 	t_cmds			temp_cmds;
-	t_cmds			off_cmds;
+	t_cmds			cmds;
 	t_limits_a		lim_a;
 }				t_all;
 
