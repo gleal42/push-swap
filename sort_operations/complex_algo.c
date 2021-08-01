@@ -57,7 +57,7 @@ t_cmds	prepare_push_b(int ra, int rra, int rb, int rrb)
 	return (cmds);
 }
 
-void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits_a *lim_a, int max_len)
+void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lim_a, int max_len)
 {
 	while (cmds->rr)
 	{
@@ -71,10 +71,10 @@ void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits_a *lim_a, in
 	}
 	if (cmds->pa)
 	{
-		if ((*a)->pos == lim_a->max_a)
-			(lim_a->max_a)--;
-		if ((*a)->pos == lim_a->min_a)
-			(lim_a->min_a)++;
+		if ((*a)->pos == lim_a->max)
+			(lim_a->max)--;
+		if ((*a)->pos == lim_a->min)
+			(lim_a->min)++;
 		op_pa(a, b, max_len);
 		(cmds->pa)--;
 	}
@@ -119,8 +119,8 @@ t_cmds	find_closest_spot_for_b(t_stack  *cur_b, t_stack  *a, t_all *all)
 	t_cmds temp;
 
 	init_cmd_list(&temp);
-	if (is_good_position_forward(cur_b, a, all->lim_a.min_a, all->lim_a.max_a)
-			&& is_good_position_backward(cur_b, a->prev, all->lim_a.min_a, all->lim_a.max_a))
+	if (is_good_position_forward(cur_b, a, all->lim_a.min, all->lim_a.max)
+			&& is_good_position_backward(cur_b, a->prev, all->lim_a.min, all->lim_a.max))
 	{
 		off = prepare_push_b(all->temp_cmds.ra, all->temp_cmds.rra, all->temp_cmds.rb, all->temp_cmds.rrb);
 		return (off);
@@ -170,14 +170,22 @@ void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 	temp->cmds.total = 1;
 	if (!b)
 		return ;
-	if (!b->next && (tobemoved->nbr > b->nbr))
+	if (!b->next)
 	{
-		has_rb++;
-		temp->cmds.rb++;
+		if (tobemoved->nbr > b->nbr)
+		{
+			has_rb++;
+			temp->cmds.rb++;
+		}
+		else
+		{
+			has_rrb++;
+			temp->cmds.rrb++;
+		}
 	}
 	temp->forw_b = b->next;
 	temp->rev_b = b->prev;
-	while (!has_rb && !has_rrb)
+	while (!has_rb && !has_rrb && temp->forw_b && temp->rev_b )
 	{
 		if((temp->cmds.ra)-- > 0)
 			temp->cmds.rr++;
@@ -195,16 +203,16 @@ void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 		temp->forw_b = (temp->forw_b)->next;
 	}
 	if (has_rb)
-		fwd_total = temp->cmds.ra + temp->cmds.rr + temp->cmds.pa;
+		fwd_total = temp->cmds.ra + temp->cmds.rb +temp->cmds.rr + temp->cmds.pa;
 	if (has_rrb)
-		rev_total = temp->cmds.rra + temp->cmds.rrr + temp->cmds.pa;
-	if (fwd_total < rev_total || !has_rrb)
+		rev_total = temp->cmds.rra + temp->cmds.rrb + temp->cmds.rrr + temp->cmds.pa;
+	if ((fwd_total < rev_total && has_rb)|| !has_rrb)
 	{
 		temp->cmds.rra = 0;
 		temp->cmds.rrr = 0;
 		temp->cmds.total = fwd_total;
 	}
-	else if (fwd_total < rev_total || !has_rrb)
+	else if ((fwd_total < rev_total && has_rb) || !has_rrb)
 	{
 		temp->cmds.ra = 0;
 		temp->cmds.rr = 0;
@@ -231,8 +239,8 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 	t_all off;
 	t_all temp;
 
-	temp.lim_a.min_a = 1;
-	temp.lim_a.max_a = n;
+	temp.lim_a.min = 1;
+	temp.lim_a.max = n;
 	temp.forw_a = *a;
 	temp.rev_a = *a;
 	temp.ini_rot_a.ra = 0;
@@ -240,7 +248,8 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 	init_cmd_list(&(off.cmds));
 	while (1)
 	{
-		if (is_good_position_forward(temp.forw_a, (temp.forw_a)->next, temp.lim_a.min_a, temp.lim_a.max_a))
+		init_cmd_list(&(temp.cmds));
+		if (is_good_position_forward(temp.forw_a, (temp.forw_a)->next, temp.lim_a.min, temp.lim_a.max))
 		{
 			temp.ini_rot_a.ra++;
 			temp.forw_a = temp.forw_a->next;
@@ -254,6 +263,8 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			push_a_moves(*b, &temp, temp.forw_a);
 			if (temp.cmds.total < off.cmds.total || !(off.cmds.total))
 				off.cmds = temp.cmds;
+			temp.ini_rot_a.ra++;
+			temp.forw_a = temp.forw_a->next;
 		}
 		if (is_good_position_backward(temp.rev_a, temp.rev_a->prev, 1, n))
 		{
@@ -269,6 +280,8 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			push_a_moves(*b, &temp, temp.rev_a);
 			if (temp.cmds.total < off.cmds.total)
 				off.cmds = temp.cmds;
+			temp.ini_rot_a.rra++;
+			temp.rev_a = temp.rev_a->prev;	
 		}
  		if (off.cmds.total && (off.cmds.total <= temp.ini_rot_a.ra || off.cmds.total <= temp.ini_rot_a.rra))
 		{
@@ -276,7 +289,6 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			temp.forw_a = *a;
 			temp.rev_a = *a;
 			init_cmd_list(&(off.cmds));
-			init_cmd_list(&(temp.cmds));
 		} 
 	}
 	widthdraw_b_moves(*a, *b, &temp);

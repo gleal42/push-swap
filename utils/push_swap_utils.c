@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/28 21:39:44 by gleal            ###   ########.fr       */
+/*   Updated: 2021/08/01 16:20:57 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 int	is_good_position_forward(t_stack *cur, t_stack *next_one, int min_a, int max_a)
 {
+	if (!next_one)
+		return (1);
 	if(next_one->nbr > cur->nbr || (cur->pos == max_a && next_one->pos == min_a))
 		return (1);
 	else
@@ -23,6 +25,8 @@ int	is_good_position_forward(t_stack *cur, t_stack *next_one, int min_a, int max
 
 int	is_good_position_backward(t_stack *cur, t_stack *prev_one, int min_a, int max_a)
 {
+	if (!prev_one)
+		return (1);
 	if (prev_one->nbr < cur->nbr || (cur->pos == min_a && prev_one->pos == max_a))
 		return (1);
 	else
