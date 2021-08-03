@@ -57,58 +57,90 @@ t_cmds	prepare_push_b(int ra, int rra, int rb, int rrb)
 	return (cmds);
 }
 
-void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lim_a, int max_len)
+void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
 {
-	while (cmds->rr)
+	while (cmds->rr > 0)
 	{
 		op_rr(a, b, max_len);
 		(cmds->rr)--;
 	}
-	while (cmds->rrr)
+	while (cmds->ra > 0)
+	{
+		op_ra(a, b, max_len);
+		(cmds->ra)--;
+	}
+	while (cmds->rrr > 0)
 	{
 		op_rrr(a, b, max_len);
 		(cmds->rrr)--;
 	}
-	if (cmds->pa)
+	while (cmds->rra > 0)
 	{
-		if ((*a)->pos == lim_a->max)
-			(lim_a->max)--;
-		if ((*a)->pos == lim_a->min)
-			(lim_a->min)++;
+		op_rra(a, b, max_len);
+		(cmds->rra)--;
+	}
+	if (cmds->ss > 0)
+	{
+		op_ss(a, b, max_len);
+		(cmds->ss)--;
+	}
+	if (cmds->sa > 0)
+	{
+		op_sa(a, b, max_len);
+		(cmds->sa)--;
+	}
+	if (cmds->sb > 0)
+	{
+		op_sb(a, b, max_len);
+		(cmds->sb)--;
+	}
+	if (cmds->pa > 0)
+	{
+		if ((*a)->pos == lims->max_a)
+			(lims->max_a)--;
+		if ((*a)->pos == lims->min_a)
+			(lims->min_a)++;
+		if (!(*b))
+		{
+			lims->max_b = (*a)->pos;
+			lims->min_b = (*a)->pos;
+		}
+		else
+		{
+			if ((*a)->pos > lims->max_b)
+				lims->max_b = (*a)->pos;
+			else if ((*a)->pos < lims->min_b)
+				lims->min_b = (*a)->pos;
+		}
 		op_pa(a, b, max_len);
 		(cmds->pa)--;
 	}
-/* 	while (cmds->ss)
+	while (cmds->rb > 0)
 	{
-		op_ss(a, b, max_len);
-		cmds->ss;
+		op_rb(a, b, max_len);
+		(cmds->rb)--;
 	}
-	cmds->sa;
-	cmds->sb;
-	cmds->ra;
-	cmds->rb;
-	cmds->rr;
-	cmds->pa;
-	cmds->pb;
-	cmds->rra;
-	cmds->rrb;
-	cmds->rrr; */
+	while (cmds->rrb > 0)
+	{
+		op_rrb(a, b, max_len);
+		(cmds->rrb)--;
+	}
 }
 
-void	count_total(t_all *temp)
+void	count_total(t_cmds *cmds)
 {
-	temp->temp_cmds.total = 0;
-	temp->temp_cmds.total += temp->temp_cmds.sa;
-	temp->temp_cmds.total += temp->temp_cmds.sb;
-	temp->temp_cmds.total += temp->temp_cmds.ss;
-	temp->temp_cmds.total += temp->temp_cmds.ra;
-	temp->temp_cmds.total += temp->temp_cmds.rb;
-	temp->temp_cmds.total += temp->temp_cmds.rr;
-	temp->temp_cmds.total += temp->temp_cmds.pa;
-	temp->temp_cmds.total += temp->temp_cmds.pb;
-	temp->temp_cmds.total += temp->temp_cmds.rra;
-	temp->temp_cmds.total += temp->temp_cmds.rrb;
-	temp->temp_cmds.total += temp->temp_cmds.rrr;
+	cmds->total = 0;
+	cmds->total += cmds->sa;
+	cmds->total += cmds->sb;
+	cmds->total += cmds->ss;
+	cmds->total += cmds->ra;
+	cmds->total += cmds->rb;
+	cmds->total += cmds->rr;
+	cmds->total += cmds->pa;
+	cmds->total += cmds->pb;
+	cmds->total += cmds->rra;
+	cmds->total += cmds->rrb;
+	cmds->total += cmds->rrr;
 }
 
 t_cmds	find_closest_spot_for_b(t_stack  *cur_b, t_stack  *a, t_all *all)
@@ -119,13 +151,13 @@ t_cmds	find_closest_spot_for_b(t_stack  *cur_b, t_stack  *a, t_all *all)
 	t_cmds temp;
 
 	init_cmd_list(&temp);
-	if (is_good_position_forward(cur_b, a, all->lim_a.min, all->lim_a.max)
-			&& is_good_position_backward(cur_b, a->prev, all->lim_a.min, all->lim_a.max))
+	if (is_good_position_forward(cur_b, a, all->lims.min_a, all->lims.max_a)
+			&& is_good_position_backward(cur_b, a->prev, all->lims.min_a, all->lims.max_a))
 	{
-		off = prepare_push_b(all->temp_cmds.ra, all->temp_cmds.rra, all->temp_cmds.rb, all->temp_cmds.rrb);
+		off = prepare_push_b(all->cmds.ra, all->cmds.rra, all->cmds.rb, all->cmds.rrb);
 		return (off);
 	}
-	off = prepare_push_b(all->temp_cmds.ra, all->temp_cmds.rra, all->temp_cmds.rb, all->temp_cmds.rrb);
+	off = prepare_push_b(all->cmds.ra, all->cmds.rra, all->cmds.rb, all->cmds.rrb);
 	return (off);
 	forw_a = a;
 	rev_a = a;
@@ -138,20 +170,22 @@ t_cmds	find_closest_spot_for_b(t_stack  *cur_b, t_stack  *a, t_all *all)
 
 void	widthdraw_b_moves(t_stack *a, t_stack *b, t_all *all)
 {
+	t_cmds	temp;
+
 	if (!b)
 		return ;
-	all->cmds = find_closest_spot_for_b(b, a, all);
+	temp = find_closest_spot_for_b(b, a, all);
 	all->forw_b = b->next;
 	all->rev_b = b->prev;
 	while (all->forw_b &&
-			(all->temp_cmds.rb < all->cmds.total
-		|| all->temp_cmds.rrb < all->cmds.total)) 
+			(temp.rb < all->cmds.total
+		|| temp.rrb < all->cmds.total)) 
 	{
-		all->temp_cmds = find_closest_spot_for_b(b, a, all);
-		if (all->temp_cmds.total < all->cmds.total)
-			all->cmds = all->temp_cmds;
-		all->temp_cmds.rb++;
-		all->temp_cmds.rrb++;
+		temp = find_closest_spot_for_b(b, a, all);
+		if (temp.total < all->cmds.total)
+			all->cmds = temp;
+		temp.rb++;
+		temp.rrb++;
 	}
 }
 
@@ -167,7 +201,7 @@ void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 	fwd_total = 0;
 	rev_total = 0;
 	temp->cmds.pa++;
-	temp->cmds.total = 1;
+	temp->cmds.total = temp->cmds.ra + temp->cmds.rb +temp->cmds.rr + temp->cmds.rra + temp->cmds.rrb +temp->cmds.rrr + temp->cmds.pa;;
 	if (!b)
 		return ;
 	if (!b->next)
@@ -239,8 +273,10 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 	t_all off;
 	t_all temp;
 
-	temp.lim_a.min = 1;
-	temp.lim_a.max = n;
+	temp.lims.min_a = 1;
+	temp.lims.max_a = n;
+	temp.lims.min_b = 0;
+	temp.lims.max_b = 0;
 	temp.forw_a = *a;
 	temp.rev_a = *a;
 	temp.ini_rot_a.ra = 0;
@@ -249,17 +285,15 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 	while (1)
 	{
 		init_cmd_list(&(temp.cmds));
-		if (is_good_position_forward(temp.forw_a, (temp.forw_a)->next, temp.lim_a.min, temp.lim_a.max))
+		if (is_good_position_forward(temp.forw_a, (temp.forw_a)->next, temp.lims.min_a, temp.lims.max_a))
 		{
 			temp.ini_rot_a.ra++;
 			temp.forw_a = temp.forw_a->next;
-			if (temp.forw_a->nbr == temp.rev_a->nbr)
-				break ;
 		}
 		else
 		{
 			init_cmd_list(&(temp.cmds));
-			temp.temp_cmds.ra = temp.ini_rot_a.ra;
+			temp.cmds.ra = temp.ini_rot_a.ra;
 			push_a_moves(*b, &temp, temp.forw_a);
 			if (temp.cmds.total < off.cmds.total || !(off.cmds.total))
 				off.cmds = temp.cmds;
@@ -270,26 +304,28 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 		{
 			temp.ini_rot_a.rra++;
 			temp.rev_a = temp.rev_a->prev;	
-			if (temp.forw_a->nbr == temp.rev_a->nbr)
-				break ;
 		}
 		else
 		{
-			init_cmd_list(&(temp.temp_cmds));
-			temp.temp_cmds.rra = temp.ini_rot_a.rra;
-			push_a_moves(*b, &temp, temp.rev_a);
-			if (temp.cmds.total < off.cmds.total)
-				off.cmds = temp.cmds;
 			temp.ini_rot_a.rra++;
+			init_cmd_list(&(temp.cmds));
+			temp.cmds.rra = temp.ini_rot_a.rra;
+			push_a_moves(*b, &temp, temp.rev_a);
+			if (temp.cmds.total < off.cmds.total || !(off.cmds.total))
+				off.cmds = temp.cmds;
 			temp.rev_a = temp.rev_a->prev;	
 		}
  		if (off.cmds.total && (off.cmds.total <= temp.ini_rot_a.ra || off.cmds.total <= temp.ini_rot_a.rra))
 		{
-			execute_moves(&off.cmds, a, b, &temp.lim_a, max_a);
+			execute_moves(&off.cmds, a, b, &temp.lims, max_a);
 			temp.forw_a = *a;
 			temp.rev_a = *a;
+			temp.ini_rot_a.ra = 0;
+			temp.ini_rot_a.rra = 0;
 			init_cmd_list(&(off.cmds));
 		} 
+		else if (!temp.forw_a || temp.forw_a->nbr == temp.rev_a->nbr)
+			break ;
 	}
 	widthdraw_b_moves(*a, *b, &temp);
 }

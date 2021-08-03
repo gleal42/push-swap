@@ -25,8 +25,10 @@ typedef struct s_rot_b
 
 typedef struct s_limits
 {
-	int			min;
-	int			max;
+	int			min_a;
+	int			max_a;
+	int			min_b;
+	int			max_b;
 }				t_limits;
 
 typedef struct s_cmds
@@ -53,10 +55,8 @@ typedef struct s_all
 	t_stack 		*rev_b;
 	t_rot_a			ini_rot_a;;
 	t_rot_b			ini_rot_b;;
-	t_cmds			temp_cmds;
 	t_cmds			cmds;
-	t_limits		lim_a;
-	t_limits		lim_b;
+	t_limits		lims;
 }				t_all;
 
 # include "stacks.h"
