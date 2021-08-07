@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/04 20:54:29 by gleal             #+#    #+#             */
-/*   Updated: 2021/08/04 21:04:06 by gleal            ###   ########.fr       */
+/*   Updated: 2021/08/07 17:35:44 gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int m
 	if (cmds->pa > 0)
 	{
 		if ((*a)->pos == lims->max_a)
-			(lims->max_a)--;
+			adjust_max_a(*b, lims);
+		// HERE HAVE TO CREAT ADJUST MAX AND MIN FOR A AND B
 		if ((*a)->pos == lims->min_a)
 			(lims->min_a)++;
 		if (!(*b))
