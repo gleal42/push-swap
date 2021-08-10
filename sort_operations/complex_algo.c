@@ -109,7 +109,7 @@ void	find_closest_b_spot(t_stack  *cur_b, t_stack  *a, t_all *temp, int max)
 	temp->rev_a = a->prev;
 	fwd_total = temp->cmds.total;
 	rev_total = temp->cmds.total;
-	while (!good_spot_forward && !good_spot_reverse && temp->forw_a && temp->rev_a )
+	while (!good_spot_forward && !good_spot_reverse && temp->forw_a)
 	{
 		if(temp->cmds.rb > 0)
 		{	
@@ -131,25 +131,27 @@ void	find_closest_b_spot(t_stack  *cur_b, t_stack  *a, t_all *temp, int max)
 			temp->cmds.rra++;
 			rev_total++;
 		}
-		if (max && (fwd_total > max && rev_total > max))
+		if (max && (fwd_total >= max && rev_total >= max))
 		{
 			init_cmd_list(&temp->cmds);
 			return ;
 		}
-		if (is_good_position_forward(cur_b, temp->forw_a, temp->lims.min_a, temp->lims.max_a))
+		if (is_good_position_forward(cur_b, temp->forw_a, temp->lims.min_a, temp->lims.max_a)
+				&& is_good_position_backward(cur_b, temp->forw_a->prev, temp->lims.min_a, temp->lims.max_a))
 			good_spot_forward++;
-		if (is_good_position_backward(cur_b, temp->rev_a, temp->lims.min_a, temp->lims.max_a))
+		if (is_good_position_backward(cur_b, temp->rev_a, temp->lims.min_a, temp->lims.max_a)
+			&& is_good_position_forward(cur_b, temp->rev_a->next, temp->lims.min_a, temp->lims.max_a))
 			good_spot_reverse++;
 		temp->rev_a = (temp->rev_a)->prev;
 		temp->forw_a = (temp->forw_a)->next;
 	}
-	if ((fwd_total < rev_total && good_spot_forward)|| !good_spot_reverse)
+	if ((fwd_total <= rev_total && good_spot_forward)|| !good_spot_reverse)
 	{
 		temp->cmds.rra = 0;
 		temp->cmds.rrr = 0;
 		temp->cmds.total = fwd_total;
 	}
-	else if ((fwd_total < rev_total && good_spot_forward) || !good_spot_reverse)
+	else if ((fwd_total <= rev_total && good_spot_forward) || !good_spot_reverse)
 	{
 		temp->cmds.ra = 0;
 		temp->cmds.rr = 0;
@@ -166,6 +168,7 @@ void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off)
 	if (!b)
 		return ;
 	find_closest_b_spot(b, a, &temp, off->cmds.total);
+	off->cmds = temp.cmds;
 	off->forw_b = b->next;
 	off->rev_b = b->prev;
 	while (off->forw_b &&
@@ -178,14 +181,14 @@ void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off)
 		find_closest_b_spot(off->forw_b, a, &temp, off->cmds.total);
 		if (temp.cmds.total && (temp.cmds.total < off->cmds.total))
 			off->cmds = temp.cmds;
-		off->forw_b = b->next;
+		off->forw_b = off->forw_b->next;
 		init_cmd_list(&temp.cmds);
 		temp.ini_rot_b.rrb = temp.ini_rot_b.rb;
 		temp.ini_rot_b.rb = 0;
 		find_closest_b_spot(off->rev_b, a, &temp, off->cmds.total);
 		if (temp.cmds.total && (temp.cmds.total < off->cmds.total))
 			off->cmds = temp.cmds;
-		off->rev_b = b->prev;
+		off->rev_b = off->rev_b->prev;
 	}
 }
 
@@ -332,6 +335,6 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 	{
 		init_cmd_list(&(temp.cmds));
 		min_push_b_to_a_moves(*a, *b, &temp);
-		execute_merge_ab(&off.cmds, a, b, &temp.lims, max_a);
+		execute_merge_ab(&temp.cmds, a, b, &temp.lims, max_a);
 	}
 }

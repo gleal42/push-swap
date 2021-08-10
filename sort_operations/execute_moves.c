@@ -62,10 +62,9 @@ void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int m
 	if (cmds->pa > 0)
 	{
 		if ((*a)->pos == lims->max_a)
-			adjust_max_a(*b, lims);
-		// HERE HAVE TO CREAT ADJUST MAX AND MIN FOR A AND B
+			pa_adjust_max_a(*b, lims);
 		if ((*a)->pos == lims->min_a)
-			(lims->min_a)++;
+			pa_adjust_min_a(*b, lims);
 		if (!(*b))
 		{
 			lims->max_b = (*a)->pos;
