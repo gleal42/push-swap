@@ -107,7 +107,7 @@ void	execute_merge_ab(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, in
 	if (cmds->pb > 0)
 	{
 		if ((*b)->pos == lims->max_b)
-			(lims->max_b)--;
+			pb_adjust_max_b(*b, lims);
 		if ((*b)->pos == lims->min_b)
 			(lims->min_b)++;
 		if (!(*a))

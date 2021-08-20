@@ -139,19 +139,34 @@ void	find_closest_b_spot(t_stack  *cur_b, t_stack  *a, t_all *temp, int max)
 		if (is_good_position_forward(cur_b, temp->forw_a, temp->lims.min_a, temp->lims.max_a)
 				&& is_good_position_backward(cur_b, temp->forw_a->prev, temp->lims.min_a, temp->lims.max_a))
 			good_spot_forward++;
-		if (is_good_position_backward(cur_b, temp->rev_a, temp->lims.min_a, temp->lims.max_a)
-			&& is_good_position_forward(cur_b, temp->rev_a->next, temp->lims.min_a, temp->lims.max_a))
-			good_spot_reverse++;
+		if (temp->rev_a->next)
+		{
+			if (is_good_position_backward(cur_b, temp->rev_a, temp->lims.min_a, temp->lims.max_a)
+				&& is_good_position_forward(cur_b, temp->rev_a->next, temp->lims.min_a, temp->lims.max_a))
+				good_spot_reverse++;
+		}
+		else
+		{
+			if (is_good_position_backward(cur_b, temp->rev_a, temp->lims.min_a, temp->lims.max_a)
+				&& is_good_position_forward(cur_b, a, temp->lims.min_a, temp->lims.max_a))
+				good_spot_reverse++;
+		}
 		temp->rev_a = (temp->rev_a)->prev;
 		temp->forw_a = (temp->forw_a)->next;
 	}
-	if ((fwd_total <= rev_total && good_spot_forward)|| !good_spot_reverse)
+	if (!good_spot_forward && !good_spot_reverse)
+	{
+			printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
+			init_cmd_list(&temp->cmds);
+			return ;
+	}
+	if (good_spot_forward && (fwd_total <= rev_total || !good_spot_reverse))
 	{
 		temp->cmds.rra = 0;
 		temp->cmds.rrr = 0;
 		temp->cmds.total = fwd_total;
 	}
-	else if ((fwd_total <= rev_total && good_spot_forward) || !good_spot_reverse)
+	else if (good_spot_reverse && (rev_total <= fwd_total || !good_spot_reverse))
 	{
 		temp->cmds.ra = 0;
 		temp->cmds.rr = 0;
@@ -337,4 +352,13 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 		min_push_b_to_a_moves(*a, *b, &temp);
 		execute_merge_ab(&temp.cmds, a, b, &temp.lims, max_a);
 	}
+	if (is_stack_sorted(a, n))
+	{
+		if ((*a)->pos == 1)
+			return ;
+		else
+			rotate_until_sorted(a, b, max_a);
+	}
+	else
+		printf("WHOOPSIE\n");
 }

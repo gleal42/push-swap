@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/07 17:25:03 by gleal             #+#    #+#             */
-/*   Updated: 2021/08/10 21:57:23 by gleal            ###   ########.fr       */
+/*   Updated: 2021/08/20 21:22:54 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,92 @@ void		pa_adjust_min_a(t_stack *b, t_limits *lims)
 			check_bckd = b->prev;
 			while (check_fwd)
 			{
-				if (check_fwd->pos == lims->max_a)
+				if (check_fwd->pos == lims->min_a)
 				{
 					lims->min_a++;
 					repeat++;
 				}
-				else if (check_bckd->pos == lims->max_a)
+				else if (check_bckd->pos == lims->min_a)
 				{
 					lims->min_a++;
+					repeat++;
+				}
+			}
+		}
+	}
+}
+
+void		pb_adjust_max_b(t_stack *a, t_limits *lims)
+{
+	t_stack *check_fwd;
+	t_stack *check_bckd;
+	int repeat;
+
+	lims->max_b--;
+	if (!a)
+		return ;
+	if (lims->max_a < lims->max_b)
+		return ;
+	else
+	{
+		repeat = 1;
+		while (repeat)
+		{
+			if (a->pos == lims->max_b)
+				lims->max_b--;
+			else
+				repeat = 0;
+			check_fwd = a->next;
+			check_bckd = a->prev;
+			while (check_fwd)
+			{
+				if (check_fwd->pos == lims->max_b)
+				{
+					lims->max_b--;
+					repeat++;
+				}
+				else if (check_bckd->pos == lims->max_b)
+				{
+					lims->max_b--;
+					repeat++;
+				}
+			}
+		}
+	}
+}
+
+void		pb_adjust_min_b(t_stack *a, t_limits *lims)
+{
+	t_stack *check_fwd;
+	t_stack *check_bckd;
+	int repeat;
+
+	lims->min_b++;
+	if (!a)
+		return ;
+	if (lims->min_a > lims->min_b)
+		return ;
+	else
+	{
+		repeat = 1;
+		while (repeat)
+		{
+			if (a->pos == lims->min_b)
+				lims->min_b++;
+			else
+				repeat = 0;
+			check_fwd = a->next;
+			check_bckd = a->prev;
+			while (check_fwd)
+			{
+				if (check_fwd->pos == lims->max_a)
+				{
+					lims->min_b++;
+					repeat++;
+				}
+				else if (check_bckd->pos == lims->max_a)
+				{
+					lims->min_b++;
 					repeat++;
 				}
 			}
