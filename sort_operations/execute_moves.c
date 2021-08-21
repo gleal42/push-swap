@@ -61,10 +61,18 @@ void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int m
 	}
 	if (cmds->pa > 0)
 	{
-		if ((*a)->pos == lims->max_a)
-			pa_adjust_max_a(*b, lims);
-		if ((*a)->pos == lims->min_a)
-			pa_adjust_min_a(*b, lims);
+		if (!((*a)->next))
+		{
+			lims->max_b = 0;
+			lims->min_b = 0;
+		}
+		else
+		{
+			if ((*a)->pos == lims->max_a)
+				pa_adjust_max_a(*b, lims);
+			if ((*a)->pos == lims->min_a)
+				pa_adjust_min_a(*b, lims);
+		}
 		if (!(*b))
 		{
 			lims->max_b = (*a)->pos;
@@ -81,7 +89,6 @@ void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int m
 		(cmds->pa)--;
 	}
 }
-
 void	execute_merge_ab(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
 {
 	while (cmds->rr > 0)
@@ -106,10 +113,18 @@ void	execute_merge_ab(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, in
 	}
 	if (cmds->pb > 0)
 	{
-		if ((*b)->pos == lims->max_b)
-			pb_adjust_max_b(*b, lims);
-		if ((*b)->pos == lims->min_b)
-			(lims->min_b)++;
+		if (!((*b)->next))
+		{
+			lims->max_b = 0;
+			lims->min_b = 0;
+		}
+		else
+		{
+			if ((*b)->pos == lims->max_b)
+				pb_adjust_max_b(*a, lims);
+			if ((*b)->pos == lims->min_b)
+				pb_adjust_min_b(*a, lims);
+		}
 		if (!(*a))
 		{
 			lims->max_a = (*b)->pos;

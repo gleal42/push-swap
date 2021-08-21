@@ -105,6 +105,9 @@ void	find_closest_b_spot(t_stack  *cur_b, t_stack  *a, t_all *temp, int max)
 		else
 			good_spot_reverse++;
 	}
+	if (is_good_position_forward(cur_b, a, temp->lims.min_a, temp->lims.max_a)
+			&& is_good_position_backward(cur_b, a->prev, temp->lims.min_a, temp->lims.max_a))
+		return ;
 	temp->forw_a = a->next;
 	temp->rev_a = a->prev;
 	fwd_total = temp->cmds.total;
@@ -212,28 +215,32 @@ void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 	int has_rb;
 	int has_rrb;
 	int rev_total;
-	int fwd_total;
+	rev_total = 0;
 
+	temp->cmds.type = INITIAL_PUSH;
 	has_rb = 0;
 	has_rrb = 0;
-	fwd_total = 0;
-	rev_total = 0;
 	temp->cmds.pa++;
 	temp->cmds.total = temp->cmds.ra + temp->cmds.rb +temp->cmds.rr + temp->cmds.rra + temp->cmds.rrb +temp->cmds.rrr + temp->cmds.pa;;
 	if (!b)
 		return ;
 	if (!b->next)
 	{
-		if (tobemoved->nbr > b->nbr)
+		if (tobemoved->pos < b->pos)
 		{
-			has_rb++;
 			temp->cmds.rb++;
+			has_rb++;
 		}
 		else
 			has_rrb++;
+		calculate_initial_pushmoves(has_rb, has_rrb, &temp->cmds);
+		return ;
 	}
+	if (is_good_position_forward(tobemoved, b, temp->lims.min_b, temp->lims.max_b)
+			&& is_good_position_backward(tobemoved, b->prev, temp->lims.min_b, temp->lims.max_b))
+			has_rb++;
 	temp->forw_b = b->next;
-	temp->rev_b = b->prev;
+	temp->rev_b = b->prev->prev;
 	while (!has_rb && !has_rrb && temp->forw_b && temp->rev_b )
 	{
 		if((temp->cmds.ra)-- > 0)
@@ -244,29 +251,16 @@ void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 			temp->cmds.rrr++;
 		else
 			temp->cmds.rrb++;
-		if (is_good_position_forward(tobemoved, temp->forw_b, temp->lims.min_b, temp->lims.max_b))
+	if (is_good_position_forward(tobemoved, temp->forw_b, temp->lims.min_b, temp->lims.max_b)
+			&& is_good_position_backward(tobemoved, temp->forw_b->prev, temp->lims.min_b, temp->lims.max_b))
 			has_rb++;
-		if (is_good_position_backward(tobemoved, temp->rev_b, temp->lims.min_b, temp->lims.max_b))
+		if (is_good_position_backward(tobemoved, temp->rev_b, temp->lims.min_b, temp->lims.max_b)
+			&& is_good_position_forward(tobemoved, temp->rev_b->next, temp->lims.min_b, temp->lims.max_b))
 			has_rrb++;
-		temp->rev_b = (temp->rev_b)->prev;
 		temp->forw_b = (temp->forw_b)->next;
+		temp->rev_b = (temp->rev_b)->prev;
 	}
-	if (has_rb)
-		fwd_total = temp->cmds.ra + temp->cmds.rb +temp->cmds.rr + temp->cmds.pa;
-	if (has_rrb)
-		rev_total = temp->cmds.rra + temp->cmds.rrb + temp->cmds.rrr + temp->cmds.pa;
-	if ((fwd_total < rev_total && has_rb)|| !has_rrb)
-	{
-		temp->cmds.rrb = 0;
-		temp->cmds.rrr = 0;
-		temp->cmds.total = fwd_total;
-	}
-	else if ((fwd_total < rev_total && has_rb) || !has_rrb)
-	{
-		temp->cmds.rb = 0;
-		temp->cmds.rr = 0;
-		temp->cmds.total = rev_total;
-	}
+	calculate_initial_pushmoves(has_rb, has_rrb, &temp->cmds);
 }
 
 /*
@@ -300,7 +294,8 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 	while (temp.forw_a)
 	{
 		init_cmd_list(&(temp.cmds));
-		if (is_good_position_forward(temp.forw_a, (temp.forw_a)->next, temp.lims.min_a, temp.lims.max_a))
+		if (is_good_position_forward(temp.forw_a, (temp.forw_a)->next, temp.lims.min_a, temp.lims.max_a)
+			|| temp.forw_a->pos == temp.lims.max_a)
 		{
 			temp.ini_rot_a.ra++;
 			temp.forw_a = temp.forw_a->next;
@@ -322,7 +317,6 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 		}
 		else
 		{
-			temp.ini_rot_a.rra++;
 			init_cmd_list(&(temp.cmds));
 			temp.cmds.rra = temp.ini_rot_a.rra;
 			push_a_moves(*b, &temp, temp.rev_a);
@@ -339,7 +333,7 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			temp.ini_rot_a.rra = 0;
 			init_cmd_list(&(off.cmds));
 		} 
-		else if (!temp.forw_a || temp.forw_a->nbr == temp.rev_a->nbr)
+		else if (!temp.forw_a || temp.forw_a->pos == temp.rev_a->pos)
 			break ;
 	}
 	temp.forw_a = *a;

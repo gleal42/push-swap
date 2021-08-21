@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/07 17:25:03 by gleal             #+#    #+#             */
-/*   Updated: 2021/08/20 21:22:54 by gleal            ###   ########.fr       */
+/*   Updated: 2021/08/21 23:38:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void		pa_adjust_max_a(t_stack *b, t_limits *lims)
 					lims->max_a--;
 					repeat++;
 				}
+				check_fwd = check_fwd->next;
+				check_bckd = check_bckd->prev;
 			}
 		}
 	}
@@ -88,6 +90,8 @@ void		pa_adjust_min_a(t_stack *b, t_limits *lims)
 					lims->min_a++;
 					repeat++;
 				}
+				check_fwd = check_fwd->next;
+				check_bckd = check_bckd->prev;
 			}
 		}
 	}
@@ -127,6 +131,8 @@ void		pb_adjust_max_b(t_stack *a, t_limits *lims)
 					lims->max_b--;
 					repeat++;
 				}
+				check_fwd = check_fwd->next;
+				check_bckd = check_bckd->prev;
 			}
 		}
 	}
@@ -156,17 +162,20 @@ void		pb_adjust_min_b(t_stack *a, t_limits *lims)
 			check_bckd = a->prev;
 			while (check_fwd)
 			{
-				if (check_fwd->pos == lims->max_a)
+				if (check_fwd->pos == lims->min_b)
 				{
 					lims->min_b++;
 					repeat++;
 				}
-				else if (check_bckd->pos == lims->max_a)
+				else if (check_bckd->pos == lims->min_b)
 				{
 					lims->min_b++;
 					repeat++;
 				}
+				check_fwd = check_fwd->next;
+				check_bckd = check_bckd->prev;
 			}
+			repeat = 0;
 		}
 	}
 }

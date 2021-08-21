@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/08/01 16:20:57 by gleal            ###   ########.fr       */
+/*   Updated: 2021/08/21 23:17:17 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	init_cmd_list(t_cmds *cmds)
 	cmds->rrr = 0;
 	cmds->rrb = 0;
 	cmds->total = 0;
+	cmds->type = 0;
 }
 
 int	is_input_integer(char **stack_a_args)
@@ -99,4 +100,29 @@ int	biggest_str_len(char **strs)
 		i++;
 	}
 	return (len);
+}
+
+void calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds)
+{
+	int fwd_total;
+	int rev_total;
+
+	rev_total = 0;
+	fwd_total = 0;
+	if (has_rb)
+		fwd_total = cmds->ra + cmds->rb +cmds->rr + cmds->pa;
+	if (has_rrb)
+		rev_total = cmds->rra + cmds->rrb + cmds->rrr + cmds->pa;
+	if ((fwd_total < rev_total && has_rb)|| !has_rrb)
+	{
+		cmds->rrb = 0;
+		cmds->rrr = 0;
+		cmds->total = fwd_total;
+	}
+	else if ((fwd_total < rev_total && has_rb) || !has_rrb)
+	{
+		cmds->rb = 0;
+		cmds->rr = 0;
+		cmds->total = rev_total;
+	}
 }

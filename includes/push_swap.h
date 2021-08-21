@@ -45,6 +45,7 @@ typedef struct s_cmds
 	int				rrb;
 	int				rrr;
 	int				total;
+	int				type;
 }				t_cmds;
 
 typedef struct s_all
@@ -58,6 +59,13 @@ typedef struct s_all
 	t_cmds			cmds;
 	t_limits		lims;
 }				t_all;
+
+enum	e_moves
+{
+	INITIAL_PUSH,
+	SWAP,
+	PUSH_BACK
+};
 
 # include "stacks.h"
 # include "push_swap_utils.h"
