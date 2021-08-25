@@ -12,18 +12,26 @@
 
 # include "sort_operations.h"
 
-void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
+int	is_cmd_table_clean(t_cmds cmds)
 {
-	while (cmds->rr > 0)
-	{
-		op_rr(a, b, max_len);
-		(cmds->rr)--;
-	}
-	while (cmds->ra > 0)
-	{
-		op_ra(a, b, max_len);
-		(cmds->ra)--;
-	}
+	if (cmds.sa == 0
+		&& cmds.sb == 0
+		&& cmds.ss == 0
+		&& cmds.ra == 0
+		&& cmds.rb == 0
+		&& cmds.rr == 0
+		&& cmds.pa == 0
+		&& cmds.pb == 0
+		&& cmds.rra == 0
+		&& cmds.rrr == 0
+		&& cmds.rrb == 0)
+		return (1);
+	else
+		return (0);
+}
+
+void	execute_pa_backward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
+{
 	while (cmds->rrr > 0)
 	{
 		op_rrr(a, b, max_len);
@@ -33,21 +41,6 @@ void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int m
 	{
 		op_rra(a, b, max_len);
 		(cmds->rra)--;
-	}
-	if (cmds->ss > 0)
-	{
-		op_ss(a, b, max_len);
-		(cmds->ss)--;
-	}
-	if (cmds->sa > 0)
-	{
-		op_sa(a, b, max_len);
-		(cmds->sa)--;
-	}
-	if (cmds->sb > 0)
-	{
-		op_sb(a, b, max_len);
-		(cmds->sb)--;
 	}
 	while (cmds->rb > 0)
 	{
@@ -88,7 +81,73 @@ void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int m
 		op_pa(a, b, max_len);
 		(cmds->pa)--;
 	}
+	if (!is_cmd_table_clean(*cmds))
+		printf("Didn't execute all the commands!\n");
 }
+
+void	execute_pa_forward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
+{
+	while (cmds->rr > 0)
+	{
+		op_rr(a, b, max_len);
+		(cmds->rr)--;
+	}
+	while (cmds->ra > 0)
+	{
+		op_ra(a, b, max_len);
+		(cmds->ra)--;
+	}
+	while (cmds->rb > 0)
+	{
+		op_rb(a, b, max_len);
+		(cmds->rb)--;
+	}
+	while (cmds->rrb > 0)
+	{
+		op_rrb(a, b, max_len);
+		(cmds->rrb)--;
+	}
+	if (cmds->pa > 0)
+	{
+		if (!((*a)->next))
+		{
+			lims->max_b = 0;
+			lims->min_b = 0;
+		}
+		else
+		{
+			if ((*a)->pos == lims->max_a)
+				pa_adjust_max_a(*b, lims);
+			if ((*a)->pos == lims->min_a)
+				pa_adjust_min_a(*b, lims);
+		}
+		if (!(*b))
+		{
+			lims->max_b = (*a)->pos;
+			lims->min_b = (*a)->pos;
+		}
+		else
+		{
+			if ((*a)->pos > lims->max_b)
+				lims->max_b = (*a)->pos;
+			else if ((*a)->pos < lims->min_b)
+				lims->min_b = (*a)->pos;
+		}
+		op_pa(a, b, max_len);
+		(cmds->pa)--;
+	}
+	if (!is_cmd_table_clean(*cmds))
+		printf("Didn't execute all the commands!\n");
+}
+
+void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
+{
+	if (cmds->type == INITIAL_PUSH_FWD)
+		execute_pa_forward(cmds, a, b, lims, max_len);
+	else if (cmds->type == INITIAL_PUSH_BWD)
+		execute_pa_backward(cmds, a, b, lims, max_len);
+}
+
 void	execute_merge_ab(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
 {
 	while (cmds->rr > 0)

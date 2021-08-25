@@ -105,8 +105,8 @@ void	find_closest_b_spot(t_stack  *cur_b, t_stack  *a, t_all *temp, int max)
 		else
 			good_spot_reverse++;
 	}
-	if (is_good_position_forward(cur_b, a, temp->lims.min_a, temp->lims.max_a)
-			&& is_good_position_backward(cur_b, a->prev, temp->lims.min_a, temp->lims.max_a))
+	if (is_good_position_forward_same_stack(cur_b, a, temp->lims.min_a, temp->lims.max_a)
+			&& is_good_position_backward_same_stack(cur_b, a->prev, temp->lims.min_a, temp->lims.max_a))
 		return ;
 	temp->forw_a = a->next;
 	temp->rev_a = a->prev;
@@ -139,19 +139,19 @@ void	find_closest_b_spot(t_stack  *cur_b, t_stack  *a, t_all *temp, int max)
 			init_cmd_list(&temp->cmds);
 			return ;
 		}
-		if (is_good_position_forward(cur_b, temp->forw_a, temp->lims.min_a, temp->lims.max_a)
-				&& is_good_position_backward(cur_b, temp->forw_a->prev, temp->lims.min_a, temp->lims.max_a))
+		if (is_good_position_forward_same_stack(cur_b, temp->forw_a, temp->lims.min_a, temp->lims.max_a)
+				&& is_good_position_backward_same_stack(cur_b, temp->forw_a->prev, temp->lims.min_a, temp->lims.max_a))
 			good_spot_forward++;
 		if (temp->rev_a->next)
 		{
-			if (is_good_position_backward(cur_b, temp->rev_a, temp->lims.min_a, temp->lims.max_a)
-				&& is_good_position_forward(cur_b, temp->rev_a->next, temp->lims.min_a, temp->lims.max_a))
+			if (is_good_position_backward_same_stack(cur_b, temp->rev_a, temp->lims.min_a, temp->lims.max_a)
+				&& is_good_position_forward_same_stack(cur_b, temp->rev_a->next, temp->lims.min_a, temp->lims.max_a))
 				good_spot_reverse++;
 		}
 		else
 		{
-			if (is_good_position_backward(cur_b, temp->rev_a, temp->lims.min_a, temp->lims.max_a)
-				&& is_good_position_forward(cur_b, a, temp->lims.min_a, temp->lims.max_a))
+			if (is_good_position_backward_same_stack(cur_b, temp->rev_a, temp->lims.min_a, temp->lims.max_a)
+				&& is_good_position_forward_same_stack(cur_b, a, temp->lims.min_a, temp->lims.max_a))
 				good_spot_reverse++;
 		}
 		temp->rev_a = (temp->rev_a)->prev;
@@ -217,11 +217,10 @@ void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 	int rev_total;
 	rev_total = 0;
 
-	temp->cmds.type = INITIAL_PUSH;
 	has_rb = 0;
 	has_rrb = 0;
 	temp->cmds.pa++;
-	temp->cmds.total = temp->cmds.ra + temp->cmds.rb +temp->cmds.rr + temp->cmds.rra + temp->cmds.rrb +temp->cmds.rrr + temp->cmds.pa;;
+	temp->cmds.total = temp->cmds.ra + temp->cmds.rb +temp->cmds.rr + temp->cmds.rra + temp->cmds.rrb +temp->cmds.rrr + temp->cmds.pa;
 	if (!b)
 		return ;
 	if (!b->next)
@@ -236,26 +235,37 @@ void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 		calculate_initial_pushmoves(has_rb, has_rrb, &temp->cmds);
 		return ;
 	}
-	if (is_good_position_forward(tobemoved, b, temp->lims.min_b, temp->lims.max_b)
-			&& is_good_position_backward(tobemoved, b->prev, temp->lims.min_b, temp->lims.max_b))
+	if (is_good_position_forward_same_stack(tobemoved, b->prev, temp->lims.min_b, temp->lims.max_b)
+			&& is_good_position_backward_same_stack(tobemoved, b, temp->lims.min_b, temp->lims.max_b))
+	{
+		if (temp->cmds.ra || (!temp->cmds.ra && !temp->cmds.rra))
 			has_rb++;
+		else if (temp->cmds.rra)
+			has_rrb++;
+	}
 	temp->forw_b = b->next;
 	temp->rev_b = b->prev->prev;
 	while (!has_rb && !has_rrb && temp->forw_b && temp->rev_b )
 	{
-		if((temp->cmds.ra)-- > 0)
+		if(temp->cmds.ra > 0)
+		{
+			temp->cmds.ra--;
 			temp->cmds.rr++;
+		}
 		else
 			temp->cmds.rb++;
-		if((temp->cmds.rra)-- > 0)
+		if(temp->cmds.rra > 0)
+		{
+			temp->cmds.rra--;
 			temp->cmds.rrr++;
+		}
 		else
 			temp->cmds.rrb++;
-	if (is_good_position_forward(tobemoved, temp->forw_b, temp->lims.min_b, temp->lims.max_b)
-			&& is_good_position_backward(tobemoved, temp->forw_b->prev, temp->lims.min_b, temp->lims.max_b))
+	if (is_good_position_forward_same_stack(tobemoved, temp->forw_b->prev, temp->lims.min_b, temp->lims.max_b)
+			&& is_good_position_backward_same_stack(tobemoved, temp->forw_b, temp->lims.min_b, temp->lims.max_b))
 			has_rb++;
-		if (is_good_position_backward(tobemoved, temp->rev_b, temp->lims.min_b, temp->lims.max_b)
-			&& is_good_position_forward(tobemoved, temp->rev_b->next, temp->lims.min_b, temp->lims.max_b))
+		if (is_good_position_forward_same_stack(tobemoved, temp->rev_b, temp->lims.min_b, temp->lims.max_b)
+		 && is_good_position_backward_same_stack(tobemoved, temp->rev_b->next, temp->lims.min_b, temp->lims.max_b))
 			has_rrb++;
 		temp->forw_b = (temp->forw_b)->next;
 		temp->rev_b = (temp->rev_b)->prev;
@@ -294,23 +304,25 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 	while (temp.forw_a)
 	{
 		init_cmd_list(&(temp.cmds));
-		if (is_good_position_forward(temp.forw_a, (temp.forw_a)->next, temp.lims.min_a, temp.lims.max_a)
-			|| temp.forw_a->pos == temp.lims.max_a)
+		if (is_good_position_forward_same_stack(temp.forw_a, (temp.forw_a)->next, temp.lims.min_a, temp.lims.max_a))
 		{
 			temp.ini_rot_a.ra++;
 			temp.forw_a = temp.forw_a->next;
 		}
 		else
 		{
+/* 			if (is_good_position_backward(temp.forw_a, (temp.forw_a)->prev, temp.lims.min_a, temp.lims.max_a))
+				temp.ini_rot_a.ra++; */
 			init_cmd_list(&(temp.cmds));
 			temp.cmds.ra = temp.ini_rot_a.ra;
+			temp.cmds.type = INITIAL_PUSH_FWD;
 			push_a_moves(*b, &temp, temp.forw_a);
 			if (temp.cmds.total < off.cmds.total || !(off.cmds.total))
 				off.cmds = temp.cmds;
 			temp.ini_rot_a.ra++;
 			temp.forw_a = temp.forw_a->next;
 		}
-		if (is_good_position_backward(temp.rev_a, temp.rev_a->prev, temp.lims.min_a, temp.lims.max_a))
+		if (is_good_position_backward_same_stack(temp.rev_a, temp.rev_a->prev, temp.lims.min_a, temp.lims.max_a))
 		{
 			temp.ini_rot_a.rra++;
 			temp.rev_a = temp.rev_a->prev;	
@@ -319,9 +331,11 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 		{
 			init_cmd_list(&(temp.cmds));
 			temp.cmds.rra = temp.ini_rot_a.rra;
+			temp.cmds.type = INITIAL_PUSH_BWD;
 			push_a_moves(*b, &temp, temp.rev_a);
 			if (temp.cmds.total < off.cmds.total || !(off.cmds.total))
 				off.cmds = temp.cmds;
+			temp.ini_rot_a.rra++;
 			temp.rev_a = temp.rev_a->prev;	
 		}
  		if (off.cmds.total && (off.cmds.total <= temp.ini_rot_a.ra || off.cmds.total <= temp.ini_rot_a.rra))
