@@ -109,7 +109,7 @@ void	find_closest_b_spot(t_stack  *cur_b, t_stack  *a, t_all *temp, int max)
 			&& is_good_position_backward_same_stack(cur_b, a->prev, temp->lims.min_a, temp->lims.max_a))
 		return ;
 	temp->forw_a = a->next;
-	temp->rev_a = a->prev;
+	temp->rev_a = a->prev->prev;
 	fwd_total = temp->cmds.total;
 	rev_total = temp->cmds.total;
 	while (!good_spot_forward && !good_spot_reverse && temp->forw_a)
@@ -181,6 +181,7 @@ void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off)
 {
 	t_all	temp;
 
+	temp = *off;
 	temp.ini_rot_b.rb = 0;
 	temp.ini_rot_b.rrb = 0;
 	if (!b)
@@ -292,6 +293,9 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 	t_all off;
 	t_all temp;
 
+	int	last;
+
+	last = 0;
 	temp.lims.min_a = 1;
 	temp.lims.max_a = n;
 	temp.lims.min_b = 0;
@@ -311,15 +315,13 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 		}
 		else
 		{
-/* 			if (is_good_position_backward(temp.forw_a, (temp.forw_a)->prev, temp.lims.min_a, temp.lims.max_a))
-				temp.ini_rot_a.ra++; */
 			init_cmd_list(&(temp.cmds));
+			temp.ini_rot_a.ra++;
 			temp.cmds.ra = temp.ini_rot_a.ra;
 			temp.cmds.type = INITIAL_PUSH_FWD;
 			push_a_moves(*b, &temp, temp.forw_a);
 			if (temp.cmds.total < off.cmds.total || !(off.cmds.total))
 				off.cmds = temp.cmds;
-			temp.ini_rot_a.ra++;
 			temp.forw_a = temp.forw_a->next;
 		}
 		if (is_good_position_backward_same_stack(temp.rev_a, temp.rev_a->prev, temp.lims.min_a, temp.lims.max_a))
@@ -338,7 +340,10 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			temp.ini_rot_a.rra++;
 			temp.rev_a = temp.rev_a->prev;	
 		}
- 		if (off.cmds.total && (off.cmds.total <= temp.ini_rot_a.ra || off.cmds.total <= temp.ini_rot_a.rra))
+ 		if (off.cmds.total &&
+		 	(off.cmds.total <= temp.ini_rot_a.ra 
+			 || off.cmds.total <= temp.ini_rot_a.rra
+			 || temp.forw_a->pos == temp.rev_a->pos))
 		{
 			execute_moves(&off.cmds, a, b, &temp.lims, max_a);
 			temp.forw_a = *a;
