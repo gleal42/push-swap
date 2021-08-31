@@ -226,7 +226,7 @@ void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 		return ;
 	if (!b->next)
 	{
-		if (tobemoved->pos < b->pos)
+		if (is_good_position_forward_same_stack(tobemoved, b, temp->lims.min_b, temp->lims.max_b))
 		{
 			temp->cmds.rb++;
 			has_rb++;
@@ -319,7 +319,7 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			temp.ini_rot_a.ra++;
 			temp.cmds.ra = temp.ini_rot_a.ra;
 			temp.cmds.type = INITIAL_PUSH_FWD;
-			push_a_moves(*b, &temp, temp.forw_a);
+			push_a_moves(*b, &temp, temp.forw_a->next);
 			if (temp.cmds.total < off.cmds.total || !(off.cmds.total))
 				off.cmds = temp.cmds;
 			temp.forw_a = temp.forw_a->next;
