@@ -50,9 +50,9 @@ void	rotate_until_sorted(t_stack **a, t_stack **b, int max_len)
 	while (!rotation_direction && norm)
 	{
 		if (norm->pos == 1)
-			rotation_direction = RRA;
-		else if (rev->pos == 1)
 			rotation_direction = RA;
+		else if (rev->pos == 1)
+			rotation_direction = RRA;
 		if (norm->pos == rev->pos)
 			break ;
 		norm = norm->next;
