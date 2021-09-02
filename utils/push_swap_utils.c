@@ -6,24 +6,31 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/01 22:25:43 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/02 22:59:39 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "push_swap_utils.h"
-// min_a and max_a have to be found by analyzing stack b and checking for the position has to be updated to reflect the highest number in stack a
+
+/* Check if this is actually working with printfs. Also consider if swap 2 or 3 positions away 
+	is even desireable */
+
+int		is_good_for_swap(t_stack *first, t_stack *to_be_swaped, int min_stack, int max_stack)
+{
+	if (!to_be_swaped->next)
+	{
+		if (is_good_position_forward_same_stack(to_be_swaped, first->next, min_stack, max_stack)
+			&& is_good_position_backward_same_stack(first, to_be_swaped->prev, min_stack, max_stack))
+			return (1);
+	}
+}
 
 int	is_good_position_forward_same_stack(t_stack *cur, t_stack *next_one, int min_stack, int max_stack)
 {
 	if (!next_one)
 		return (1);
 	if (cur->pos <= min_stack && next_one->pos >= max_stack)
-	{
-		if (next_one->next)
 			return (0);
-		else
-			return (1);
-	}
 	if(next_one->pos > cur->pos)
 		return (1);
 	if (cur->pos >= max_stack && next_one->pos <= min_stack)
@@ -36,12 +43,7 @@ int	is_good_position_backward_same_stack(t_stack *cur, t_stack *prev_one, int mi
 	if (!prev_one)
 		return (1);
 	if (cur->pos >= max_stack && prev_one->pos <= min_stack)
-	{
-		if (prev_one->prev->pos == cur->pos)
 			return (0);
-		else
-			return (1);
-	}
 	if (prev_one->pos < cur->pos)
 		return (1);
 	if (cur->pos <= min_stack && prev_one->pos >= max_stack)
@@ -49,24 +51,32 @@ int	is_good_position_backward_same_stack(t_stack *cur, t_stack *prev_one, int mi
 	return (0);
 }
 
+//maybe add different validations?
+
 int	is_good_position_forward_diff_stack(t_stack *cur, t_stack *next_one, int min_stack, int max_stack)
 {
 	if (!next_one)
 		return (1);
-	if(next_one->nbr > cur->nbr || (cur->pos >= max_stack && next_one->pos <= min_stack))
+	if (cur->pos <= min_stack && next_one->pos >= max_stack)
+			return (0);
+	if(next_one->pos > cur->pos)
 		return (1);
-	else
-		return (0);
+	if (cur->pos >= max_stack && next_one->pos <= min_stack)
+		return (1);
+	return (0);
 }
 
 int	is_good_position_backward_diff_stack(t_stack *cur, t_stack *prev_one, int min_stack, int max_stack)
 {
 	if (!prev_one)
 		return (1);
-	if (prev_one->nbr < cur->nbr || (cur->pos <= min_stack && prev_one->pos <= max_stack))
+	if (cur->pos >= max_stack && prev_one->pos <= min_stack)
+			return (0);
+	if (prev_one->pos < cur->pos)
 		return (1);
-	else
-		return (0);
+	if (cur->pos <= min_stack && prev_one->pos >= max_stack)
+		return (1);
+	return (0);
 }
 
 void	init_rot_b(t_all *all)
@@ -146,7 +156,7 @@ void calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds)
 	rev_total = 0;
 	fwd_total = 0;
 	if (has_rb)
-		fwd_total = cmds->ra + cmds->rr + cmds->rra + cmds->rrr + cmds->rb +  + cmds->pa;
+		fwd_total = cmds->ra + cmds->rr + cmds->rra + cmds->rrr + cmds->rb + cmds->pa;
 	if (has_rrb)
 		rev_total = cmds->ra + cmds->rr + cmds->rra + cmds->rrr + cmds->rrb + cmds->pa;
 	if ((fwd_total <= rev_total && has_rb)|| !has_rrb)
@@ -162,23 +172,3 @@ void calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds)
 		cmds->total = rev_total;
 	}
 }
-
-/* int	is_good_position_backward(t_stack *cur, t_stack *prev_one, int min_a, int max_a)
-{
-	if (!prev_one)
-		return (1);
-	if (prev_one->nbr < cur->nbr || (cur->pos == min_a && prev_one->pos == max_a))
-		return (1);
-	else
-		return (0);
-} */
-
-/* int	is_good_position_forward(t_stack *cur, t_stack *next_one, int min_a, int max_a)
-{
-	if (!next_one)
-		return (1);
-	if(next_one->nbr > cur->nbr || (cur->pos == max_a && next_one->pos == min_a))
-		return (1);
-	else
-		return (0);
-} */

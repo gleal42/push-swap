@@ -226,15 +226,9 @@ void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 		return ;
 	if (!b->next)
 	{
-		if (is_good_position_forward_same_stack(tobemoved, b, temp->lims.min_b, temp->lims.max_b))
-		{
-			temp->cmds.rb++;
-			has_rb++;
-		}
-		else
-			has_rrb++;
+		has_rb++;
 		calculate_initial_pushmoves(has_rb, has_rrb, &temp->cmds);
-		return ;
+			return ;
 	}
 	if (is_good_position_forward_same_stack(tobemoved, b->prev, temp->lims.min_b, temp->lims.max_b)
 			&& is_good_position_backward_same_stack(tobemoved, b, temp->lims.min_b, temp->lims.max_b))
@@ -287,7 +281,10 @@ void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 ** Line-by-line comments:
 ** @line-line	comment
 */
-	
+
+/* don't forget that good in samne stack doesn't work well for 2 numbers in same stack
+	separate same stack from different stacks or add extra validation in if*/
+
 void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 {
 	t_all off;
@@ -316,6 +313,8 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 		else
 		{
 			init_cmd_list(&(temp.cmds));
+			if (is_good_for_swap(*a, temp.forw_a, temp.lims.min_a, temp.lims.max_a))
+				swap_moves(&temp, temp.forw_a->next);
 			temp.ini_rot_a.ra++;
 			temp.cmds.ra = temp.ini_rot_a.ra;
 			temp.cmds.type = INITIAL_PUSH_FWD;
