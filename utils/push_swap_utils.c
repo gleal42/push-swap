@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/02 22:59:39 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/07 23:13:51 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,56 @@
 
 int		is_good_for_swap(t_stack *first, t_stack *to_be_swaped, int min_stack, int max_stack)
 {
+	if (!first)
+		return (0);
+	if (!first->next)
+		return (0);
+	if (!first->next->next)
+		return (0);
 	if (!to_be_swaped->next)
 	{
-		if (is_good_position_forward_same_stack(to_be_swaped, first->next, min_stack, max_stack)
-			&& is_good_position_backward_same_stack(first, to_be_swaped->prev, min_stack, max_stack))
+		if (is_next_nbr_bigger(to_be_swaped, first->next, min_stack, max_stack)
+			&& is_prev_nbr_smaller(to_be_swaped, first, min_stack, max_stack))
 			return (1);
 	}
+	else
+	{
+		if (!to_be_swaped->next->next)
+		{
+			if (is_next_nbr_bigger(to_be_swaped, first, min_stack, max_stack)
+				&& is_prev_nbr_smaller(to_be_swaped, to_be_swaped->next, min_stack, max_stack))
+				return (1);
+		}
+		else
+		{
+			if (is_next_nbr_bigger(to_be_swaped, to_be_swaped->next->next, min_stack, max_stack)
+				&& is_prev_nbr_smaller(to_be_swaped, to_be_swaped->next, min_stack, max_stack))
+				return (1);
+		}
+	}
+	return (0);
 }
 
-int	is_good_position_forward_same_stack(t_stack *cur, t_stack *next_one, int min_stack, int max_stack)
+int	count_moves(t_cmds *cmds)
+{
+	int total;
+
+	total = 0;
+	total += cmds->sa;
+	total += cmds->sb;
+	total += cmds->ss;
+	total += cmds->ra;
+	total += cmds->rb;
+	total += cmds->rr;
+	total += cmds->pa;
+	total += cmds->pb;
+	total += cmds->rra;
+	total += cmds->rrb;
+	total += cmds->rrr;
+	return (total);
+}
+
+int	is_next_nbr_bigger(t_stack *cur, t_stack *next_one, int min_stack, int max_stack)
 {
 	if (!next_one)
 		return (1);
@@ -38,7 +79,7 @@ int	is_good_position_forward_same_stack(t_stack *cur, t_stack *next_one, int min
 	return (0);
 }
 
-int	is_good_position_backward_same_stack(t_stack *cur, t_stack *prev_one, int min_stack, int max_stack)
+int	is_prev_nbr_smaller(t_stack *cur, t_stack *prev_one, int min_stack, int max_stack)
 {
 	if (!prev_one)
 		return (1);

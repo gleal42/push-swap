@@ -27,8 +27,11 @@ void	pa_adjust_min_a(t_stack *b, t_limits *lims);
 void	pb_adjust_max_b(t_stack *a, t_limits *lims);
 void	pb_adjust_min_b(t_stack *a, t_limits *lims);
 
-
-
 void	rotate_until_sorted(t_stack **a, t_stack **b, int max_len);
+
+void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved);
+void	swap_moves(t_all *temp, t_stack *tobemoved);
+void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off);
+
 
 #endif

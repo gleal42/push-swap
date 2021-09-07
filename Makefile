@@ -27,6 +27,7 @@ SRCS := push_swap.c \
 		sort_operations/sort_operations3.c \
 		sort_operations/sort_algorithm.c \
 		sort_operations/complex_algo.c \
+		sort_operations/prepare_moves.c \
 		sort_operations/execute_moves.c \
 		sort_operations/limit_check.c \
 		stacks/isinstack.c \

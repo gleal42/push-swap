@@ -140,12 +140,48 @@ void	execute_pa_forward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, 
 		printf("Didn't execute all the commands!\n");
 }
 
+void	execute_swap_forward(t_cmds *cmds, t_stack **a, t_stack **b, int max_len)
+{
+	while (cmds->ra)
+	{
+		op_ra(a, b, max_len);
+		cmds->ra--;
+	}
+	while (cmds->sa)
+	{
+		op_sa(a, b, max_len);
+		cmds->sa--;
+	}
+	if (!is_cmd_table_clean(*cmds))
+		printf("Didn't execute all the commands!\n");
+}
+
+void	execute_swap_backward(t_cmds *cmds, t_stack **a, t_stack **b, int max_len)
+{
+	while (cmds->rra)
+	{
+		op_rra(a, b, max_len);
+		cmds->rra--;
+	}
+	while (cmds->sa)
+	{
+		op_sa(a, b, max_len);
+		cmds->sa--;
+	}
+	if (!is_cmd_table_clean(*cmds))
+		printf("Didn't execute all the commands!\n");
+}
+
 void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
 {
 	if (cmds->type == INITIAL_PUSH_FWD)
 		execute_pa_forward(cmds, a, b, lims, max_len);
 	else if (cmds->type == INITIAL_PUSH_BWD)
 		execute_pa_backward(cmds, a, b, lims, max_len);
+	else if (cmds->type == SWAP_FWD)
+		execute_swap_forward(cmds, a, b, max_len);
+	else if (cmds->type == SWAP_BWD)
+		execute_swap_backward(cmds, a, b, max_len);
 }
 
 void	execute_merge_ab(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)

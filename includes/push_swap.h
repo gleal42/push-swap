@@ -64,7 +64,8 @@ enum	e_moves
 {
 	INITIAL_PUSH_FWD,
 	INITIAL_PUSH_BWD,
-	SWAP,
+	SWAP_FWD,
+	SWAP_BWD,
 	PUSH_BACK
 };
 
