@@ -23,7 +23,10 @@ void	stack_swap(t_stack **head)
 	third_stack = (*head)->next->next;
 	*head = (*head)->next;
 	if (third_stack)
+	{
+		third_stack->prev = second_stack;
 		(*head)->prev = second_stack->prev;
+	}
 	else
 		(*head)->prev = second_stack;
 	second_stack->prev = *head;
