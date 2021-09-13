@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/07 23:13:51 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/13 21:59:40 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,9 +197,9 @@ void calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds)
 	rev_total = 0;
 	fwd_total = 0;
 	if (has_rb)
-		fwd_total = cmds->ra + cmds->rr + cmds->rra + cmds->rrr + cmds->rb + cmds->pa;
+		fwd_total = cmds->ra + cmds->rr + cmds->rra + cmds->rrr + cmds->rb + cmds->pb;
 	if (has_rrb)
-		rev_total = cmds->ra + cmds->rr + cmds->rra + cmds->rrr + cmds->rrb + cmds->pa;
+		rev_total = cmds->ra + cmds->rr + cmds->rra + cmds->rrr + cmds->rrb + cmds->pb;
 	if ((fwd_total <= rev_total && has_rb)|| !has_rrb)
 	{
 		cmds->rrb = 0;

@@ -30,7 +30,7 @@ int	is_cmd_table_clean(t_cmds cmds)
 		return (0);
 }
 
-void	execute_pa_backward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
+void	execute_pb_backward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
 {
 	while (cmds->rrr > 0)
 	{
@@ -52,7 +52,7 @@ void	execute_pa_backward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims,
 		op_rrb(a, b, max_len);
 		(cmds->rrb)--;
 	}
-	if (cmds->pa > 0)
+	if (cmds->pb > 0)
 	{
 		if (!((*a)->next))
 		{
@@ -78,14 +78,14 @@ void	execute_pa_backward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims,
 			else if ((*a)->pos < lims->min_b)
 				lims->min_b = (*a)->pos;
 		}
-		op_pa(a, b, max_len);
-		(cmds->pa)--;
+		op_pb(a, b, max_len);
+		(cmds->pb)--;
 	}
 	if (!is_cmd_table_clean(*cmds))
 		printf("Didn't execute all the commands!\n");
 }
 
-void	execute_pa_forward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
+void	execute_pb_forward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
 {
 	while (cmds->rr > 0)
 	{
@@ -107,7 +107,7 @@ void	execute_pa_forward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, 
 		op_rrb(a, b, max_len);
 		(cmds->rrb)--;
 	}
-	if (cmds->pa > 0)
+	if (cmds->pb > 0)
 	{
 		if (!((*a)->next))
 		{
@@ -133,8 +133,8 @@ void	execute_pa_forward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, 
 			else if ((*a)->pos < lims->min_b)
 				lims->min_b = (*a)->pos;
 		}
-		op_pa(a, b, max_len);
-		(cmds->pa)--;
+		op_pb(a, b, max_len);
+		(cmds->pb)--;
 	}
 	if (!is_cmd_table_clean(*cmds))
 		printf("Didn't execute all the commands!\n");
@@ -152,6 +152,11 @@ void	execute_swap_forward(t_cmds *cmds, t_stack **a, t_stack **b, int max_len)
 		op_sa(a, b, max_len);
 		cmds->sa--;
 	}
+	while (cmds->ss)
+	{
+		op_ss(a, b, max_len);
+		cmds->ss--;
+	}
 	if (!is_cmd_table_clean(*cmds))
 		printf("Didn't execute all the commands!\n");
 }
@@ -168,6 +173,11 @@ void	execute_swap_backward(t_cmds *cmds, t_stack **a, t_stack **b, int max_len)
 		op_sa(a, b, max_len);
 		cmds->sa--;
 	}
+	while (cmds->ss)
+	{
+		op_ss(a, b, max_len);
+		cmds->ss--;
+	}
 	if (!is_cmd_table_clean(*cmds))
 		printf("Didn't execute all the commands!\n");
 }
@@ -175,9 +185,9 @@ void	execute_swap_backward(t_cmds *cmds, t_stack **a, t_stack **b, int max_len)
 void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
 {
 	if (cmds->type == INITIAL_PUSH_FWD)
-		execute_pa_forward(cmds, a, b, lims, max_len);
+		execute_pb_forward(cmds, a, b, lims, max_len);
 	else if (cmds->type == INITIAL_PUSH_BWD)
-		execute_pa_backward(cmds, a, b, lims, max_len);
+		execute_pb_backward(cmds, a, b, lims, max_len);
 	else if (cmds->type == SWAP_FWD)
 		execute_swap_forward(cmds, a, b, max_len);
 	else if (cmds->type == SWAP_BWD)
@@ -232,7 +242,7 @@ void	execute_merge_ab(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, in
 			else if ((*b)->pos < lims->min_a)
 				lims->min_a = (*b)->pos;
 		}
-		op_pb(a, b, max_len);
+		op_pa(a, b, max_len);
 		(cmds->pb)--;
 	}
 }

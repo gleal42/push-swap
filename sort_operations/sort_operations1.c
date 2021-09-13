@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/04 15:54:25 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/13 22:29:09 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/12 15:25:26 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,18 @@ int		op_ss(t_stack **a, t_stack **b, int max_len)
 	return (0);
 }
 
-int		op_pa(t_stack **a, t_stack **b, int max_len)
+int		op_pb(t_stack **a, t_stack **b, int max_len)
 {
 	stack_push_from_to(a, b);
-	ft_putstr_fd("pa\n", 1);
+	ft_putstr_fd("pb\n", 1);
 	print_both_stacks(*a, *b, max_len);
 	return (0);
 }
 
-int		op_pb(t_stack **a, t_stack **b, int max_len)
+int		op_pa(t_stack **a, t_stack **b, int max_len)
 {
 	stack_push_from_to(b, a);
-	ft_putstr_fd("pb\n", 1);
+	ft_putstr_fd("pa\n", 1);
 	print_both_stacks(*a, *b, max_len);
 	return (0);
 }

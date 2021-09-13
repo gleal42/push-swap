@@ -6,20 +6,27 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 16:56:33 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/07 23:22:07 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/13 22:16:54 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "sort_operations.h"
 
-void	swap_moves(t_all *temp, t_stack *tobemoved)
+void	swap_moves(t_all *temp, t_stack *tobemoved, t_stack *b)
 {
 	(void)tobemoved;
 	temp->cmds.sa = 1;
 	temp->cmds.total = count_moves(&temp->cmds);
+	if (!b || !b->next)
+		return ;
+	if (!b->next->next && b->pos < b->next->pos)
+	{
+		temp->cmds.sa = 0;
+		temp->cmds.ss = 1;
+	}
 }
 
-void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
+void	push_b_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 {
 	int has_rb;
 	int has_rrb;
@@ -28,8 +35,8 @@ void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 
 	has_rb = 0;
 	has_rrb = 0;
-	temp->cmds.pa++;
-	temp->cmds.total = temp->cmds.ra + temp->cmds.rb +temp->cmds.rr + temp->cmds.rra + temp->cmds.rrb +temp->cmds.rrr + temp->cmds.pa;
+	temp->cmds.pb++;
+	temp->cmds.total = temp->cmds.ra + temp->cmds.rb +temp->cmds.rr + temp->cmds.rra + temp->cmds.rrb +temp->cmds.rrr + temp->cmds.pb;
 	if (!b)
 		return ;
 	if (!b->next)

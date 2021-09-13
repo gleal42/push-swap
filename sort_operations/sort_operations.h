@@ -9,8 +9,8 @@
 int		op_sa(t_stack **a, t_stack **b, int max_len);
 int		op_sb(t_stack **a, t_stack **b, int max_len);
 int		op_ss(t_stack **a, t_stack **b, int max_len);
-int		op_pa(t_stack **a, t_stack **b, int max_len);
 int		op_pb(t_stack **a, t_stack **b, int max_len);
+int		op_pa(t_stack **a, t_stack **b, int max_len);
 int		op_ra(t_stack **a, t_stack **b, int max_len);
 int		op_rb(t_stack **a, t_stack **b, int max_len);
 int		op_rr(t_stack **a, t_stack **b, int max_len);
@@ -29,8 +29,8 @@ void	pb_adjust_min_b(t_stack *a, t_limits *lims);
 
 void	rotate_until_sorted(t_stack **a, t_stack **b, int max_len);
 
-void	push_a_moves(t_stack *b, t_all *temp, t_stack *tobemoved);
-void	swap_moves(t_all *temp, t_stack *tobemoved);
+void	push_b_moves(t_stack *b, t_all *temp, t_stack *tobemoved);
+void	swap_moves(t_all *temp, t_stack *tobemoved, t_stack *b);
 void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off);
 
 

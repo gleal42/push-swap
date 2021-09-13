@@ -107,7 +107,7 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			{
 				temp.cmds.ra = temp.ini_rot_a.ra;
 				temp.cmds.type = SWAP_FWD;
-				swap_moves(&temp, temp.forw_a);
+				swap_moves(&temp, temp.forw_a, *b);
 				temp.ini_rot_a.ra++;
 			}
 			else
@@ -115,8 +115,7 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 				temp.ini_rot_a.ra++;
 				temp.cmds.ra = temp.ini_rot_a.ra;
 				temp.cmds.type = INITIAL_PUSH_FWD;
-				push_a_moves(*b, &temp, temp.forw_a->next);
-				temp.cmds.total += 2;
+				push_b_moves(*b, &temp, temp.forw_a->next);
 			}
 			if (temp.cmds.total < off.cmds.total || !(off.cmds.total))
 				off.cmds = temp.cmds;
@@ -135,14 +134,13 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 				temp.ini_rot_a.rra++;
 				temp.cmds.rra = temp.ini_rot_a.rra;
 				temp.cmds.type = SWAP_BWD;
-				swap_moves(&temp, temp.rev_a->prev);
+				swap_moves(&temp, temp.rev_a->prev, *b);
 			}
 			else
 			{
 				temp.cmds.rra = temp.ini_rot_a.rra;
 				temp.cmds.type = INITIAL_PUSH_BWD;
-				push_a_moves(*b, &temp, temp.rev_a);
-				temp.cmds.total += 2;
+				push_b_moves(*b, &temp, temp.rev_a);
 				temp.ini_rot_a.rra++;
 			}
 			if (temp.cmds.total < off.cmds.total || !(off.cmds.total))
