@@ -184,9 +184,9 @@ void	execute_swap_backward(t_cmds *cmds, t_stack **a, t_stack **b, int max_len)
 
 void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
 {
-	if (cmds->type == INITIAL_PUSH_FWD)
+	if (cmds->type == PUSH_B_FWD)
 		execute_pb_forward(cmds, a, b, lims, max_len);
-	else if (cmds->type == INITIAL_PUSH_BWD)
+	else if (cmds->type == PUSH_B_BWD)
 		execute_pb_backward(cmds, a, b, lims, max_len);
 	else if (cmds->type == SWAP_FWD)
 		execute_swap_forward(cmds, a, b, max_len);

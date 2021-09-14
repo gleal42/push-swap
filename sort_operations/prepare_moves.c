@@ -6,15 +6,24 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 16:56:33 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/13 22:16:54 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/14 23:44:22 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "sort_operations.h"
 
-void	swap_moves(t_all *temp, t_stack *tobemoved, t_stack *b)
+void	merge_ramp_spot(t_stack *b, t_all *temp, t_stack *tobemoved)
+{
+	place_in_b(b, temp, tobemoved);
+}
+
+void	swap_a(t_all *temp, t_stack *tobemoved, t_stack *b)
 {
 	(void)tobemoved;
+	if (temp->cmds.ra)
+		temp->cmds.type = SWAP_FWD;
+	else 
+		temp->cmds.type = SWAP_BWD;
 	temp->cmds.sa = 1;
 	temp->cmds.total = count_moves(&temp->cmds);
 	if (!b || !b->next)
@@ -26,7 +35,7 @@ void	swap_moves(t_all *temp, t_stack *tobemoved, t_stack *b)
 	}
 }
 
-void	push_b_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
+void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved)
 {
 	int has_rb;
 	int has_rrb;
@@ -35,6 +44,10 @@ void	push_b_moves(t_stack *b, t_all *temp, t_stack *tobemoved)
 
 	has_rb = 0;
 	has_rrb = 0;
+	if (temp->cmds.ra)
+		temp->cmds.type = PUSH_B_FWD;
+	else 
+		temp->cmds.type = PUSH_B_BWD;
 	temp->cmds.pb++;
 	temp->cmds.total = temp->cmds.ra + temp->cmds.rb +temp->cmds.rr + temp->cmds.rra + temp->cmds.rrb +temp->cmds.rrr + temp->cmds.pb;
 	if (!b)

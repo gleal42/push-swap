@@ -62,8 +62,8 @@ typedef struct s_all
 
 enum	e_moves
 {
-	INITIAL_PUSH_FWD,
-	INITIAL_PUSH_BWD,
+	PUSH_B_FWD,
+	PUSH_B_BWD,
 	SWAP_FWD,
 	SWAP_BWD,
 	PUSH_BACK

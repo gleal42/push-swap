@@ -106,16 +106,14 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			if (is_good_for_swap(*a, temp.forw_a, temp.lims.min_a, temp.lims.max_a))
 			{
 				temp.cmds.ra = temp.ini_rot_a.ra;
-				temp.cmds.type = SWAP_FWD;
-				swap_moves(&temp, temp.forw_a, *b);
+				swap_a(&temp, temp.forw_a, *b);
 				temp.ini_rot_a.ra++;
 			}
 			else
 			{
 				temp.ini_rot_a.ra++;
 				temp.cmds.ra = temp.ini_rot_a.ra;
-				temp.cmds.type = INITIAL_PUSH_FWD;
-				push_b_moves(*b, &temp, temp.forw_a->next);
+				merge_ramp_spot(*b, &temp, temp.forw_a->next);
 			}
 			if (is_temp_better(temp.cmds, off.cmds))
 				off.cmds = temp.cmds;
@@ -133,14 +131,12 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			{
 				temp.ini_rot_a.rra++;
 				temp.cmds.rra = temp.ini_rot_a.rra;
-				temp.cmds.type = SWAP_BWD;
-				swap_moves(&temp, temp.rev_a->prev, *b);
+				swap_a(&temp, temp.rev_a->prev, *b);
 			}
 			else
 			{
 				temp.cmds.rra = temp.ini_rot_a.rra;
-				temp.cmds.type = INITIAL_PUSH_BWD;
-				push_b_moves(*b, &temp, temp.rev_a);
+				merge_ramp_spot(*b, &temp, temp.rev_a);
 				temp.ini_rot_a.rra++;
 			}
 			if (is_temp_better(temp.cmds, off.cmds))

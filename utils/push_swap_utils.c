@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/14 22:34:03 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/14 23:42:49 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int is_temp_better(t_cmds temp, t_cmds off)
 		return (1);
 	if(temp.type == SWAP_BWD || temp.type == SWAP_FWD)
 	{
-		if(off.type == INITIAL_PUSH_BWD || off.type == INITIAL_PUSH_FWD) 
+		if(off.type == PUSH_B_BWD || off.type == PUSH_B_FWD) 
 		{
 			if (temp.total < off.total + 2)
 				return (1);
