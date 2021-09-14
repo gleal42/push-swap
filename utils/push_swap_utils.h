@@ -12,5 +12,7 @@ int	is_prev_nbr_smaller(t_stack *cur, t_stack *prev_one, int min_a, int max_a);
 void calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
 int		is_good_for_swap(t_stack *first, t_stack *to_be_swaped, int min_stack, int max_stack);
 int	count_moves(t_cmds *cmds);
+int is_temp_better(t_cmds temp, t_cmds off);
+int	have_analyzed_enough(t_cmds off, t_rot_a ini_rot_a, t_stack *forw_a, t_stack *rev_a);
 
 #endif

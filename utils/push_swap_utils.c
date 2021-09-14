@@ -6,11 +6,54 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/13 21:59:40 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/14 22:34:03 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "push_swap_utils.h"
+
+int	have_analyzed_enough(t_cmds off, t_rot_a ini_rot_a, t_stack *forw_a, t_stack *rev_a)
+{
+	if (off.total)
+	{
+		if (off.total < ini_rot_a.ra)
+			return (1);
+		if (off.total < ini_rot_a.rra)
+			return (1);
+		if (!forw_a)
+			return (1);
+		if (forw_a->pos == rev_a->pos)
+			return (1);
+	}
+	return (0);
+}
+
+int is_temp_better(t_cmds temp, t_cmds off)
+{	
+	if (!(off.total))
+		return (1);
+	if(temp.type == SWAP_BWD || temp.type == SWAP_FWD)
+	{
+		if(off.type == INITIAL_PUSH_BWD || off.type == INITIAL_PUSH_FWD) 
+		{
+			if (temp.total < off.total + 2)
+				return (1);
+			else
+				return (0);
+		}
+		else
+		{
+			if (temp.total < off.total)
+				return (1);
+			else
+				return (0);
+		}
+	}
+	if (temp.total < off.total)
+		return (1);
+	else
+		return (0);
+}
 
 /* Check if this is actually working with printfs. Also consider if swap 2 or 3 positions away 
 	is even desireable */
