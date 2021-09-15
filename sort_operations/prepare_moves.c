@@ -6,20 +6,29 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 16:56:33 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/14 23:44:22 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/15 22:55:29 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "sort_operations.h"
 
-void	merge_ramp_spot(t_stack *b, t_all *temp, t_stack *tobemoved)
+void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 {
-	place_in_b(b, temp, tobemoved);
+	t_cmds start_push;
+	t_stack	*first_nbr;
+
+	first_nbr = firstinramp->prev;
+	start_push = temp->cmds;
+	while (continue_ramp_analysis(a, first_nbr, temp))
+	{
+		first_nbr = first_nbr->prev;
+	}
+	place_in_b(b, temp, firstinramp);
 }
 
-void	swap_a(t_all *temp, t_stack *tobemoved, t_stack *b)
+void	swap_a(t_all *temp, t_stack *firstinramp, t_stack *b)
 {
-	(void)tobemoved;
+	(void)firstinramp;
 	if (temp->cmds.ra)
 		temp->cmds.type = SWAP_FWD;
 	else 

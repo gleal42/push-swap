@@ -32,7 +32,7 @@ void	rotate_until_sorted(t_stack **a, t_stack **b, int max_len);
 void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved);
 void	swap_a(t_all *temp, t_stack *tobemoved, t_stack *b);
 void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off);
-void	merge_ramp_spot(t_stack *b, t_all *temp, t_stack *tobemoved);
+void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp);
 
 
 #endif

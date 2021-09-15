@@ -14,5 +14,6 @@ int		is_good_for_swap(t_stack *first, t_stack *to_be_swaped, int min_stack, int 
 int	count_moves(t_cmds *cmds);
 int is_temp_better(t_cmds temp, t_cmds off);
 int	have_analyzed_enough(t_cmds off, t_rot_a ini_rot_a, t_stack *forw_a, t_stack *rev_a);
+int	continue_ramp_analysis(t_stack *a, t_stack	*first_nbr, t_all *temp);
 
 #endif

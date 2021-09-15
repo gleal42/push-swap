@@ -6,11 +6,21 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/14 23:42:49 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/15 22:51:25 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "push_swap_utils.h"
+
+int	continue_ramp_analysis(t_stack *a, t_stack	*first_nbr, t_all *temp)
+{
+	if (first_nbr->pos == a->pos)
+		return (0);
+	if (is_prev_nbr_smaller(first_nbr, first_nbr->prev, temp->lims.min_a, temp->lims.max_a))
+		return (1);
+	else
+		return (0);
+}
 
 int	have_analyzed_enough(t_cmds off, t_rot_a ini_rot_a, t_stack *forw_a, t_stack *rev_a)
 {

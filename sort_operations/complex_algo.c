@@ -113,7 +113,7 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			{
 				temp.ini_rot_a.ra++;
 				temp.cmds.ra = temp.ini_rot_a.ra;
-				merge_ramp_spot(*b, &temp, temp.forw_a->next);
+				merge_ramp_spot(*a, *b, &temp, temp.forw_a->next);
 			}
 			if (is_temp_better(temp.cmds, off.cmds))
 				off.cmds = temp.cmds;
@@ -136,7 +136,7 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			else
 			{
 				temp.cmds.rra = temp.ini_rot_a.rra;
-				merge_ramp_spot(*b, &temp, temp.rev_a);
+				merge_ramp_spot(*a, *b, &temp, temp.rev_a);
 				temp.ini_rot_a.rra++;
 			}
 			if (is_temp_better(temp.cmds, off.cmds))
