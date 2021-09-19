@@ -6,24 +6,59 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 16:56:33 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/15 22:55:29 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/19 16:37:35 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "sort_operations.h"
 
+// verificar se está top
 void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 {
-	t_cmds start_push;
+	t_cmds temp_cmd;
+	t_cmds off_cmd;
 	t_stack	*first_nbr;
-
+	t_stack	*last_nbr;
+	t_stack	*off_nbr;
+	int		ini_pb;
+	
+	ini_pb = 0;
 	first_nbr = firstinramp->prev;
-	start_push = temp->cmds;
+	temp_cmd = temp->cmds;
+	init_cmd_list(&off_cmd);
 	while (continue_ramp_analysis(a, first_nbr, temp))
 	{
+		last_nbr = firstinramp;
+		temp_cmd.pb = ini_pb;
+		temp_cmd.total = count_moves(&temp_cmd);
+		while (!is_next_nbr_bigger(first_nbr, last_nbr, temp->lims.min_a, temp->lims.max_a))
+		{
+			temp_cmd.pb++;
+			temp_cmd.total++;
+			if (off_cmd.total && (temp_cmd.total > off_cmd.total))
+			{		
+				off_cmd.pb = 0;
+				temp->cmds = off_cmd;
+				place_in_b(b, temp, off_nbr);
+				return ;
+			}
+			last_nbr = last_nbr->next;
+		}
+		if (temp_cmd.total < off_cmd.total || !off_cmd.total)
+		{
+			off_nbr = first_nbr;
+			off_cmd = temp_cmd;
+		}
+		ini_pb++;
+		if (temp_cmd.ra)
+			temp_cmd.ra--;
+		else if (temp_cmd.rra || !temp_cmd.ra)
+			temp_cmd.rra++;
 		first_nbr = first_nbr->prev;
 	}
-	place_in_b(b, temp, firstinramp);
+	off_cmd.pb = 0;
+	temp->cmds = off_cmd;
+	place_in_b(b, temp, off_nbr);
 }
 
 void	swap_a(t_all *temp, t_stack *firstinramp, t_stack *b)
