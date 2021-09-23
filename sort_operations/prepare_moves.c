@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 16:56:33 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/19 16:37:35 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/23 23:43:30 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 		}
 		if (temp_cmd.total < off_cmd.total || !off_cmd.total)
 		{
-			off_nbr = first_nbr;
+			if (!first_nbr->next)
+				off_nbr = a;
+			else
+				off_nbr = first_nbr->next;
 			off_cmd = temp_cmd;
 		}
 		ini_pb++;
@@ -154,7 +157,7 @@ void	find_closest_b_spot(t_stack  *cur_b, t_stack  *a, t_all *temp, int max)
 	rev_total = 0;
 	temp->cmds.rb = temp->ini_rot_b.rb;
 	temp->cmds.rrb = temp->ini_rot_b.rrb;
-	temp->cmds.pb++;
+	temp->cmds.pa++;
 	temp->cmds.total = count_moves(&temp->cmds);
 	if (!a)
 		return ;
@@ -229,12 +232,14 @@ void	find_closest_b_spot(t_stack  *cur_b, t_stack  *a, t_all *temp, int max)
 	if (good_spot_forward && (fwd_total <= rev_total || !good_spot_reverse))
 	{
 		temp->cmds.rra = 0;
+		temp->cmds.rrb = temp->cmds.rrr;
 		temp->cmds.rrr = 0;
 		temp->cmds.total = fwd_total;
 	}
 	else if (good_spot_reverse && (rev_total <= fwd_total || !good_spot_reverse))
 	{
 		temp->cmds.ra = 0;
+		temp->cmds.rb = temp->cmds.rr;
 		temp->cmds.rr = 0;
 		temp->cmds.total = rev_total;
 	} 
@@ -270,6 +275,7 @@ void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off)
 		find_closest_b_spot(off->rev_b, a, &temp, off->cmds.total);
 		if (temp.cmds.total && (temp.cmds.total < off->cmds.total))
 			off->cmds = temp.cmds;
+		temp.ini_rot_b.rb = temp.ini_rot_b.rrb;
 		off->rev_b = off->rev_b->prev;
 	}
 }

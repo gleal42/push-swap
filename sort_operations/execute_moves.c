@@ -216,7 +216,7 @@ void	execute_merge_ab(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, in
 		op_rra(a, b, max_len);
 		(cmds->rra)--;
 	}
-	if (cmds->pb > 0)
+	if (cmds->pa > 0)
 	{
 		if (!((*b)->next))
 		{
@@ -226,9 +226,9 @@ void	execute_merge_ab(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, in
 		else
 		{
 			if ((*b)->pos == lims->max_b)
-				pb_adjust_max_b(*a, lims);
+				pa_adjust_max_b(*a, lims);
 			if ((*b)->pos == lims->min_b)
-				pb_adjust_min_b(*a, lims);
+				pa_adjust_min_b(*a, lims);
 		}
 		if (!(*a))
 		{
@@ -243,6 +243,6 @@ void	execute_merge_ab(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, in
 				lims->min_a = (*b)->pos;
 		}
 		op_pa(a, b, max_len);
-		(cmds->pb)--;
+		(cmds->pa)--;
 	}
 }

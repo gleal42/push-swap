@@ -75,6 +75,8 @@ t_cmds	prepare_push_b(int ra, int rra, int rb, int rrb)
 /* don't forget that good in samne stack doesn't work well for 2 numbers in same stack
 	separate same stack from different stacks or add extra validation in if*/
 
+// else if (!temp.forw_a || temp.forw_a->pos == temp.rev_a->pos)
+
 void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 {
 	t_all off;
