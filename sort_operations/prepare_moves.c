@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 16:56:33 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/23 23:43:30 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/25 00:08:46 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 	ini_pb = 0;
 	first_nbr = firstinramp->prev;
 	temp_cmd = temp->cmds;
+	off_nbr = firstinramp;
 	init_cmd_list(&off_cmd);
-	while (continue_ramp_analysis(a, first_nbr, temp))
+	while (!off_cmd.total || ini_pb < off_cmd.total)
 	{
 		last_nbr = firstinramp;
 		temp_cmd.pb = ini_pb;
@@ -35,7 +36,7 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 		{
 			temp_cmd.pb++;
 			temp_cmd.total++;
-			if (off_cmd.total && (temp_cmd.total > off_cmd.total))
+			if (off_cmd.total && (temp_cmd.pb > off_cmd.total))
 			{		
 				off_cmd.pb = 0;
 				temp->cmds = off_cmd;
@@ -57,6 +58,8 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 			temp_cmd.ra--;
 		else if (temp_cmd.rra || !temp_cmd.ra)
 			temp_cmd.rra++;
+		if (!continue_ramp_analysis(a, first_nbr, temp))
+			break ;
 		first_nbr = first_nbr->prev;
 	}
 	off_cmd.pb = 0;
@@ -175,7 +178,7 @@ void	find_closest_b_spot(t_stack  *cur_b, t_stack  *a, t_all *temp, int max)
 			&& is_prev_nbr_smaller(cur_b, a->prev, temp->lims.min_a, temp->lims.max_a))
 		return ;
 	temp->forw_a = a->next;
-	temp->rev_a = a->prev->prev;
+	temp->rev_a = a->prev;
 	fwd_total = temp->cmds.total;
 	rev_total = temp->cmds.total;
 	while (!good_spot_forward && !good_spot_reverse && temp->forw_a)

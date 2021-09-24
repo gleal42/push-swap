@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/18 16:22:27 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/25 00:53:49 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,6 @@ int is_temp_better(t_cmds temp, t_cmds off)
 		return (0);
 }
 
-/* Check if this is actually working with printfs. Also consider if swap 2 or 3 positions away 
-	is even desireable */
-
 int		is_good_for_swap(t_stack *first, t_stack *to_be_swaped, int min_stack, int max_stack)
 {
 	if (!first)
@@ -78,7 +75,7 @@ int		is_good_for_swap(t_stack *first, t_stack *to_be_swaped, int min_stack, int 
 	if (!to_be_swaped->next)
 	{
 		if (is_next_nbr_bigger(to_be_swaped, first->next, min_stack, max_stack)
-			&& is_prev_nbr_smaller(to_be_swaped, first, min_stack, max_stack))
+			&& is_prev_nbr_smaller(first,to_be_swaped->prev, min_stack, max_stack))
 			return (1);
 	}
 	else
@@ -86,13 +83,13 @@ int		is_good_for_swap(t_stack *first, t_stack *to_be_swaped, int min_stack, int 
 		if (!to_be_swaped->next->next)
 		{
 			if (is_next_nbr_bigger(to_be_swaped, first, min_stack, max_stack)
-				&& is_prev_nbr_smaller(to_be_swaped, to_be_swaped->next, min_stack, max_stack))
+				&& is_prev_nbr_smaller(to_be_swaped->next, to_be_swaped->prev, min_stack, max_stack))
 				return (1);
 		}
 		else
 		{
 			if (is_next_nbr_bigger(to_be_swaped, to_be_swaped->next->next, min_stack, max_stack)
-				&& is_prev_nbr_smaller(to_be_swaped, to_be_swaped->next, min_stack, max_stack))
+				&& is_prev_nbr_smaller(to_be_swaped->next, to_be_swaped->prev, min_stack, max_stack))
 				return (1);
 		}
 	}
@@ -255,12 +252,14 @@ void calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds)
 	if ((fwd_total <= rev_total && has_rb)|| !has_rrb)
 	{
 		cmds->rrb = 0;
+		cmds->rra = cmds->rrr;
 		cmds->rrr = 0;
 		cmds->total = fwd_total;
 	}
 	else if ((fwd_total > rev_total && has_rrb) || !has_rb)
 	{
 		cmds->rb = 0;
+		cmds->ra = cmds->rr;
 		cmds->rr = 0;
 		cmds->total = rev_total;
 	}
