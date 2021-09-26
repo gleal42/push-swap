@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 16:56:33 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/25 00:08:46 by gleal            ###   ########.fr       */
+/*   Updated: 2021/09/26 23:42:02 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 				off_nbr = first_nbr->next;
 			off_cmd = temp_cmd;
 		}
-		ini_pb++;
+		if (!continue_ramp_analysis(a, first_nbr, temp))
+			break ;
 		if (temp_cmd.ra)
 			temp_cmd.ra--;
 		else if (temp_cmd.rra || !temp_cmd.ra)
 			temp_cmd.rra++;
-		if (!continue_ramp_analysis(a, first_nbr, temp))
-			break ;
+		ini_pb++;
 		first_nbr = first_nbr->prev;
 	}
 	off_cmd.pb = 0;
@@ -178,7 +178,7 @@ void	find_closest_b_spot(t_stack  *cur_b, t_stack  *a, t_all *temp, int max)
 			&& is_prev_nbr_smaller(cur_b, a->prev, temp->lims.min_a, temp->lims.max_a))
 		return ;
 	temp->forw_a = a->next;
-	temp->rev_a = a->prev;
+	temp->rev_a = a->prev->prev;
 	fwd_total = temp->cmds.total;
 	rev_total = temp->cmds.total;
 	while (!good_spot_forward && !good_spot_reverse && temp->forw_a)
