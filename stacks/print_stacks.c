@@ -27,6 +27,11 @@ void print_char(char *str, int start, int len)
 		printf("%s", str);
 }
 
+/* int counter = 0;
+	counter++;
+	printf("%d\n", counter);
+	return ; */
+
 void print_both_stacks(t_stack *a, t_stack *b, int max_len)
 {
 	int i;
