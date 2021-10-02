@@ -6,14 +6,55 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 16:56:33 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/26 23:42:02 by gleal            ###   ########.fr       */
+/*   Updated: 2021/10/02 17:19:55 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "sort_operations.h"
 
-// verificar se está top
 void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
+{
+	t_cmds temp_cmd;
+	t_cmds off_cmd;
+	t_stack	*first_nbr;
+	t_stack	*last_nbr;
+	t_stack	*off_nbr;
+
+	first_nbr = firstinramp->prev;
+	temp_cmd = temp->cmds;
+	off_nbr = firstinramp;
+	init_cmd_list(&off_cmd);
+	while (first_nbr->pos != last_nbr->pos)
+	{
+		last_nbr = firstinramp;
+		temp_cmd.pb = 0;
+		temp_cmd.rb = 0;
+		temp_cmd.rrb = 0;
+		predict_ramp_moves(first_nbr, last_nbr, a, b, &temp_cmd);
+		temp_cmd.total = count_moves(&temp_cmd);
+		if (temp_cmd.total < off_cmd.total || !off_cmd.total)
+		{
+			if (!first_nbr->next)
+				off_nbr = a;
+			else
+				off_nbr = first_nbr->next;
+			off_cmd = temp_cmd;
+		}
+		if (!continue_ramp_analysis(a, first_nbr, temp))
+			break ;
+		if (temp_cmd.ra)
+			temp_cmd.ra--;
+		else if (temp_cmd.rra || !temp_cmd.ra)
+			temp_cmd.rra++;
+		first_nbr = first_nbr->prev;
+	}
+	off_cmd.pb = 0;
+	temp->cmds = off_cmd;
+	place_in_b(b, temp, off_nbr);
+}
+
+
+/* void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 {
 	t_cmds temp_cmd;
 	t_cmds off_cmd;
@@ -66,6 +107,8 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 	temp->cmds = off_cmd;
 	place_in_b(b, temp, off_nbr);
 }
+ */
+
 
 void	swap_a(t_all *temp, t_stack *firstinramp, t_stack *b)
 {

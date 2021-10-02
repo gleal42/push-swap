@@ -6,11 +6,34 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/26 23:56:55 by gleal            ###   ########.fr       */
+/*   Updated: 2021/10/02 17:38:25 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "push_swap_utils.h"
+
+int	predict_ramp_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_stack *b, t_cmds *temp_cmd)
+{
+	t_stack	*cur_stack;
+
+	cur_stack = first_nbr;	
+	while (cur_stack->pos != last_nbr)
+	{
+		cur_stack->next;
+		if (!cur_stack->next)
+			cur_stack = a;
+		else
+			cur_stack = cur_stack->next;
+	}
+
+/* 	while ()
+	{
+		if (!last_nbr->next)
+			last_nbr = a;
+		else
+			last_nbr = last_nbr->next;
+	} */
+}
 
 int	continue_ramp_analysis(t_stack *a, t_stack	*first_nbr, t_all *temp)
 {
