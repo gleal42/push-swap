@@ -6,13 +6,51 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/10/03 19:52:31 by gleal            ###   ########.fr       */
+/*   Updated: 2021/10/03 22:08:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "push_swap_utils.h"
 
 //similar to place in b but we also predict those that were previously pushed
+//now I need to decide when I will predict rotates. 
+//As soon as they happen might be smart. But I will have to validate the same thing many times and make it slower
+
+void	add_rbs(t_cmds *nbr_rot_pred)
+{
+	nbr_rot_pred->rb++;
+	//add something to check if current position was already used in previous pushes
+}
+
+void update_position_and_total(int has_rb, int has_rrb, t_cmds *cmds)
+{
+	int fwd_total;
+	int rev_total;
+
+	rev_total = 0;
+	fwd_total = 0;
+	if (has_rb)
+		fwd_total = cmds->ra + cmds->rr + cmds->rra + cmds->rrr + cmds->rb + cmds->pb;
+	if (has_rrb)
+		rev_total = cmds->ra + cmds->rr + cmds->rra + cmds->rrr + cmds->rrb + cmds->pb;
+	if ((fwd_total <= rev_total && has_rb)|| !has_rrb)
+	{
+		cmds->rrb = 0;
+		cmds->rra += cmds->rrr;
+		cmds->rrr = 0;
+		cmds->total = fwd_total;
+		//function to update cur_b with the position forward
+	}
+	else if ((fwd_total > rev_total && has_rrb) || !has_rb)
+	{
+		cmds->rb = 0;
+		cmds->ra += cmds->rr;
+		cmds->rr = 0;
+		cmds->total = rev_total;
+		//function to update cur_b with the position backward
+	}
+}
+
 
 int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *cur_stack, t_stack *cur_b, t_all *temp)
 {
@@ -32,7 +70,7 @@ int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *cur_st
 	if (!cur_b->next)
 	{
 		has_rb++;
-		calculate_initial_pushmoves(has_rb, has_rrb, &nbr_rot_pred);
+		update_position_and_total(has_rb, has_rrb, &nbr_rot_pred);
 		temp_cmd->rb += nbr_rot_pred.rb;
 		temp_cmd->rrb += nbr_rot_pred.rrb;
 		temp_cmd->rr += nbr_rot_pred.rr;
@@ -59,7 +97,7 @@ int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *cur_st
 				nbr_rot_pred.rr++;
 			}
 			else
-				nbr_rot_pred.rb++;
+				add_rbs(&nbr_rot_pred);
 		}
 		if (!has_rrb)
 		{
@@ -87,7 +125,7 @@ int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *cur_st
 		if (!has_rrb)
 			temp->rev_b = (temp->rev_b)->prev;
 	}
-	calculate_initial_pushmoves(has_rb, has_rrb, &nbr_rot_pred);
+	update_position_and_total(has_rb, has_rrb, &nbr_rot_pred);
 	temp_cmd->rb += nbr_rot_pred.rb;
 	temp_cmd->rrb += nbr_rot_pred.rrb;
 	temp_cmd->rr += nbr_rot_pred.rr;
