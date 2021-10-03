@@ -6,33 +6,116 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/10/02 17:38:25 by gleal            ###   ########.fr       */
+/*   Updated: 2021/10/03 19:52:31 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "push_swap_utils.h"
 
-int	predict_ramp_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_stack *b, t_cmds *temp_cmd)
+//similar to place in b but we also predict those that were previously pushed
+
+int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *cur_stack, t_stack *cur_b, t_all *temp)
+{
+	t_cmds	nbr_rot_pred;
+	int has_rb;
+	int has_rrb;
+	int rev_total;
+
+	nbr_rot_pred = *temp_cmd;
+	nbr_rot_pred.rb = 0;
+	nbr_rot_pred.rrb = 0;
+	nbr_rot_pred.rr = 0;
+	nbr_rot_pred.rrr = 0;
+	rev_total = 0;
+	has_rb = 0;
+	has_rrb = 0;
+	if (!cur_b->next)
+	{
+		has_rb++;
+		calculate_initial_pushmoves(has_rb, has_rrb, &nbr_rot_pred);
+		temp_cmd->rb += nbr_rot_pred.rb;
+		temp_cmd->rrb += nbr_rot_pred.rrb;
+		temp_cmd->rr += nbr_rot_pred.rr;
+		temp_cmd->rrr += nbr_rot_pred.rrr;
+		return ;
+	}
+	if (is_next_nbr_bigger(cur_stack, cur_b->prev, temp->lims.min_b, temp->lims.max_b)
+			&& is_prev_nbr_smaller(cur_stack, cur_b, temp->lims.min_b, temp->lims.max_b))
+	{
+		if (nbr_rot_pred.ra || (!nbr_rot_pred.ra && !nbr_rot_pred.rra))
+			has_rb++;
+		else if (nbr_rot_pred.rra)
+			has_rrb++;
+	}
+	temp->forw_b = cur_b->next;
+	temp->rev_b = cur_b->prev->prev;
+	while (!has_rb || !has_rrb)
+	{
+		if (!has_rb)
+		{
+			if(nbr_rot_pred.ra > 0)
+			{
+				nbr_rot_pred.rra--;
+				nbr_rot_pred.rr++;
+			}
+			else
+				nbr_rot_pred.rb++;
+		}
+		if (!has_rrb)
+		{
+			if(nbr_rot_pred.rra > 0)
+			{
+				nbr_rot_pred.rra--;
+				nbr_rot_pred.rrr++;
+			}
+			else
+				nbr_rot_pred.rrb++;
+		}
+		if (is_next_nbr_bigger(cur_stack, temp->forw_b->prev, temp->lims.min_b, temp->lims.max_b)
+			&& is_prev_nbr_smaller(cur_stack, temp->forw_b, temp->lims.min_b, temp->lims.max_b))
+			has_rb++;
+		if (is_next_nbr_bigger(cur_stack, temp->rev_b, temp->lims.min_b, temp->lims.max_b)
+		 && is_prev_nbr_smaller(cur_stack, temp->rev_b->next, temp->lims.min_b, temp->lims.max_b))
+			has_rrb++;
+		if (!has_rb)
+			{
+			if (!(temp->forw_b)->next)
+				temp->forw_b = b;
+			else
+				temp->forw_b = temp->forw_b->next;
+		}
+		if (!has_rrb)
+			temp->rev_b = (temp->rev_b)->prev;
+	}
+	calculate_initial_pushmoves(has_rb, has_rrb, &nbr_rot_pred);
+	temp_cmd->rb += nbr_rot_pred.rb;
+	temp_cmd->rrb += nbr_rot_pred.rrb;
+	temp_cmd->rr += nbr_rot_pred.rr;
+	temp_cmd->rrr += nbr_rot_pred.rrr;
+}
+
+int	predict_rotate_b_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_stack *b, t_cmds *temp_cmd, t_all *temp)
 {
 	t_stack	*cur_stack;
+	t_stack	*cur_b;
 
-	cur_stack = first_nbr;	
+	cur_stack = first_nbr;
+	cur_b = b;
 	while (cur_stack->pos != last_nbr)
 	{
-		cur_stack->next;
+		temp_cmd->pb++;
+		if (b)
+			add_ramp_rot_moves(a, b, temp_cmd, cur_stack, &cur_b, temp);
+		temp_cmd->ra = 0;
+		temp_cmd->rra = 0;
 		if (!cur_stack->next)
 			cur_stack = a;
 		else
 			cur_stack = cur_stack->next;
 	}
-
-/* 	while ()
+	while (!is_next_nbr_bigger(cur_stack, last_nbr, temp->lims.min_a, temp->lims.max_a))
 	{
-		if (!last_nbr->next)
-			last_nbr = a;
-		else
-			last_nbr = last_nbr->next;
-	} */
+	}
 }
 
 int	continue_ramp_analysis(t_stack *a, t_stack	*first_nbr, t_all *temp)

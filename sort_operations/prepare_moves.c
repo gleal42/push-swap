@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 16:56:33 by gleal             #+#    #+#             */
-/*   Updated: 2021/10/02 17:19:55 by gleal            ###   ########.fr       */
+/*   Updated: 2021/10/03 19:01:13 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,7 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 	while (first_nbr->pos != last_nbr->pos)
 	{
 		last_nbr = firstinramp;
-		temp_cmd.pb = 0;
-		temp_cmd.rb = 0;
-		temp_cmd.rrb = 0;
-		predict_ramp_moves(first_nbr, last_nbr, a, b, &temp_cmd);
+		predict_rotate_b_moves(first_nbr, last_nbr, a, b, &temp_cmd, temp);
 		temp_cmd.total = count_moves(&temp_cmd);
 		if (temp_cmd.total < off_cmd.total || !off_cmd.total)
 		{
