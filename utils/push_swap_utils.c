@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/10/03 22:08:00 by gleal            ###   ########.fr       */
+/*   Updated: 2021/10/23 16:30:36 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *cur_st
 		temp_cmd->rrb += nbr_rot_pred.rrb;
 		temp_cmd->rr += nbr_rot_pred.rr;
 		temp_cmd->rrr += nbr_rot_pred.rrr;
-		return ;
+		return (0);
 	}
 	if (is_next_nbr_bigger(cur_stack, cur_b->prev, temp->lims.min_b, temp->lims.max_b)
 			&& is_prev_nbr_smaller(cur_stack, cur_b, temp->lims.min_b, temp->lims.max_b))
