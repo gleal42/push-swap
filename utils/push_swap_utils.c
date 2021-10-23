@@ -6,23 +6,35 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/10/23 16:30:36 by gleal            ###   ########.fr       */
+/*   Updated: 2021/10/23 22:22:51 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "push_swap_utils.h"
 
 //similar to place in b but we also predict those that were previously pushed
-//now I need to decide when I will predict rotates. 
-//As soon as they happen might be smart. But I will have to validate the same thing many times and make it slower
+/*
+*	okay aqui tu ves os numeros que já foram atraves do first nbr e daquele em que estamos
+*	atenção que aqui é só para acrescentar os rbs que estao entre dois numeros caso existam
+*	ou seja é só umna mini operação
+*/
 
-void	add_rbs(t_cmds *nbr_rot_pred)
+void	add_rbs(t_stack *first_nbr, t_stack *rev_b, t_stack *cur_stack, t_cmds *nbr_rot_pred)
 {
 	nbr_rot_pred->rb++;
 	//add something to check if current position was already used in previous pushes
 }
 
-void update_position_and_total(int has_rb, int has_rrb, t_cmds *cmds)
+void	add_rbs(t_stack *first_nbr, t_stack *forw_b, t_cmds *nbr_rot_pred)
+{
+	t_stack *temp;
+
+	temp = forw_b;
+	nbr_rot_pred->rrb++;
+	//add something to check if current position was already used in previous pushes
+}
+
+void update_position_and_total(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds, t_stack *cur_stack, t_stack **cur_b, t_all *temp)
 {
 	int fwd_total;
 	int rev_total;
@@ -39,7 +51,14 @@ void update_position_and_total(int has_rb, int has_rrb, t_cmds *cmds)
 		cmds->rra += cmds->rrr;
 		cmds->rrr = 0;
 		cmds->total = fwd_total;
-		//function to update cur_b with the position forward
+		while (!(is_next_nbr_bigger(cur_stack, (*cur_b)->prev, temp->lims.min_b, temp->lims.max_b)
+			&& is_prev_nbr_smaller(cur_stack, *cur_b, temp->lims.min_b, temp->lims.max_b)))
+		{
+			if ((*cur_b)->next)
+				*cur_b = (*cur_b)->next;
+			else
+				*cur_b = b;
+		}
 	}
 	else if ((fwd_total > rev_total && has_rrb) || !has_rb)
 	{
@@ -47,12 +66,14 @@ void update_position_and_total(int has_rb, int has_rrb, t_cmds *cmds)
 		cmds->ra += cmds->rr;
 		cmds->rr = 0;
 		cmds->total = rev_total;
-		//function to update cur_b with the position backward
+		while (!(is_next_nbr_bigger(cur_stack, (*cur_b)->prev, temp->lims.min_b, temp->lims.max_b)
+			&& is_prev_nbr_smaller(cur_stack, *cur_b, temp->lims.min_b, temp->lims.max_b)))
+			*cur_b = (*cur_b)->prev;
 	}
 }
 
 
-int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *cur_stack, t_stack *cur_b, t_all *temp)
+int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_nbr, t_stack *cur_stack, t_stack *cur_b, t_all *temp)
 {
 	t_cmds	nbr_rot_pred;
 	int has_rb;
@@ -70,7 +91,7 @@ int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *cur_st
 	if (!cur_b->next)
 	{
 		has_rb++;
-		update_position_and_total(has_rb, has_rrb, &nbr_rot_pred);
+		update_position_and_total(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, temp);
 		temp_cmd->rb += nbr_rot_pred.rb;
 		temp_cmd->rrb += nbr_rot_pred.rrb;
 		temp_cmd->rr += nbr_rot_pred.rr;
@@ -97,7 +118,7 @@ int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *cur_st
 				nbr_rot_pred.rr++;
 			}
 			else
-				add_rbs(&nbr_rot_pred);
+				add_rbs(temp->forw_b, &nbr_rot_pred);
 		}
 		if (!has_rrb)
 		{
@@ -107,7 +128,7 @@ int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *cur_st
 				nbr_rot_pred.rrr++;
 			}
 			else
-				nbr_rot_pred.rrb++;
+				add_rrbs(temp->rev_b, &nbr_rot_pred);
 		}
 		if (is_next_nbr_bigger(cur_stack, temp->forw_b->prev, temp->lims.min_b, temp->lims.max_b)
 			&& is_prev_nbr_smaller(cur_stack, temp->forw_b, temp->lims.min_b, temp->lims.max_b))
@@ -139,13 +160,11 @@ int	predict_rotate_b_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_
 
 	cur_stack = first_nbr;
 	cur_b = b;
-	while (cur_stack->pos != last_nbr)
+	while (cur_stack->pos != last_nbr->pos)
 	{
 		temp_cmd->pb++;
 		if (b)
-			add_ramp_rot_moves(a, b, temp_cmd, cur_stack, &cur_b, temp);
-		temp_cmd->ra = 0;
-		temp_cmd->rra = 0;
+			add_ramp_rot_moves(a, b, temp_cmd, first_nbr, cur_stack, &cur_b, temp);
 		if (!cur_stack->next)
 			cur_stack = a;
 		else
