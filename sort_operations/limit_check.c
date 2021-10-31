@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/07 17:25:03 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/23 21:50:49 by gleal            ###   ########.fr       */
+/*   Updated: 2021/10/31 17:41:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,186 @@
 
 // We can change the way it analyzes B in order to see if we need to go 
 // forward of backward instead of just going blindly (because B will be organized (i think))
+
+/* For the adjust function we can simply look at the numbers that were already pushed*/
+
+void		pa_predict_adjust_max_a(t_stack *b, t_stack *cur_b, t_limits *lims)
+{
+	t_stack *check_fwd;
+	t_stack *check_bckd;
+	int repeat;
+
+	lims->max_a--;
+	if (!cur_b)
+		return ;
+	if (lims->max_b < lims->max_a)
+		return ;
+	else
+	{
+		repeat = 1;
+		while (repeat)
+		{
+			if (cur_b->pos == lims->max_a)
+				lims->max_a--;
+			else
+				repeat = 0;
+			check_fwd = cur_b->next;
+			check_bckd = cur_b->prev;
+			while (check_fwd)
+			{
+				if (check_fwd->pos == lims->max_a)
+				{
+					lims->max_a--;
+					repeat++;
+				}
+				else if (check_bckd->pos == lims->max_a)
+				{
+					lims->max_a--;
+					repeat++;
+				}
+				if (check_fwd->next)
+					check_fwd = check_fwd->next;
+				else
+					check_fwd = b;
+				check_bckd = check_bckd->prev;
+			}
+		}
+	}
+}
+
+void		pa_predict_adjust_min_a(t_stack *b, t_stack *cur_b, t_limits *lims)
+{
+	t_stack *check_fwd;
+	t_stack *check_bckd;
+	int repeat;
+
+	lims->min_a++;
+	if (!cur_b)
+		return ;
+	if (lims->min_b > lims->min_a)
+		return ;
+	else
+	{
+		repeat = 1;
+		while (repeat)
+		{
+			if (cur_b->pos == lims->min_a)
+				lims->min_a++;
+			else
+				repeat = 0;
+			check_fwd = cur_b->next;
+			check_bckd = cur_b->prev;
+			while (check_fwd)
+			{
+				if (check_fwd->pos == lims->min_a)
+				{
+					lims->min_a++;
+					repeat++;
+				}
+				else if (check_bckd->pos == lims->min_a)
+				{
+					lims->min_a++;
+					repeat++;
+				}
+				if (check_fwd->next)
+					check_fwd = check_fwd->next;
+				else
+					check_fwd = b;
+				check_bckd = check_bckd->prev;
+			}
+		}
+	}
+}
+
+void		pa_predict_adjust_max_b(t_stack *a, t_stack *b, t_limits *lims)
+{
+	t_stack *check_fwd;
+	t_stack *check_bckd;
+	int repeat;
+
+	(void)b;
+	lims->max_b--;
+	if (!a)
+		return ;
+	if (lims->max_a < lims->max_b)
+		return ;
+	else
+	{
+		repeat = 1;
+		while (repeat)
+		{
+			if (a->pos == lims->max_b)
+				lims->max_b--;
+			else
+				repeat = 0;
+			check_fwd = a->next;
+			check_bckd = a->prev;
+			while (check_fwd)
+			{
+				if (check_fwd->pos == lims->max_b)
+				{
+					lims->max_b--;
+					repeat++;
+				}
+				else if (check_bckd->pos == lims->max_b)
+				{
+					lims->max_b--;
+					repeat++;
+				}
+				if (check_fwd->next)
+					check_fwd = check_fwd->next;
+				else
+					check_fwd = a;
+				check_bckd = check_bckd->prev;
+			}
+		}
+	}
+}
+
+void		pa_predict_adjust_min_b(t_stack *a, t_stack *cur_a, t_limits *lims)
+{
+	t_stack *check_fwd;
+	t_stack *check_bckd;
+	int repeat;
+
+	lims->min_b++;
+	if (!cur_a)
+		return ;
+	if (lims->min_a > lims->min_b)
+		return ;
+	else
+	{
+		repeat = 1;
+		while (repeat)
+		{
+			if (cur_a->pos == lims->min_b)
+				lims->min_b++;
+			else
+				repeat = 0;
+			check_fwd = cur_a->next;
+			check_bckd = cur_a->prev;
+			while (check_fwd)
+			{
+				if (check_fwd->pos == lims->min_b)
+				{
+					lims->min_b++;
+					repeat++;
+				}
+				else if (check_bckd->pos == lims->min_b)
+				{
+					lims->min_b++;
+					repeat++;
+				}
+				if (check_fwd->next)
+					check_fwd = check_fwd->next;
+				else
+					check_fwd = a;
+				check_bckd = check_bckd->prev;
+			}
+			repeat = 0;
+		}
+	}
+}
 
 void		pa_adjust_max_a(t_stack *b, t_limits *lims)
 {
@@ -56,7 +236,7 @@ void		pa_adjust_max_a(t_stack *b, t_limits *lims)
 	}
 }
 
-void		pa_adjust_min_a(t_stack *b, t_limits *lims)
+void		pa_adjust_min_a(t_stack *a, t_stack *b, t_limits *lims)
 {
 	t_stack *check_fwd;
 	t_stack *check_bckd;
@@ -90,7 +270,10 @@ void		pa_adjust_min_a(t_stack *b, t_limits *lims)
 					lims->min_a++;
 					repeat++;
 				}
-				check_fwd = check_fwd->next;
+				if (check_fwd->next)
+					check_fwd = check_fwd->next;
+				else
+					check_fwd = a;
 				check_bckd = check_bckd->prev;
 			}
 		}

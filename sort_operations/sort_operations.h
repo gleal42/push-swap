@@ -23,9 +23,13 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_len, int n);
 void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len);
 void	execute_merge_ab(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len);
 void	pa_adjust_max_a(t_stack *b, t_limits *lims);
-void	pa_adjust_min_a(t_stack *b, t_limits *lims);
+void	pa_adjust_min_a(t_stack *a, t_stack *b, t_limits *lims);
 void	pa_adjust_max_b(t_stack *a, t_limits *lims);
 void	pa_adjust_min_b(t_stack *a, t_limits *lims);
+void	pa_predict_adjust_max_a(t_stack *a, t_stack *cur_b, t_limits *lims);
+void	pa_predict_adjust_min_a(t_stack *a, t_stack *b, t_limits *lims);
+void	pa_predict_adjust_max_b(t_stack *a, t_stack *b, t_limits *lims);
+void	pa_predict_adjust_min_b(t_stack *a, t_stack *b, t_limits *lims);
 
 void	rotate_until_sorted(t_stack **a, t_stack **b, int max_len);
 
