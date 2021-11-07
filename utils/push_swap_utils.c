@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/10/31 17:34:38 by gleal            ###   ########.fr       */
+/*   Updated: 2021/11/07 20:19:34 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	add_rbs(t_stack *first_nbr, t_stack *rev_b, t_cmds *nbr_rot_pred)
 	(void) first_nbr;
 	(void) rev_b;
 	nbr_rot_pred->rb++;
+	return ;
+	// (void)update_predict_limits(first_nbr, cur_a, cur_b, a, b, pred_limits);
 	//add something to check if current position was already used in previous pushes
 }
 
@@ -35,10 +37,12 @@ void	add_rrbs(t_stack *first_nbr, t_stack *forw_b, t_cmds *nbr_rot_pred)
 	(void) forw_b;
 	temp = forw_b;
 	nbr_rot_pred->rrb++;
+	return ;
+	// update_predict_limits(first_nbr, cur_a, cur_b, a, b, pred_limits);
 	//add something to check if current position was already used in previous pushes
 }
 
-void update_position_and_total(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds, t_stack *cur_stack, t_stack **cur_b, t_all *temp)
+void update_position_and_total(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds, t_stack *cur_stack, t_stack **cur_b, t_limits *limits)
 {
 	int fwd_total;
 	int rev_total;
@@ -55,8 +59,8 @@ void update_position_and_total(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds
 		cmds->rra += cmds->rrr;
 		cmds->rrr = 0;
 		cmds->total = fwd_total;
-		while (b->next && !(is_next_nbr_bigger(cur_stack, (*cur_b)->prev, temp->lims.min_b, temp->lims.max_b)
-			&& is_prev_nbr_smaller(cur_stack, *cur_b, temp->lims.min_b, temp->lims.max_b)))
+		while (b->next && !(is_next_nbr_bigger(cur_stack, (*cur_b)->prev, limits->min_b, limits->max_b)
+			&& is_prev_nbr_smaller(cur_stack, *cur_b, limits->min_b, limits->max_b)))
 		{
 			if ((*cur_b)->next)
 				*cur_b = (*cur_b)->next;
@@ -70,21 +74,19 @@ void update_position_and_total(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds
 		cmds->ra += cmds->rr;
 		cmds->rr = 0;
 		cmds->total = rev_total;
-		while (b->next && !(is_next_nbr_bigger(cur_stack, (*cur_b)->prev, temp->lims.min_b, temp->lims.max_b)
-			&& is_prev_nbr_smaller(cur_stack, *cur_b, temp->lims.min_b, temp->lims.max_b)))
+		while (b->next && !(is_next_nbr_bigger(cur_stack, (*cur_b)->prev, limits->min_b, limits->max_b)
+			&& is_prev_nbr_smaller(cur_stack, *cur_b, limits->min_b, limits->max_b)))
 			*cur_b = (*cur_b)->prev;
 	}
 }
 
-
-int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_nbr, t_stack *cur_stack, t_stack *cur_b, t_all *temp)
+int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_nbr, t_stack *cur_stack, t_stack *cur_b, t_all *temp, t_limits *limits)
 {
 	t_cmds	nbr_rot_pred;
 	int has_rb;
 	int has_rrb;
 	int rev_total;
 
-	(void)a;
 	nbr_rot_pred = *temp_cmd;
 	nbr_rot_pred.rb = 0;
 	nbr_rot_pred.rrb = 0;
@@ -93,18 +95,19 @@ int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_
 	rev_total = 0;
 	has_rb = 0;
 	has_rrb = 0;
+	(void)a;
 	if (!cur_b->next)
 	{
 		has_rb++;
-		update_position_and_total(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, temp);
+		update_position_and_total(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, limits);
 		temp_cmd->rb += nbr_rot_pred.rb;
 		temp_cmd->rrb += nbr_rot_pred.rrb;
 		temp_cmd->rr += nbr_rot_pred.rr;
 		temp_cmd->rrr += nbr_rot_pred.rrr;
 		return (0);
 	}
-	if (is_next_nbr_bigger(cur_stack, cur_b->prev, temp->lims.min_b, temp->lims.max_b)
-			&& is_prev_nbr_smaller(cur_stack, cur_b, temp->lims.min_b, temp->lims.max_b))
+	if (is_next_nbr_bigger(cur_stack, cur_b->prev, limits->min_b, limits->max_b)
+			&& is_prev_nbr_smaller(cur_stack, cur_b, limits->min_b, limits->max_b))
 	{
 		if (nbr_rot_pred.ra || (!nbr_rot_pred.ra && !nbr_rot_pred.rra))
 			has_rb++;
@@ -122,8 +125,12 @@ int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_
 				nbr_rot_pred.rra--;
 				nbr_rot_pred.rr++;
 			}
-			else
+			else if (is_next_nbr_bigger(cur_stack, temp->forw_b->prev, limits->min_b, limits->max_b)
+			&& is_prev_nbr_smaller(cur_stack, temp->forw_b, limits->min_b, limits->max_b))
+			{
+				has_rb++;
 				add_rbs(first_nbr, temp->forw_b, &nbr_rot_pred);
+			}
 		}
 		if (!has_rrb)
 		{
@@ -132,26 +139,24 @@ int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_
 				nbr_rot_pred.rra--;
 				nbr_rot_pred.rrr++;
 			}
-			else
-				add_rrbs(first_nbr, temp->rev_b, &nbr_rot_pred);
-		}
-		if (is_next_nbr_bigger(cur_stack, temp->forw_b->prev, temp->lims.min_b, temp->lims.max_b)
-			&& is_prev_nbr_smaller(cur_stack, temp->forw_b, temp->lims.min_b, temp->lims.max_b))
-			has_rb++;
-		if (is_next_nbr_bigger(cur_stack, temp->rev_b, temp->lims.min_b, temp->lims.max_b)
-		 && is_prev_nbr_smaller(cur_stack, temp->rev_b->next, temp->lims.min_b, temp->lims.max_b))
-			has_rrb++;
-		if (!has_rb)
+			else if (is_next_nbr_bigger(cur_stack, temp->rev_b, limits->min_b, limits->max_b)
+		 && is_prev_nbr_smaller(cur_stack, temp->rev_b->next, limits->min_b, limits->max_b))
 			{
-			if (!(temp->forw_b)->next)
-				temp->forw_b = b;
-			else
+				has_rrb++;
+				add_rrbs(first_nbr, temp->rev_b, &nbr_rot_pred);
+			}
+		}
+		if (!has_rb)
+		{
+			if (temp->forw_b)
 				temp->forw_b = temp->forw_b->next;
+			else
+				temp->forw_b = b;
 		}
 		if (!has_rrb)
 			temp->rev_b = (temp->rev_b)->prev;
 	}
-	update_position_and_total(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, temp);
+	update_position_and_total(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, limits);
 	temp_cmd->rb += nbr_rot_pred.rb;
 	temp_cmd->rrb += nbr_rot_pred.rrb;
 	temp_cmd->rr += nbr_rot_pred.rr;
@@ -188,30 +193,31 @@ void update_predict_limits(t_stack *first_nbr, t_stack *cur_a, t_stack *cur_b, t
 	}
 }
 
+// perceber porque 4 não está a ser apanhado no has_rb
+
 int	predict_rotate_b_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_stack *b, t_cmds *temp_cmd, t_all *temp)
 {
 	t_stack	*cur_a;
 	t_stack	*cur_b;
-	t_all	*pred_limits;
+	t_limits	pred_limits;
 
 	cur_a = first_nbr;
 	cur_b = b;
-	pred_limits=temp;
+	pred_limits=temp->lims;
 	while (cur_a->pos != last_nbr->pos)
 	{
 		temp_cmd->pb++;
 		if (b)
-			add_ramp_rot_moves(temp_cmd, a, b, first_nbr, cur_a, cur_b, pred_limits);
-		update_predict_limits(first_nbr, cur_a, cur_b, a, b, pred_limits);
+			add_ramp_rot_moves(temp_cmd, a, b, first_nbr, cur_a, cur_b, temp, &pred_limits);
 		if (!cur_a->next)
 			cur_a = a;
 		else
 			cur_a = cur_a->next;
 	}
-	while (!is_next_nbr_bigger(cur_a, last_nbr, temp->lims.min_a, temp->lims.max_a))
+	while (!is_next_nbr_bigger(cur_a, last_nbr, pred_limits.min_a, pred_limits.max_a))
 	{
 		if (b)
-			add_ramp_rot_moves(temp_cmd, a, b, first_nbr, cur_a, cur_b, pred_limits);
+			add_ramp_rot_moves(temp_cmd, a, b, first_nbr, cur_a, cur_b, temp, &pred_limits);
 		if (!cur_a->next)
 			cur_a = a;
 		else

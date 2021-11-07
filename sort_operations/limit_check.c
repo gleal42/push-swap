@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/07 17:25:03 by gleal             #+#    #+#             */
-/*   Updated: 2021/10/31 17:41:09 by gleal            ###   ########.fr       */
+/*   Updated: 2021/11/02 21:44:29 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,7 @@ void		pa_adjust_max_a(t_stack *b, t_limits *lims)
 	}
 }
 
-void		pa_adjust_min_a(t_stack *a, t_stack *b, t_limits *lims)
+void		pa_adjust_min_a(t_stack *b, t_limits *lims)
 {
 	t_stack *check_fwd;
 	t_stack *check_bckd;
@@ -270,10 +270,7 @@ void		pa_adjust_min_a(t_stack *a, t_stack *b, t_limits *lims)
 					lims->min_a++;
 					repeat++;
 				}
-				if (check_fwd->next)
-					check_fwd = check_fwd->next;
-				else
-					check_fwd = a;
+				check_fwd = check_fwd->next;
 				check_bckd = check_bckd->prev;
 			}
 		}
