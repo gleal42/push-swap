@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/11/07 20:19:34 by gleal            ###   ########.fr       */
+/*   Updated: 2021/11/21 23:51:23 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,12 @@ void update_position_and_total(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds
 	}
 }
 
-int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_nbr, t_stack *cur_stack, t_stack *cur_b, t_all *temp, t_limits *limits)
+/* cur stack 4 não está a funcionar.
+b merge ramp spot antes de mais
+aqui tem demasiadas coisas. Aqui para é só para prever rbs e rrbs 
+(ver se dá paara delete a parte dos ra e rra*/
+
+int	rot_moves_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_nbr, t_stack *cur_stack, t_stack *cur_b, t_all *temp, t_limits *limits)
 {
 	t_cmds	nbr_rot_pred;
 	int has_rb;
@@ -100,10 +105,6 @@ int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_
 	{
 		has_rb++;
 		update_position_and_total(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, limits);
-		temp_cmd->rb += nbr_rot_pred.rb;
-		temp_cmd->rrb += nbr_rot_pred.rrb;
-		temp_cmd->rr += nbr_rot_pred.rr;
-		temp_cmd->rrr += nbr_rot_pred.rrr;
 		return (0);
 	}
 	if (is_next_nbr_bigger(cur_stack, cur_b->prev, limits->min_b, limits->max_b)
@@ -120,17 +121,16 @@ int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_
 	{
 		if (!has_rb)
 		{
-			if(nbr_rot_pred.ra > 0)
+			if(nbr_rot_pred.rb > 0)
 			{
 				nbr_rot_pred.rra--;
 				nbr_rot_pred.rr++;
 			}
-			else if (is_next_nbr_bigger(cur_stack, temp->forw_b->prev, limits->min_b, limits->max_b)
-			&& is_prev_nbr_smaller(cur_stack, temp->forw_b, limits->min_b, limits->max_b))
-			{
-				has_rb++;
+			else
 				add_rbs(first_nbr, temp->forw_b, &nbr_rot_pred);
-			}
+			if (is_next_nbr_bigger(cur_stack, temp->forw_b->prev, limits->min_b, limits->max_b)
+			&& is_prev_nbr_smaller(cur_stack, temp->forw_b, limits->min_b, limits->max_b))
+				has_rb++;
 		}
 		if (!has_rrb)
 		{
@@ -139,16 +139,24 @@ int	add_ramp_rot_moves(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_
 				nbr_rot_pred.rra--;
 				nbr_rot_pred.rrr++;
 			}
-			else if (is_next_nbr_bigger(cur_stack, temp->rev_b, limits->min_b, limits->max_b)
-		 && is_prev_nbr_smaller(cur_stack, temp->rev_b->next, limits->min_b, limits->max_b))
-			{
-				has_rrb++;
+			else
 				add_rrbs(first_nbr, temp->rev_b, &nbr_rot_pred);
+			if (temp->rev_b->next)
+			{
+				if (is_next_nbr_bigger(cur_stack, temp->rev_b, limits->min_b, limits->max_b)
+			 && is_prev_nbr_smaller(cur_stack, temp->rev_b->next, limits->min_b, limits->max_b))
+					has_rrb++;
+			}
+			else
+			{
+				if (is_next_nbr_bigger(cur_stack, temp->rev_b, limits->min_b, limits->max_b)
+			 && is_prev_nbr_smaller(cur_stack, b, limits->min_b, limits->max_b))
+					has_rrb++;
 			}
 		}
 		if (!has_rb)
 		{
-			if (temp->forw_b)
+			if (temp->forw_b->next)
 				temp->forw_b = temp->forw_b->next;
 			else
 				temp->forw_b = b;
@@ -194,6 +202,7 @@ void update_predict_limits(t_stack *first_nbr, t_stack *cur_a, t_stack *cur_b, t
 }
 
 // perceber porque 4 não está a ser apanhado no has_rb
+// also perceber porque merge_ramp 5 vez depois do nove o 5 está a ficar com tantos rras ao passar aqui pelo o predict
 
 int	predict_rotate_b_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_stack *b, t_cmds *temp_cmd, t_all *temp)
 {
@@ -208,7 +217,7 @@ int	predict_rotate_b_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_
 	{
 		temp_cmd->pb++;
 		if (b)
-			add_ramp_rot_moves(temp_cmd, a, b, first_nbr, cur_a, cur_b, temp, &pred_limits);
+			rot_moves_curnbr(temp_cmd, a, b, first_nbr, cur_a, cur_b, temp, &pred_limits);
 		if (!cur_a->next)
 			cur_a = a;
 		else
@@ -216,8 +225,9 @@ int	predict_rotate_b_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_
 	}
 	while (!is_next_nbr_bigger(cur_a, last_nbr, pred_limits.min_a, pred_limits.max_a))
 	{
+		temp_cmd->pb++;
 		if (b)
-			add_ramp_rot_moves(temp_cmd, a, b, first_nbr, cur_a, cur_b, temp, &pred_limits);
+			rot_moves_curnbr(temp_cmd, a, b, first_nbr, cur_a, cur_b, temp, &pred_limits);
 		if (!cur_a->next)
 			cur_a = a;
 		else
