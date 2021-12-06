@@ -6,11 +6,13 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 16:56:33 by gleal             #+#    #+#             */
-/*   Updated: 2021/11/21 23:08:49 by gleal            ###   ########.fr       */
+/*   Updated: 2021/12/06 22:16:27 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "sort_operations.h"
+
+/* Não percebo 18-22 */
 
 void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 {
@@ -28,8 +30,7 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 	while (first_nbr->pos != last_nbr->pos)
 	{
 		last_nbr = firstinramp;
-		predict_rotate_b_moves(first_nbr, last_nbr, a, b, &temp_cmd, temp);
-		temp_cmd.total = count_moves(&temp_cmd);
+		predict_merge_moves(first_nbr, last_nbr, a, b, &temp_cmd, temp);
 		if (temp_cmd.total < off_cmd.total || !off_cmd.total)
 		{
 			if (!first_nbr->next)
@@ -49,10 +50,6 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 	off_cmd.pb = 0;
 	off_cmd.rb = 0;
 	off_cmd.rrb = 0;
-	off_cmd.ra+=off_cmd.rr;
-	off_cmd.rra+=off_cmd.rrr;
-	off_cmd.rr = 0;
-	off_cmd.rrr = 0;
 	temp->cmds = off_cmd;
 	place_in_b(b, temp, off_nbr);
 }

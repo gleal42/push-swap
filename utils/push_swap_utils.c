@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/11/21 23:51:23 by gleal            ###   ########.fr       */
+/*   Updated: 2021/12/06 22:10:54 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,41 +42,22 @@ void	add_rrbs(t_stack *first_nbr, t_stack *forw_b, t_cmds *nbr_rot_pred)
 	//add something to check if current position was already used in previous pushes
 }
 
-void update_position_and_total(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds, t_stack *cur_stack, t_stack **cur_b, t_limits *limits)
-{
-	int fwd_total;
-	int rev_total;
+/* Add compare rbs and rrbs and don't forget to take r and rrs 
+into consideration*/
 
-	rev_total = 0;
-	fwd_total = 0;
-	if (has_rb)
-		fwd_total = cmds->ra + cmds->rr + cmds->rra + cmds->rrr + cmds->rb + cmds->pb;
-	if (has_rrb)
-		rev_total = cmds->ra + cmds->rr + cmds->rra + cmds->rrr + cmds->rrb + cmds->pb;
-	if ((fwd_total <= rev_total && has_rb)|| !has_rrb)
+void add_new_rotatesb(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds, t_stack *cur_stack, t_stack **cur_b, t_limits *limits)
+{
+	if ((cmds->rb <= cmds->rrb && has_rb)|| !has_rrb)
 	{
 		cmds->rrb = 0;
 		cmds->rra += cmds->rrr;
 		cmds->rrr = 0;
-		cmds->total = fwd_total;
-		while (b->next && !(is_next_nbr_bigger(cur_stack, (*cur_b)->prev, limits->min_b, limits->max_b)
-			&& is_prev_nbr_smaller(cur_stack, *cur_b, limits->min_b, limits->max_b)))
-		{
-			if ((*cur_b)->next)
-				*cur_b = (*cur_b)->next;
-			else
-				*cur_b = b;
-		}
 	}
-	else if ((fwd_total > rev_total && has_rrb) || !has_rb)
+	else if ((cmds->rb > cmds->rrb && has_rrb) || !has_rb)
 	{
 		cmds->rb = 0;
 		cmds->ra += cmds->rr;
 		cmds->rr = 0;
-		cmds->total = rev_total;
-		while (b->next && !(is_next_nbr_bigger(cur_stack, (*cur_b)->prev, limits->min_b, limits->max_b)
-			&& is_prev_nbr_smaller(cur_stack, *cur_b, limits->min_b, limits->max_b)))
-			*cur_b = (*cur_b)->prev;
 	}
 }
 
@@ -85,62 +66,41 @@ b merge ramp spot antes de mais
 aqui tem demasiadas coisas. Aqui para é só para prever rbs e rrbs 
 (ver se dá paara delete a parte dos ra e rra*/
 
-int	rot_moves_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_nbr, t_stack *cur_stack, t_stack *cur_b, t_all *temp, t_limits *limits)
+int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_nbr, t_stack *cur_stack, t_stack *cur_b, t_all *temp, t_limits *limits)
 {
 	t_cmds	nbr_rot_pred;
 	int has_rb;
 	int has_rrb;
-	int rev_total;
 
-	nbr_rot_pred = *temp_cmd;
-	nbr_rot_pred.rb = 0;
-	nbr_rot_pred.rrb = 0;
-	nbr_rot_pred.rr = 0;
-	nbr_rot_pred.rrr = 0;
-	rev_total = 0;
+	init_cmd_list(&nbr_rot_pred);
 	has_rb = 0;
 	has_rrb = 0;
-	(void)a;
 	if (!cur_b->next)
 	{
-		has_rb++;
-		update_position_and_total(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, limits);
+		if (cur_stack->pos == first_nbr 
+			&& temp_cmd 
+			&& is_prev_nbr_smaller(cur_stack, cur_b, limits->min_b, limits->max_b))
+			nbr_rot_pred.rb++;
+		add_new_rotatesb(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, limits);
 		return (0);
 	}
 	if (is_next_nbr_bigger(cur_stack, cur_b->prev, limits->min_b, limits->max_b)
 			&& is_prev_nbr_smaller(cur_stack, cur_b, limits->min_b, limits->max_b))
-	{
-		if (nbr_rot_pred.ra || (!nbr_rot_pred.ra && !nbr_rot_pred.rra))
-			has_rb++;
-		else if (nbr_rot_pred.rra)
-			has_rrb++;
-	}
+		return (0);
 	temp->forw_b = cur_b->next;
 	temp->rev_b = cur_b->prev->prev;
-	while (!has_rb || !has_rrb)
+	while (!has_rb && !has_rrb)
 	{
 		if (!has_rb)
 		{
-			if(nbr_rot_pred.rb > 0)
-			{
-				nbr_rot_pred.rra--;
-				nbr_rot_pred.rr++;
-			}
-			else
-				add_rbs(first_nbr, temp->forw_b, &nbr_rot_pred);
+			add_rbs(first_nbr, temp->forw_b, &nbr_rot_pred);
 			if (is_next_nbr_bigger(cur_stack, temp->forw_b->prev, limits->min_b, limits->max_b)
 			&& is_prev_nbr_smaller(cur_stack, temp->forw_b, limits->min_b, limits->max_b))
 				has_rb++;
 		}
 		if (!has_rrb)
 		{
-			if(nbr_rot_pred.rra > 0)
-			{
-				nbr_rot_pred.rra--;
-				nbr_rot_pred.rrr++;
-			}
-			else
-				add_rrbs(first_nbr, temp->rev_b, &nbr_rot_pred);
+			add_rrbs(first_nbr, temp->rev_b, &nbr_rot_pred);
 			if (temp->rev_b->next)
 			{
 				if (is_next_nbr_bigger(cur_stack, temp->rev_b, limits->min_b, limits->max_b)
@@ -164,11 +124,9 @@ int	rot_moves_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_nb
 		if (!has_rrb)
 			temp->rev_b = (temp->rev_b)->prev;
 	}
-	update_position_and_total(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, limits);
+	add_new_rotatesb(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, limits);
 	temp_cmd->rb += nbr_rot_pred.rb;
 	temp_cmd->rrb += nbr_rot_pred.rrb;
-	temp_cmd->rr += nbr_rot_pred.rr;
-	temp_cmd->rrr += nbr_rot_pred.rrr;
 	return (0);
 }
 
@@ -204,7 +162,7 @@ void update_predict_limits(t_stack *first_nbr, t_stack *cur_a, t_stack *cur_b, t
 // perceber porque 4 não está a ser apanhado no has_rb
 // also perceber porque merge_ramp 5 vez depois do nove o 5 está a ficar com tantos rras ao passar aqui pelo o predict
 
-int	predict_rotate_b_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_stack *b, t_cmds *temp_cmd, t_all *temp)
+int	predict_merge_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_stack *b, t_cmds *temp_cmd, t_all *temp)
 {
 	t_stack	*cur_a;
 	t_stack	*cur_b;
@@ -217,7 +175,7 @@ int	predict_rotate_b_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_
 	{
 		temp_cmd->pb++;
 		if (b)
-			rot_moves_curnbr(temp_cmd, a, b, first_nbr, cur_a, cur_b, temp, &pred_limits);
+			predict_rotationsb_curnbr(temp_cmd, a, b, first_nbr, cur_a, cur_b, temp, &pred_limits);
 		if (!cur_a->next)
 			cur_a = a;
 		else
@@ -227,12 +185,13 @@ int	predict_rotate_b_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_
 	{
 		temp_cmd->pb++;
 		if (b)
-			rot_moves_curnbr(temp_cmd, a, b, first_nbr, cur_a, cur_b, temp, &pred_limits);
+			predict_rotationsb_curnbr(temp_cmd, a, b, first_nbr, cur_a, cur_b, temp, &pred_limits);
 		if (!cur_a->next)
 			cur_a = a;
 		else
 			cur_a = cur_a->next;
 	}
+	temp_cmd->total = count_moves(&temp_cmd);
 	return (0);
 }
 
