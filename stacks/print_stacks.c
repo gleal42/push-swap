@@ -36,7 +36,6 @@ void print_both_stacks(t_stack *a, t_stack *b, int max_len)
 {
 	int i;
 	int prt;
-
 	print_char("_", 0, max_len);
 	print_char("_", 1, max_len);
 	printf("__");

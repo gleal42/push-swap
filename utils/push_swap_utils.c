@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/12/06 22:10:54 by gleal            ###   ########.fr       */
+/*   Updated: 2021/12/13 22:17:22 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,10 @@ into consideration*/
 
 void add_new_rotatesb(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds, t_stack *cur_stack, t_stack **cur_b, t_limits *limits)
 {
+	(void)b;
+	(void)cur_stack;
+	(void)cur_b;
+	(void)limits;
 	if ((cmds->rb <= cmds->rrb && has_rb)|| !has_rrb)
 	{
 		cmds->rrb = 0;
@@ -61,10 +65,9 @@ void add_new_rotatesb(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds, t_stack
 	}
 }
 
-/* cur stack 4 não está a funcionar.
-b merge ramp spot antes de mais
-aqui tem demasiadas coisas. Aqui para é só para prever rbs e rrbs 
-(ver se dá paara delete a parte dos ra e rra*/
+/* We need:
+* To create something
+*/
 
 int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_nbr, t_stack *cur_stack, t_stack *cur_b, t_all *temp, t_limits *limits)
 {
@@ -72,12 +75,13 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack 
 	int has_rb;
 	int has_rrb;
 
+	(void)a;
 	init_cmd_list(&nbr_rot_pred);
 	has_rb = 0;
 	has_rrb = 0;
 	if (!cur_b->next)
 	{
-		if (cur_stack->pos == first_nbr 
+		if (cur_stack->pos == first_nbr->pos 
 			&& temp_cmd 
 			&& is_prev_nbr_smaller(cur_stack, cur_b, limits->min_b, limits->max_b))
 			nbr_rot_pred.rb++;
@@ -191,7 +195,7 @@ int	predict_merge_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_sta
 		else
 			cur_a = cur_a->next;
 	}
-	temp_cmd->total = count_moves(&temp_cmd);
+	temp_cmd->total = count_moves(temp_cmd);
 	return (0);
 }
 
