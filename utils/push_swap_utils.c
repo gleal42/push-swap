@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/12/13 22:17:22 by gleal            ###   ########.fr       */
+/*   Updated: 2021/12/15 22:36:02 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,16 @@ void	add_rrbs(t_stack *first_nbr, t_stack *forw_b, t_cmds *nbr_rot_pred)
 	//add something to check if current position was already used in previous pushes
 }
 
+/* Have to check if this is actually working (updating cur_b for every prediction) */
+
+void	update_cur_b(t_cmds *cmds, t_stack **cur_b_head, t_stack *fwd_b, t_stack *bwd_b)
+{
+	if (cmds->rb <= cmds->rrb)
+		*cur_b_head = fwd_b;
+	else
+		*cur_b_head = bwd_b;
+}
+
 /* Add compare rbs and rrbs and don't forget to take r and rrs 
 into consideration*/
 
@@ -66,7 +76,8 @@ void add_new_rotatesb(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds, t_stack
 }
 
 /* We need:
-* To create something
+* To have something to update the current b (because when we rotate the head changes)
+* To keep track of the numbers we have already pushed (in case we need to go backwards)
 */
 
 int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_nbr, t_stack *cur_stack, t_stack *cur_b, t_all *temp, t_limits *limits)
@@ -91,7 +102,10 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack 
 	if (is_next_nbr_bigger(cur_stack, cur_b->prev, limits->min_b, limits->max_b)
 			&& is_prev_nbr_smaller(cur_stack, cur_b, limits->min_b, limits->max_b))
 		return (0);
-	temp->forw_b = cur_b->next;
+	if (!cur_b->next)
+		temp->forw_b = b;
+	else
+		temp->forw_b = cur_b->next;
 	temp->rev_b = cur_b->prev->prev;
 	while (!has_rb && !has_rrb)
 	{
@@ -128,6 +142,7 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack 
 		if (!has_rrb)
 			temp->rev_b = (temp->rev_b)->prev;
 	}
+	update_cur_b(&nbr_rot_pred, &cur_b, temp->forw_b, temp->rev_b);
 	add_new_rotatesb(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, limits);
 	temp_cmd->rb += nbr_rot_pred.rb;
 	temp_cmd->rrb += nbr_rot_pred.rrb;
