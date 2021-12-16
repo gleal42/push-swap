@@ -6,40 +6,52 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/12/15 22:36:02 by gleal            ###   ########.fr       */
+/*   Updated: 2021/12/16 22:08:40 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "push_swap_utils.h"
 
-//similar to place in b but we also predict those that were previously pushed
 /*
-*	okay aqui tu ves os numeros que já foram atraves do first nbr e daquele em que estamos
-*	atenção que aqui é só para acrescentar os rbs que estao entre dois numeros caso existam
-*	ou seja é só umna mini operação
+* Consider the numbers that were already pushed in case the next number
+* Check if it is considering the right numbers
 */
 
-void	add_rbs(t_stack *first_nbr, t_stack *rev_b, t_cmds *nbr_rot_pred)
+void	add_rbs(t_stack *a, t_stack *first_nbr, t_stack *cur_stack, t_stack *forw_b, t_cmds *nbr_rot_pred, t_limits *limits)
 {
-	(void) first_nbr;
-	(void) rev_b;
-	nbr_rot_pred->rb++;
-	return ;
-	// (void)update_predict_limits(first_nbr, cur_a, cur_b, a, b, pred_limits);
-	//add something to check if current position was already used in previous pushes
+	t_stack *sent_stack;
+
+	sent_stack = first_nbr;
+	while (sent_stack->pos != cur_stack->pos)
+	{
+		if (is_prev_nbr_smaller(sent_stack, forw_b, limits->min_b, limits->max_b) &&
+			is_next_nbr_bigger(sent_stack, forw_b->next, limits->min_b, limits->max_b) )
+			nbr_rot_pred->rb++;
+		if(!sent_stack->next)
+			sent_stack = a;
+		else
+			sent_stack = sent_stack->next;
+	}
 }
+/* este foi copiado de cima, ver se faz sentido ou que modificações é preciso fazer.
+* utilizar os prev era top
+ */
 
-void	add_rrbs(t_stack *first_nbr, t_stack *forw_b, t_cmds *nbr_rot_pred)
+void	add_rrbs(t_stack *a, t_stack *first_nbr, t_stack *cur_stack, t_stack *rev_b, t_cmds *nbr_rot_pred, t_limits *limits)
 {
-	t_stack *temp;
+	t_stack *sent_stack;
 
-	(void) first_nbr;
-	(void) forw_b;
-	temp = forw_b;
-	nbr_rot_pred->rrb++;
-	return ;
-	// update_predict_limits(first_nbr, cur_a, cur_b, a, b, pred_limits);
-	//add something to check if current position was already used in previous pushes
+	sent_stack = first_nbr;
+	while (sent_stack->pos != cur_stack->pos)
+	{
+		if (is_prev_nbr_smaller(sent_stack, rev_b, limits->min_b, limits->max_b) &&
+			is_next_nbr_bigger(sent_stack, rev_b->next, limits->min_b, limits->max_b) )
+			nbr_rot_pred->rrb++;
+		if(!sent_stack->next)
+			sent_stack = a;
+		else
+			sent_stack = sent_stack->next;
+	}
 }
 
 /* Have to check if this is actually working (updating cur_b for every prediction) */
@@ -111,14 +123,14 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack 
 	{
 		if (!has_rb)
 		{
-			add_rbs(first_nbr, temp->forw_b, &nbr_rot_pred);
+			add_rbs(a, first_nbr, cur_stack, temp->forw_b, &nbr_rot_pred, limits);
 			if (is_next_nbr_bigger(cur_stack, temp->forw_b->prev, limits->min_b, limits->max_b)
 			&& is_prev_nbr_smaller(cur_stack, temp->forw_b, limits->min_b, limits->max_b))
 				has_rb++;
 		}
 		if (!has_rrb)
 		{
-			add_rrbs(first_nbr, temp->rev_b, &nbr_rot_pred);
+			add_rrbs(a, first_nbr, cur_stack, temp->rev_b, &nbr_rot_pred, limits);
 			if (temp->rev_b->next)
 			{
 				if (is_next_nbr_bigger(cur_stack, temp->rev_b, limits->min_b, limits->max_b)
@@ -178,8 +190,10 @@ void update_predict_limits(t_stack *first_nbr, t_stack *cur_a, t_stack *cur_b, t
 	}
 }
 
-// perceber porque 4 não está a ser apanhado no has_rb
-// also perceber porque merge_ramp 5 vez depois do nove o 5 está a ficar com tantos rras ao passar aqui pelo o predict
+/* 
+considerar fazer apenas predict_rotationsb caso tenha mais que 100 algarismos
+(porque com 100 está melhor sem isso) 
+*/
 
 int	predict_merge_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_stack *b, t_cmds *temp_cmd, t_all *temp)
 {
