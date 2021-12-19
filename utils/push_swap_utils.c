@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/12/16 22:08:40 by gleal            ###   ########.fr       */
+/*   Updated: 2021/12/18 15:45:25 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,8 @@ void update_predict_limits(t_stack *first_nbr, t_stack *cur_a, t_stack *cur_b, t
 
 /* 
 considerar fazer apenas predict_rotationsb caso tenha mais que 100 algarismos
-(porque com 100 está melhor sem isso) 
+(porque com 100 está melhor sem isso acho eu)
+first prediction pode ser com aquele predictmoves 
 */
 
 int	predict_merge_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_stack *b, t_cmds *temp_cmd, t_all *temp)

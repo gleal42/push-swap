@@ -6,46 +6,42 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 16:56:33 by gleal             #+#    #+#             */
-/*   Updated: 2021/12/06 22:16:27 by gleal            ###   ########.fr       */
+/*   Updated: 2021/12/19 22:23:55y gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "sort_operations.h"
 
-/* Não percebo 18-22 */
+/* Não percebo 18-22
+
+*/
 
 void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 {
 	t_cmds temp_cmd;
 	t_cmds off_cmd;
 	t_stack	*first_nbr;
-	t_stack	*last_nbr;
 	t_stack	*off_nbr;
 
-	first_nbr = firstinramp->prev;
-	last_nbr = firstinramp;
+	first_nbr = firstinramp;
 	temp_cmd = temp->cmds;
 	off_nbr = firstinramp;
 	init_cmd_list(&off_cmd);
-	while (first_nbr->pos != last_nbr->pos)
+	while (1)
 	{
-		last_nbr = firstinramp;
-		predict_merge_moves(first_nbr, last_nbr, a, b, &temp_cmd, temp);
+		predict_merge_moves(first_nbr, firstinramp, a, b, &temp_cmd, temp);
 		if (temp_cmd.total < off_cmd.total || !off_cmd.total)
 		{
-			if (!first_nbr->next)
-				off_nbr = a;
-			else
-				off_nbr = first_nbr->next;
+			off_nbr = first_nbr;
 			off_cmd = temp_cmd;
 		}
-		if (!continue_ramp_analysis(a, first_nbr, temp))
-			break ;
 		if (temp_cmd.ra)
 			temp_cmd.ra--;
 		else if (temp_cmd.rra || !temp_cmd.ra)
 			temp_cmd.rra++;
 		first_nbr = first_nbr->prev;
+		if (first_nbr->pos == firstinramp->pos || !continue_ramp_analysis(a, first_nbr, temp))
+			break ;
 	}
 	off_cmd.pb = 0;
 	off_cmd.rb = 0;
