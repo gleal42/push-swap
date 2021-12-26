@@ -6,11 +6,34 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2021/12/18 15:45:25 by gleal            ###   ########.fr       */
+/*   Updated: 2021/12/26 22:08:31 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "push_swap_utils.h"
+
+/*  
+* See which is best metric for every size of ramp
+*/
+
+int		is_better_ramp(t_cmds temp_cmd, t_cmds off_cmd)
+{
+	float temp_rotates_per_push;
+	float off_rotates_per_push;
+	
+	if (!off_cmd.total)
+		return (1);
+	temp_rotates_per_push = temp_cmd.total/temp_cmd.pb;
+	off_rotates_per_push = off_cmd.total/off_cmd.pb;
+	// temp_rotates_per_push = (temp_cmd.rb + temp_cmd.rrb)/temp_cmd.pb;
+	// off_ratio = (off_cmd.rb + off_cmd.rrb)/off_cmd.pb;
+	// if (temp_ratio < off_ratio)
+	// if (temp_cmd.total < off_cmd.total && temp_rotates_per_push < off_rotates_per_push)
+	if (temp_cmd.total < off_cmd.total)
+		return (1);
+	else
+		return (0);
+}
 
 /*
 * Consider the numbers that were already pushed in case the next number
@@ -58,6 +81,27 @@ void	add_rrbs(t_stack *a, t_stack *first_nbr, t_stack *cur_stack, t_stack *rev_b
 
 void	update_cur_b(t_cmds *cmds, t_stack **cur_b_head, t_stack *fwd_b, t_stack *bwd_b)
 {
+	int fwd_total;
+	int rev_total;
+
+	rev_total = 0;
+	fwd_total = 0;
+	fwd_total = cmds->ra + cmds->rr + cmds->rb;
+	rev_total = cmds->rra + cmds->rrr + cmds->rrb;
+	if ((fwd_total && fwd_total <= rev_total) || !rev_total)
+	{
+		cmds->rrb = 0;
+		cmds->rra += cmds->rrr;
+		cmds->rrr = 0;
+		cmds->total = fwd_total;
+	}
+	else if ((rev_total && fwd_total > rev_total) || !fwd_total)
+	{
+		cmds->rb = 0;
+		cmds->ra += cmds->rr;
+		cmds->rr = 0;
+		cmds->total = rev_total;
+	}
 	if (cmds->rb <= cmds->rrb)
 		*cur_b_head = fwd_b;
 	else
@@ -73,7 +117,7 @@ void add_new_rotatesb(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds, t_stack
 	(void)cur_stack;
 	(void)cur_b;
 	(void)limits;
-	if ((cmds->rb <= cmds->rrb && has_rb)|| !has_rrb)
+	if ((cmds->rb <= cmds->rrb && has_rb) || !has_rrb)
 	{
 		cmds->rrb = 0;
 		cmds->rra += cmds->rrr;
@@ -92,7 +136,7 @@ void add_new_rotatesb(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds, t_stack
 * To keep track of the numbers we have already pushed (in case we need to go backwards)
 */
 
-int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_nbr, t_stack *cur_stack, t_stack *cur_b, t_all *temp, t_limits *limits)
+int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack *first_nbr, t_stack *cur_stack, t_stack **cur_b, t_all *temp, t_limits *limits)
 {
 	t_cmds	nbr_rot_pred;
 	int has_rb;
@@ -102,7 +146,9 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack 
 	init_cmd_list(&nbr_rot_pred);
 	has_rb = 0;
 	has_rrb = 0;
-	if (!cur_b->next)
+	if (!b || !b->next)
+		return (0);
+/* 	if (!b->next)
 	{
 		if (cur_stack->pos == first_nbr->pos 
 			&& temp_cmd 
@@ -110,15 +156,15 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack 
 			nbr_rot_pred.rb++;
 		add_new_rotatesb(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, limits);
 		return (0);
-	}
-	if (is_next_nbr_bigger(cur_stack, cur_b->prev, limits->min_b, limits->max_b)
-			&& is_prev_nbr_smaller(cur_stack, cur_b, limits->min_b, limits->max_b))
+	} */
+	if (is_next_nbr_bigger(cur_stack, (*cur_b)->prev, limits->min_b, limits->max_b)
+			&& is_prev_nbr_smaller(cur_stack, (*cur_b), limits->min_b, limits->max_b))
 		return (0);
-	if (!cur_b->next)
+	if (!(*cur_b)->next)
 		temp->forw_b = b;
 	else
-		temp->forw_b = cur_b->next;
-	temp->rev_b = cur_b->prev->prev;
+		temp->forw_b = (*cur_b)->next;
+	temp->rev_b = (*cur_b)->prev->prev;
 	while (!has_rb && !has_rrb)
 	{
 		if (!has_rb)
@@ -154,11 +200,71 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a, t_stack *b, t_stack 
 		if (!has_rrb)
 			temp->rev_b = (temp->rev_b)->prev;
 	}
-	update_cur_b(&nbr_rot_pred, &cur_b, temp->forw_b, temp->rev_b);
-	add_new_rotatesb(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, limits);
+	update_cur_b(&nbr_rot_pred, cur_b, temp->forw_b, temp->rev_b);
+	add_new_rotatesb(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, cur_b, limits);
 	temp_cmd->rb += nbr_rot_pred.rb;
 	temp_cmd->rrb += nbr_rot_pred.rrb;
 	return (0);
+}
+
+void	predict_place_in_b(t_cmds *cmds, t_stack *b, t_stack *tobemoved, t_stack **cur_b,t_all *temp)
+{
+	int has_rb;
+	int has_rrb;
+
+	has_rb = 0;
+	has_rrb = 0;
+	cmds->total = count_moves(cmds);
+	if (!b)
+		return ;
+	if (!b->next)
+	{
+		has_rb++;
+		predict_initial_pushmoves(has_rb, has_rrb, cmds);
+			return ;
+	}
+	if (is_next_nbr_bigger(tobemoved, b->prev, temp->lims.min_b, temp->lims.max_b)
+			&& is_prev_nbr_smaller(tobemoved, b, temp->lims.min_b, temp->lims.max_b))
+	{
+		if (cmds->ra || (!cmds->ra && !cmds->rra))
+			has_rb++;
+		else if (cmds->rra)
+			has_rrb++;
+	}
+	temp->forw_b = b->next;
+	temp->rev_b = b->prev->prev;
+	while (!has_rb && !has_rrb)
+	{
+		if(cmds->ra > 0)
+		{
+			cmds->ra--;
+			cmds->rr++;
+		}
+		else
+			cmds->rb++;
+		if(cmds->rra > 0)
+		{
+			cmds->rra--;
+			cmds->rrr++;
+		}
+		else
+			cmds->rrb++;
+	if (is_next_nbr_bigger(tobemoved, temp->forw_b->prev, temp->lims.min_b, temp->lims.max_b)
+			&& is_prev_nbr_smaller(tobemoved, temp->forw_b, temp->lims.min_b, temp->lims.max_b))
+			has_rb++;
+		if (is_next_nbr_bigger(tobemoved, temp->rev_b, temp->lims.min_b, temp->lims.max_b)
+		 && is_prev_nbr_smaller(tobemoved, temp->rev_b->next, temp->lims.min_b, temp->lims.max_b))
+			has_rrb++;
+		if (!temp->forw_b->next)
+			temp->forw_b = b;
+		else
+			temp->forw_b = (temp->forw_b)->next;
+		temp->rev_b = (temp->rev_b)->prev;
+	}
+	predict_initial_pushmoves(has_rb, has_rrb, cmds);
+	update_cur_b(cmds, cur_b, temp->forw_b, temp->rev_b);
+	cmds->total = count_moves(cmds);
+
 }
 
 void update_predict_limits(t_stack *first_nbr, t_stack *cur_a, t_stack *cur_b, t_stack *a, t_stack *b, t_all *pred_limits)
@@ -196,7 +302,7 @@ considerar fazer apenas predict_rotationsb caso tenha mais que 100 algarismos
 first prediction pode ser com aquele predictmoves 
 */
 
-int	predict_merge_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_stack *b, t_cmds *temp_cmd, t_all *temp)
+int	predict_merge_moves(t_stack *first_nbr, t_stack *firstinramp, t_stack *a, t_stack *b, t_cmds *temp_cmd, t_all *temp)
 {
 	t_stack	*cur_a;
 	t_stack	*cur_b;
@@ -205,21 +311,26 @@ int	predict_merge_moves(t_stack *first_nbr, t_stack *last_nbr, t_stack *a, t_sta
 	cur_a = first_nbr;
 	cur_b = b;
 	pred_limits=temp->lims;
-	while (cur_a->pos != last_nbr->pos)
+	while (cur_a->pos != firstinramp->pos)
 	{
 		temp_cmd->pb++;
-		if (b)
-			predict_rotationsb_curnbr(temp_cmd, a, b, first_nbr, cur_a, cur_b, temp, &pred_limits);
+		if (cur_a->pos == first_nbr->pos)
+			predict_place_in_b(temp_cmd, b, cur_a, &cur_b, temp);
+		else	
+			predict_rotationsb_curnbr(temp_cmd, a, b, first_nbr, cur_a, &cur_b, temp, &pred_limits);
 		if (!cur_a->next)
 			cur_a = a;
 		else
 			cur_a = cur_a->next;
 	}
-	while (!is_next_nbr_bigger(cur_a, last_nbr, pred_limits.min_a, pred_limits.max_a))
+	// maybe cur_a->next is not the best here (for the cases where there is no next)
+	while (!is_next_nbr_bigger(first_nbr->prev, cur_a, pred_limits.min_a, pred_limits.max_a))
 	{
 		temp_cmd->pb++;
-		if (b)
-			predict_rotationsb_curnbr(temp_cmd, a, b, first_nbr, cur_a, cur_b, temp, &pred_limits);
+		if (cur_a->pos == first_nbr->pos)
+			predict_place_in_b(temp_cmd, b, cur_a, &cur_b, temp);
+		else	
+			predict_rotationsb_curnbr(temp_cmd, a, b, first_nbr, cur_a, &cur_b, temp, &pred_limits);
 		if (!cur_a->next)
 			cur_a = a;
 		else
@@ -415,6 +526,22 @@ void	init_cmd_list(t_cmds *cmds)
 	cmds->type = 0;
 }
 
+void	init_cmd_list_exc_total(t_cmds *cmds)
+{
+	cmds->sa = 0;
+	cmds->sb = 0;
+	cmds->ss = 0;
+	cmds->ra = 0;
+	cmds->rb = 0;
+	cmds->rr = 0;
+	cmds->pa = 0;
+	cmds->pb = 0;
+	cmds->rra = 0;
+	cmds->rrr = 0;
+	cmds->rrb = 0;
+	cmds->type = 0;
+}
+
 int	is_input_integer(char **stack_a_args)
 {
 	int i;
@@ -453,6 +580,22 @@ int	biggest_str_len(char **strs)
 		i++;
 	}
 	return (len);
+}
+
+void predict_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds)
+{
+	if ((cmds->rb && cmds->rb <= cmds->rrb) || !has_rrb)
+	{
+		cmds->rrb = 0;
+		cmds->rra += cmds->rrr;
+		cmds->rrr = 0;
+	}
+	else if ((cmds->rrb && cmds->rb > cmds->rrb) || !has_rb)
+	{
+		cmds->rb = 0;
+		cmds->ra += cmds->rr;
+		cmds->rr = 0;
+	}
 }
 
 void calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds)

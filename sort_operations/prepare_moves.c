@@ -12,41 +12,50 @@
 
 # include "sort_operations.h"
 
-/* Não percebo 18-22
-
+/* 
+	existe um commit anterior em que merge ramp spot estava diferente (ver nome dos commits e ver se vale a pena voltar)
+	Adicionar o predict_a só para o primeiro numero (para ter conta os ra e rra substituirem por rr e rrr)
+	Mandou mal o maior número (pôs num sitio aleatório)
 */
 
 void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 {
-	t_cmds temp_cmd;
-	t_cmds off_cmd;
+	t_cmds init_cmds;
+	t_cmds best_cmds;
+	t_cmds off_cmds;
 	t_stack	*first_nbr;
 	t_stack	*off_nbr;
 
 	first_nbr = firstinramp;
-	temp_cmd = temp->cmds;
+	init_cmds = temp->cmds;
+	off_cmds = init_cmds;
 	off_nbr = firstinramp;
-	init_cmd_list(&off_cmd);
+	init_cmd_list(&best_cmds);
 	while (1)
 	{
-		predict_merge_moves(first_nbr, firstinramp, a, b, &temp_cmd, temp);
-		if (temp_cmd.total < off_cmd.total || !off_cmd.total)
+		predict_merge_moves(first_nbr, firstinramp, a, b, &init_cmds, temp);
+		if (is_better_ramp(init_cmds, best_cmds))
 		{
+			best_cmds = init_cmds;
+			if (off_cmds.ra)
+				best_cmds.ra = off_cmds.ra;
+			else if (off_cmds.rra)
+				best_cmds.rra = off_cmds.rra;
 			off_nbr = first_nbr;
-			off_cmd = temp_cmd;
 		}
-		if (temp_cmd.ra)
-			temp_cmd.ra--;
-		else if (temp_cmd.rra || !temp_cmd.ra)
-			temp_cmd.rra++;
-		first_nbr = first_nbr->prev;
-		if (first_nbr->pos == firstinramp->pos || !continue_ramp_analysis(a, first_nbr, temp))
+		if (off_cmds.ra)
+			off_cmds.ra--;
+		else if (off_cmds.rra || !off_cmds.ra)
+			off_cmds.rra++;
+		init_cmds=off_cmds; 
+		if ((first_nbr->prev)->pos == firstinramp->pos ||
+			(!continue_ramp_analysis(a, first_nbr, temp)))
 			break ;
+		first_nbr = first_nbr->prev;
 	}
-	off_cmd.pb = 0;
-	off_cmd.rb = 0;
-	off_cmd.rrb = 0;
-	temp->cmds = off_cmd;
+	off_cmds.ra = best_cmds.ra;
+	off_cmds.rra = best_cmds.rra;
+	temp->cmds = off_cmds;
 	place_in_b(b, temp, off_nbr);
 }
 
