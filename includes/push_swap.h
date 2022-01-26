@@ -1,7 +1,6 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-# include "libft.h"
 
 typedef struct s_stack
 {
@@ -69,8 +68,10 @@ enum	e_moves
 	PUSH_BACK
 };
 
+# include "libft.h"
 # include "stacks.h"
-# include "push_swap_utils.h"
-# include "sort_operations.h"
+# include "operations.h"
+# include "utils.h"
+# include "sort.h"
 
 #endif

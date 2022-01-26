@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_operations1.c                                 :+:      :+:    :+:   */
+/*   operations_push_swap.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/04 15:54:25 by gleal             #+#    #+#             */
-/*   Updated: 2021/09/12 15:25:26 by gleal            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:39:39 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "sort_operations.h"
+# include "operations.h"
 
 int		op_sa(t_stack **a, t_stack **b, int max_len)
 {

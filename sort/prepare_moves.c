@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "sort_operations.h"
+# include "sort.h"
 
 /* 
 	existe um commit anterior em que merge ramp spot estava diferente (ver nome dos commits e ver se vale a pena voltar)
@@ -57,81 +57,6 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 	off_cmds.rra = best_cmds.rra;
 	temp->cmds = off_cmds;
 	place_in_b(b, temp, off_nbr);
-}
-
-
-/* void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
-{
-	t_cmds temp_cmd;
-	t_cmds off_cmd;
-	t_stack	*first_nbr;
-	t_stack	*last_nbr;
-	t_stack	*off_nbr;
-	int		ini_pb;
-	
-	ini_pb = 0;
-	first_nbr = firstinramp->prev;
-	temp_cmd = temp->cmds;
-	off_nbr = firstinramp;
-	init_cmd_list(&off_cmd);
-	while (!off_cmd.total || ini_pb < off_cmd.total)
-	{
-		last_nbr = firstinramp;
-		temp_cmd.pb = ini_pb;
-		temp_cmd.total = count_moves(&temp_cmd);
-		while (!is_next_nbr_bigger(first_nbr, last_nbr, temp->lims.min_a, temp->lims.max_a))
-		{
-			temp_cmd.pb++;
-			temp_cmd.total++;
-			if (off_cmd.total && (temp_cmd.pb > off_cmd.total))
-			{		
-				off_cmd.pb = 0;
-				temp->cmds = off_cmd;
-				place_in_b(b, temp, off_nbr);
-				return ;
-			}
-			last_nbr = last_nbr->next;
-		}
-		if (temp_cmd.total < off_cmd.total || !off_cmd.total)
-		{
-			if (!first_nbr->next)
-				off_nbr = a;
-			else
-				off_nbr = first_nbr->next;
-			off_cmd = temp_cmd;
-		}
-		if (!continue_ramp_analysis(a, first_nbr, temp))
-			break ;
-		if (temp_cmd.ra)
-			temp_cmd.ra--;
-		else if (temp_cmd.rra || !temp_cmd.ra)
-			temp_cmd.rra++;
-		ini_pb++;
-		first_nbr = first_nbr->prev;
-	}
-	off_cmd.pb = 0;
-	temp->cmds = off_cmd;
-	place_in_b(b, temp, off_nbr);
-}
- */
-
-
-void	swap_a(t_all *temp, t_stack *firstinramp, t_stack *b)
-{
-	(void)firstinramp;
-	if (temp->cmds.ra)
-		temp->cmds.type = SWAP_FWD;
-	else 
-		temp->cmds.type = SWAP_BWD;
-	temp->cmds.sa = 1;
-	temp->cmds.total = count_moves(&temp->cmds);
-	if (!b || !b->next)
-		return ;
-	if (!b->next->next && b->pos < b->next->pos)
-	{
-		temp->cmds.sa = 0;
-		temp->cmds.ss = 1;
-	}
 }
 
 void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved)
@@ -195,106 +120,24 @@ void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved)
 	calculate_initial_pushmoves(has_rb, has_rrb, &temp->cmds);
 }
 
-void	find_closest_b_spot(t_stack  *cur_b, t_stack  *a, t_all *temp, int max)
-{
-	int good_spot_forward;
-	int good_spot_reverse;
-	int rev_total;
-	int fwd_total;
 
-	init_cmd_list(&temp->cmds);
-	good_spot_forward = 0;
-	good_spot_reverse = 0;
-	fwd_total = 0;
-	rev_total = 0;
-	temp->cmds.rb = temp->ini_rot_b.rb;
-	temp->cmds.rrb = temp->ini_rot_b.rrb;
-	temp->cmds.pa++;
+
+void	swap_a(t_all *temp, t_stack *firstinramp, t_stack *b)
+{
+	(void)firstinramp;
+	if (temp->cmds.ra)
+		temp->cmds.type = SWAP_FWD;
+	else 
+		temp->cmds.type = SWAP_BWD;
+	temp->cmds.sa = 1;
 	temp->cmds.total = count_moves(&temp->cmds);
-	if (!a)
+	if (!b || !b->next)
 		return ;
-	if (!a->next)
+	if (!b->next->next && b->pos < b->next->pos)
 	{
-		if (cur_b->nbr > a->nbr)
-		{
-			good_spot_forward++;
-			temp->cmds.ra++;
-		}
-		else
-			good_spot_reverse++;
+		temp->cmds.sa = 0;
+		temp->cmds.ss = 1;
 	}
-	if (is_next_nbr_bigger(cur_b, a, temp->lims.min_a, temp->lims.max_a)
-			&& is_prev_nbr_smaller(cur_b, a->prev, temp->lims.min_a, temp->lims.max_a))
-		return ;
-	temp->forw_a = a->next;
-	temp->rev_a = a->prev->prev;
-	fwd_total = temp->cmds.total;
-	rev_total = temp->cmds.total;
-	while (!good_spot_forward && !good_spot_reverse && temp->forw_a)
-	{
-		if(temp->cmds.rb > 0)
-		{	
-			temp->cmds.rb--;
-			temp->cmds.rr++;
-		}
-		else
-		{
-			temp->cmds.ra++;
-			fwd_total++;
-		}
-		if(temp->cmds.rrb > 0)
-		{
-			temp->cmds.rrb--;
-			temp->cmds.rrr++;
-		}
-		else
-		{
-			temp->cmds.rra++;
-			rev_total++;
-		}
-		if (max && (fwd_total >= max && rev_total >= max))
-		{
-			init_cmd_list(&temp->cmds);
-			return ;
-		}
-		if (is_next_nbr_bigger(cur_b, temp->forw_a, temp->lims.min_a, temp->lims.max_a)
-				&& is_prev_nbr_smaller(cur_b, temp->forw_a->prev, temp->lims.min_a, temp->lims.max_a))
-			good_spot_forward++;
-		if (temp->rev_a->next)
-		{
-			if (is_prev_nbr_smaller(cur_b, temp->rev_a, temp->lims.min_a, temp->lims.max_a)
-				&& is_next_nbr_bigger(cur_b, temp->rev_a->next, temp->lims.min_a, temp->lims.max_a))
-				good_spot_reverse++;
-		}
-		else
-		{
-			if (is_prev_nbr_smaller(cur_b, temp->rev_a, temp->lims.min_a, temp->lims.max_a)
-				&& is_next_nbr_bigger(cur_b, a, temp->lims.min_a, temp->lims.max_a))
-				good_spot_reverse++;
-		}
-		temp->rev_a = (temp->rev_a)->prev;
-		temp->forw_a = (temp->forw_a)->next;
-	}
-	if (!good_spot_forward && !good_spot_reverse)
-	{
-			printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
-			init_cmd_list(&temp->cmds);
-			return ;
-	}
-	if (good_spot_forward && (fwd_total <= rev_total || !good_spot_reverse))
-	{
-		temp->cmds.rra = 0;
-		temp->cmds.rrb = temp->cmds.rrr;
-		temp->cmds.rrr = 0;
-		temp->cmds.total = fwd_total;
-	}
-	else if (good_spot_reverse && (rev_total <= fwd_total || !good_spot_reverse))
-	{
-		temp->cmds.ra = 0;
-		temp->cmds.rb = temp->cmds.rr;
-		temp->cmds.rr = 0;
-		temp->cmds.total = rev_total;
-	} 
 }
 
 void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off)

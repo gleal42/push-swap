@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sort_operations3.c                                 :+:      :+:    :+:   */
+/*   operations_rotate_bwd.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/04 15:54:25 by gleal             #+#    #+#             */
-/*   Updated: 2021/08/03 21:48:15 by gleal            ###   ########.fr       */
+/*   Updated: 2022/01/26 16:44:29 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "sort_operations.h"
+# include "operations.h"
 
 int		op_rra(t_stack **a, t_stack **b, int max_len)
 {

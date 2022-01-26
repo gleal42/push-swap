@@ -13,39 +13,45 @@
 CC := gcc
 FLAGS := -Wall -Wextra -Werror -g
 INCLUDE_DIRS := libft \
-				utils \
-				sort_operations \
+				operations \
+				sort \
 				stacks \
+				utils \
 				includes \
 				.
 INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := push_swap
 SRCS := push_swap.c \
-		utils/push_swap_utils.c \
-		sort_operations/sort_operations1.c \
-		sort_operations/sort_operations2.c \
-		sort_operations/sort_operations3.c \
-		sort_operations/sort_algorithm.c \
-		sort_operations/complex_algo.c \
-		sort_operations/prepare_moves.c \
-		sort_operations/execute_moves.c \
-		sort_operations/limit_check.c \
+		operations/operations_push_swap.c \
+		operations/operations_rotate_bwd.c \
+		operations/operations_rotate_fwd.c \
+		sort/execute_moves.c \
+		sort/limits_max_min.c \
+		sort/predict_limits_max_min.c \
+		sort/predict_ramps.c \
+		sort/prepare_moves.c \
+		sort/sort_algorithm.c \
+		sort/validations.c \
 		stacks/isinstack.c \
 		stacks/print_stacks.c \
+		stacks/stack_last.c \
+		stacks/stack_push.c \
+		stacks/stack_rotate_backward.c \
+		stacks/stack_rotate_forward.c \
+		stacks/stack_seccond_to_last.c \
+		stacks/stack_size.c \
+		stacks/stack_swap.c \
 		stacks/stackadd_back.c \
 		stacks/stackadd_front.c \
 		stacks/stackdelone.c \
 		stacks/stackiter.c \
-		stacks/stack_last.c \
-		stacks/stack_seccond_to_last.c \
 		stacks/stackmap.c \
 		stacks/stacknew.c \
 		stacks/stacks_clear.c \
-		stacks/stack_size.c \
-		stacks/stack_swap.c \
-		stacks/stack_rotate_forward.c \
-		stacks/stack_rotate_backward.c \
-		stacks/stack_push.c
+		utils/get_info.c \
+		utils/init_utils.c \
+		utils/prepare_moves_utils.c \
+		utils/update_values.c
 
 OBJS := $(SRCS:.c=.o)
 
