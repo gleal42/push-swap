@@ -1,45 +1,49 @@
 #include "push_swap.h"
 
-void	prepare_stack_a(t_stack **a, char **stack_a_args)
+int	main(int argc, char **argv)
 {
-	t_stack	*next_nbr;
-	int	nbr;
-	int i;
-
-	i = 0;
-	while (stack_a_args[i])
-	{
-		nbr = ft_atoi(stack_a_args[i]);
-		if (is_nbr_in_stack(nbr, *a))
-		{
-			printf("Error\n");
-			exit(EXIT_FAILURE);
-		}
-		next_nbr = stacknew(nbr);
-		if (!next_nbr)
-			exit(EXIT_FAILURE);
-		stackadd_back(a, next_nbr);
-		i++;
-	}
+	if (argc >= 1)
+		push_swap(&argv[1]);
 }
 
-int		ft_nbr_strs(char **strs)
-{
-	int i;
+/*
+** Validates input, creates a stack and sorts it using algorithm
+** @param:	- [char **] numbers to be sorted
+**
+** Line-by-line comments:
+** @8	validation to see if all inputs are valid numbers
+** @10	Validates duplicate numbers
+** 		duplicate validation done inside
+** @12	Might be useful to improve algorithm (sort/parameters.c)
+*/
 
-	i = 0;
-	if (!strs)
-		return (0);
-	while (strs[i])
-		i++;
-	return (i);
+void	push_swap(char **stack_a_args)
+{
+	t_stack	*a;
+	t_stack	*b;
+	int		max_len;
+	int		n;
+
+	a = NULL;
+	b = NULL;
+	if (!is_input_integer(stack_a_args))
+		return ;
+	prepare_stack_a(&a, stack_a_args);
+	n = nbr_strs(stack_a_args);
+	add_positions(&a, n);
+	max_len = biggest_str_len(stack_a_args);
+	print_both_stacks(a, b, max_len);
+	ft_sort_stacks(&a, &b, max_len, n);
+	stacks_clear(&a, delete_stack);
+	check_leaks();
+	exit(EXIT_SUCCESS);
 }
 
-void	get_stack_info(t_stack	**a, int n)
+void	add_positions(t_stack	**a, int n)
 {
-	t_stack *first;
-	t_stack *next_min;
-	int i;
+	t_stack		*first;
+	t_stack		*next_min;
+	int			i;
 
 	i = 1;
 	first = (*a);
@@ -49,9 +53,9 @@ void	get_stack_info(t_stack	**a, int n)
 		next_min = 0;
 		while (*a)
 		{
-			if (!(*a)->pos &&
-				(next_min == 0 || ((*a)->nbr < next_min->nbr)))
-					next_min = *a;
+			if (! (*a)->pos
+				&& (next_min == 0 || ((*a)->nbr < next_min->nbr)))
+				next_min = *a;
 			*a = (*a)->next;
 		}
 		*a = next_min;
@@ -59,30 +63,4 @@ void	get_stack_info(t_stack	**a, int n)
 		i++;
 	}
 	*a = first;
-}
-
-
-void	push_swap(char **stack_a_args)
-{
-	t_stack *a;
-	t_stack *b;
-	int max_len;
-	int n;
-
-	a = NULL;
-	b = NULL;
-	if (!is_input_integer(stack_a_args))
-		return ;
-	prepare_stack_a(&a, stack_a_args);
-	n = ft_nbr_strs(stack_a_args);
-	get_stack_info(&a, n);
-	max_len = biggest_str_len(stack_a_args);
-	print_both_stacks(a, b, max_len);
-	ft_sort_stacks(&a, &b, max_len, n);
-}
-
-int	main(int argc, char **argv)
-{
-	if (argc >= 1)
-		push_swap(&argv[1]);
 }

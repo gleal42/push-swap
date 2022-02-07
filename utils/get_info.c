@@ -6,15 +6,15 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:16:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/01/25 22:17:39 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/07 00:15:38 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "utils.h"
+#include "utils.h"
 
 int	count_moves(t_cmds *cmds)
 {
-	int total;
+	int	total;
 
 	total = 0;
 	total += cmds->sa;
@@ -33,14 +33,14 @@ int	count_moves(t_cmds *cmds)
 
 int	biggest_str_len(char **strs)
 {
-	int i;
-	int len;
-	int temp;
+	int	i;
+	int	len;
+	int	temp;
 
 	i = 0;
 	len = 0;
 	if (!strs)
-		return 0;
+		return (0);
 	while (strs[i])
 	{
 		temp = ft_strlen(strs[i]);
@@ -49,4 +49,16 @@ int	biggest_str_len(char **strs)
 		i++;
 	}
 	return (len);
+}
+
+int	nbr_strs(char **strs)
+{
+	int	i;
+
+	i = 0;
+	if (!strs)
+		return (0);
+	while (strs[i])
+		i++;
+	return (i);
 }

@@ -10,18 +10,22 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC := gcc
-FLAGS := -Wall -Wextra -Werror -g
+CC := clang
+FLAGS := -Wall -Wextra -Werror -g 
+LIBRARIES := -Llibft -lft -Lmlc -lmlc 
 INCLUDE_DIRS := libft \
+				mlc \
 				operations \
 				sort \
 				stacks \
 				utils \
 				includes \
+				validations \
 				.
 INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := push_swap
 SRCS := push_swap.c \
+		validations/input_validations.c \
 		operations/operations_push_swap.c \
 		operations/operations_rotate_bwd.c \
 		operations/operations_rotate_fwd.c \
@@ -31,8 +35,8 @@ SRCS := push_swap.c \
 		sort/predict_ramps.c \
 		sort/prepare_moves.c \
 		sort/sort_algorithm.c \
-		sort/validations.c \
-		stacks/isinstack.c \
+		sort/parameters.c \
+		stacks/prepare_stacks.c \
 		stacks/print_stacks.c \
 		stacks/stack_last.c \
 		stacks/stack_push.c \
@@ -50,6 +54,7 @@ SRCS := push_swap.c \
 		stacks/stacks_clear.c \
 		utils/get_info.c \
 		utils/init_utils.c \
+		utils/other_utils.c \
 		utils/prepare_moves_utils.c \
 		utils/update_values.c
 
@@ -60,11 +65,14 @@ all: libft $(NAME)
 libft:
 	make -C libft/
 
+mlc:
+	make -C mlc/
+
 %.o : %.c
 	$(CC) $(FLAGS) -c $^ -o $@ $(INCLUDES)
 
 $(NAME) : $(OBJS) 
-	$(CC) $(FLAGS) $^ -Llibft -lft -o $@ $(INCLUDES)
+	$(CC) $(FLAGS) $^ $(LIBRARIES) -o $@ $(INCLUDES)
 
 clean:
 	rm -f $(OBJS)

@@ -10,16 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "sort.h"
+#include "sort.h"
 
 void	rotate_until_sorted(t_stack **a, t_stack **b, int max_len)
 {
-	int rotation_direction;
+	int		rotation_direction;
+	t_stack	*norm;
+	t_stack	*rev;
 
-	t_stack *norm;
-	t_stack *rev;
 	rotation_direction = 0;
-
 	norm = (*a)->next;
 	rev = (*a)->prev;
 	while (!rotation_direction && norm)
@@ -33,7 +32,7 @@ void	rotate_until_sorted(t_stack **a, t_stack **b, int max_len)
 		norm = norm->next;
 		if (norm->pos == rev->pos)
 			break ;
-		rev = rev->prev;	
+		rev = rev->prev;
 	}
 	if (!rotation_direction)
 		return ;
@@ -57,7 +56,7 @@ void	ft_sort_stacks(t_stack **a, t_stack **b, int max_len, int n)
 		else
 			rotate_until_sorted(a, b, max_len);
 	}
-	else 
+	else
 		more_complex_algorithm(a, b, max_len, n);
 }
 
@@ -82,10 +81,9 @@ void	ft_sort_stacks(t_stack **a, t_stack **b, int max_len, int n)
 
 void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 {
-	t_all off;
-	t_all temp;
-
-	int	last;
+	t_all	off;
+	t_all	temp;
+	int		last;
 
 	last = 0;
 	temp.lims.min_a = 1;
@@ -100,7 +98,8 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 	while (temp.forw_a)
 	{
 		init_cmd_list(&(temp.cmds));
-		if (is_next_nbr_bigger(temp.forw_a, (temp.forw_a)->next, temp.lims.min_a, temp.lims.max_a))
+		if (is_next_nbr_bigger(temp.forw_a, (temp.forw_a)->next,
+				temp.lims.min_a, temp.lims.max_a))
 		{
 			temp.ini_rot_a.ra++;
 			temp.forw_a = temp.forw_a->next;
@@ -108,7 +107,8 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 		else
 		{
 			init_cmd_list(&(temp.cmds));
-			if (is_good_for_swap(*a, temp.forw_a, temp.lims.min_a, temp.lims.max_a))
+			if (is_good_for_swap(*a, temp.forw_a, temp.lims.min_a,
+					temp.lims.max_a))
 			{
 				temp.cmds.ra = temp.ini_rot_a.ra;
 				swap_a(&temp, temp.forw_a, *b);
@@ -124,15 +124,17 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 				off.cmds = temp.cmds;
 			temp.forw_a = temp.forw_a->next;
 		}
-		if (is_prev_nbr_smaller(temp.rev_a, temp.rev_a->prev, temp.lims.min_a, temp.lims.max_a))
+		if (is_prev_nbr_smaller(temp.rev_a, temp.rev_a->prev,
+				temp.lims.min_a, temp.lims.max_a))
 		{
 			temp.ini_rot_a.rra++;
-			temp.rev_a = temp.rev_a->prev;	
+			temp.rev_a = temp.rev_a->prev;
 		}
 		else
 		{
 			init_cmd_list(&(temp.cmds));
-			if (is_good_for_swap(*a, temp.rev_a->prev, temp.lims.min_a, temp.lims.max_a))
+			if (is_good_for_swap(*a, temp.rev_a->prev,
+					temp.lims.min_a, temp.lims.max_a))
 			{
 				temp.ini_rot_a.rra++;
 				temp.cmds.rra = temp.ini_rot_a.rra;
@@ -146,9 +148,10 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			}
 			if (is_temp_better(temp.cmds, off.cmds))
 				off.cmds = temp.cmds;
-			temp.rev_a = temp.rev_a->prev;	
+			temp.rev_a = temp.rev_a->prev;
 		}
- 		if (have_analyzed_enough(off.cmds, temp.ini_rot_a, temp.forw_a, temp.rev_a))
+		if (have_analyzed_enough(off.cmds, temp.ini_rot_a,
+				temp.forw_a, temp.rev_a))
 		{
 			execute_moves(&off.cmds, a, b, &temp.lims, max_a);
 			temp.forw_a = *a;
@@ -156,7 +159,7 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 			temp.ini_rot_a.ra = 0;
 			temp.ini_rot_a.rra = 0;
 			init_cmd_list(&(off.cmds));
-		} 
+		}
 		else if (!temp.forw_a || temp.forw_a->pos == temp.rev_a->pos)
 			break ;
 	}

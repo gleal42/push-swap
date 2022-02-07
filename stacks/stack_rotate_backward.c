@@ -6,11 +6,11 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/05 21:17:46 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/11 16:05:38 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/07 00:46:44 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "stacks.h"
+#include "stacks.h"
 
 void	stack_rotate_backward(t_stack **stack)
 {

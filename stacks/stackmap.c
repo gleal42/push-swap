@@ -6,13 +6,13 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/03 16:48:45 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/05 20:38:50 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/04 17:13:24 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stacks.h"
 
-t_stack	*stackmap(t_stack *stack, int(*f)(int), void (*del)(int))
+t_stack	*stackmap(t_stack *stack, int(*f)(int), void (*del)(int *))
 {
 	t_stack	*first_s;
 	t_stack	*new_s;

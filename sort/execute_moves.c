@@ -10,9 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "sort.h"
+#include "sort.h"
 
-void	execute_pb_backward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
+void	execute_pb_backward(t_cmds *cmds, t_stack **a,
+		t_stack **b, t_limits *lims, int max_len)
 {
 	while (cmds->rrr > 0)
 	{
@@ -67,7 +68,8 @@ void	execute_pb_backward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims,
 		printf("Didn't execute all the commands!\n");
 }
 
-void	execute_pb_forward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
+void	execute_pb_forward(t_cmds *cmds, t_stack **a,
+		t_stack **b, t_limits *lims, int max_len)
 {
 	while (cmds->rr > 0)
 	{
@@ -122,7 +124,8 @@ void	execute_pb_forward(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, 
 		printf("Didn't execute all the commands!\n");
 }
 
-void	execute_swap_forward(t_cmds *cmds, t_stack **a, t_stack **b, int max_len)
+void	execute_swap_forward(t_cmds *cmds, t_stack **a,
+		t_stack **b, int max_len)
 {
 	while (cmds->ra)
 	{
@@ -143,7 +146,8 @@ void	execute_swap_forward(t_cmds *cmds, t_stack **a, t_stack **b, int max_len)
 		printf("Didn't execute all the commands!\n");
 }
 
-void	execute_swap_backward(t_cmds *cmds, t_stack **a, t_stack **b, int max_len)
+void	execute_swap_backward(t_cmds *cmds, t_stack **a,
+		t_stack **b, int max_len)
 {
 	while (cmds->rra)
 	{
@@ -164,7 +168,8 @@ void	execute_swap_backward(t_cmds *cmds, t_stack **a, t_stack **b, int max_len)
 		printf("Didn't execute all the commands!\n");
 }
 
-void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
+void	execute_moves(t_cmds *cmds, t_stack **a,
+		t_stack **b, t_limits *lims, int max_len)
 {
 	if (cmds->type == PUSH_B_FWD)
 		execute_pb_forward(cmds, a, b, lims, max_len);
@@ -176,7 +181,8 @@ void	execute_moves(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int m
 		execute_swap_backward(cmds, a, b, max_len);
 }
 
-void	execute_merge_ab(t_cmds *cmds, t_stack **a, t_stack **b, t_limits *lims, int max_len)
+void	execute_merge_ab(t_cmds *cmds, t_stack **a,
+		t_stack **b, t_limits *lims, int max_len)
 {
 	while (cmds->rr > 0)
 	{

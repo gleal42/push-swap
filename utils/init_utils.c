@@ -6,11 +6,11 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 21:45:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/01/25 21:50:44 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/07 00:16:34 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "utils.h"
+#include "utils.h"
 
 void	init_rot_b(t_all *all)
 {

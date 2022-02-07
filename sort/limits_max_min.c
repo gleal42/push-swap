@@ -6,17 +6,17 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/07 17:25:03 by gleal             #+#    #+#             */
-/*   Updated: 2022/01/26 16:56:06 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/07 01:58:48 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "sort.h"
+#include "sort.h"
 
-void		pa_adjust_max_a(t_stack *b, t_limits *lims)
+void	pa_adjust_max_a(t_stack *b, t_limits *lims)
 {
-	t_stack *check_fwd;
-	t_stack *check_bckd;
-	int repeat;
+	t_stack	*check_fwd;
+	t_stack	*check_bckd;
+	int		repeat;
 
 	lims->max_a--;
 	if (!b)
@@ -53,11 +53,11 @@ void		pa_adjust_max_a(t_stack *b, t_limits *lims)
 	}
 }
 
-void		pa_adjust_min_a(t_stack *b, t_limits *lims)
+void	pa_adjust_min_a(t_stack *b, t_limits *lims)
 {
-	t_stack *check_fwd;
-	t_stack *check_bckd;
-	int repeat;
+	t_stack	*check_fwd;
+	t_stack	*check_bckd;
+	int		repeat;
 
 	lims->min_a++;
 	if (!b)
@@ -94,11 +94,11 @@ void		pa_adjust_min_a(t_stack *b, t_limits *lims)
 	}
 }
 
-void		pa_adjust_max_b(t_stack *a, t_limits *lims)
+void	pa_adjust_max_b(t_stack *a, t_limits *lims)
 {
-	t_stack *check_fwd;
-	t_stack *check_bckd;
-	int repeat;
+	t_stack	*check_fwd;
+	t_stack	*check_bckd;
+	int		repeat;
 
 	lims->max_b--;
 	if (!a)
@@ -135,11 +135,11 @@ void		pa_adjust_max_b(t_stack *a, t_limits *lims)
 	}
 }
 
-void		pa_adjust_min_b(t_stack *a, t_limits *lims)
+void	pa_adjust_min_b(t_stack *a, t_limits *lims)
 {
-	t_stack *check_fwd;
-	t_stack *check_bckd;
-	int repeat;
+	t_stack	*check_fwd;
+	t_stack	*check_bckd;
+	int		repeat;
 
 	lims->min_b++;
 	if (!a)

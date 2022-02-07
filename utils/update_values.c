@@ -6,28 +6,31 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:13:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/01/25 22:14:17 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/07 00:41:58 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "utils.h"
+#include "utils.h"
 
 /*
 * Consider the numbers that were already pushed in case the next number
 * Check if it is considering the right numbers
 */
 
-void	add_rbs(t_stack *a, t_stack *first_nbr, t_stack *cur_stack, t_stack *forw_b, t_cmds *nbr_rot_pred, t_limits *limits)
+void	add_rbs(t_stack *a, t_stack *first_nbr,
+		t_stack *cur_stack, t_stack *forw_b,
+		t_cmds *nbr_rot_pred, t_limits *limits)
 {
-	t_stack *sent_stack;
+	t_stack	*sent_stack;
 
 	sent_stack = first_nbr;
 	while (sent_stack->pos != cur_stack->pos)
 	{
-		if (is_prev_nbr_smaller(sent_stack, forw_b, limits->min_b, limits->max_b) &&
-			is_next_nbr_bigger(sent_stack, forw_b->next, limits->min_b, limits->max_b) )
+		if (is_prev_nbr_smaller(sent_stack, forw_b, limits->min_b, limits->max_b)
+			&& is_next_nbr_bigger(sent_stack, forw_b->next,
+					limits->min_b, limits->max_b))
 			nbr_rot_pred->rb++;
-		if(!sent_stack->next)
+		if (!sent_stack->next)
 			sent_stack = a;
 		else
 			sent_stack = sent_stack->next;
@@ -37,29 +40,34 @@ void	add_rbs(t_stack *a, t_stack *first_nbr, t_stack *cur_stack, t_stack *forw_b
 * utilizar os prev era top
  */
 
-void	add_rrbs(t_stack *a, t_stack *first_nbr, t_stack *cur_stack, t_stack *rev_b, t_cmds *nbr_rot_pred, t_limits *limits)
+void	add_rrbs(t_stack *a, t_stack *first_nbr,
+		t_stack *cur_stack, t_stack *rev_b,
+		t_cmds *nbr_rot_pred, t_limits *limits)
 {
-	t_stack *sent_stack;
+	t_stack	*sent_stack;
 
 	sent_stack = first_nbr;
 	while (sent_stack->pos != cur_stack->pos)
 	{
-		if (is_prev_nbr_smaller(sent_stack, rev_b, limits->min_b, limits->max_b) &&
-			is_next_nbr_bigger(sent_stack, rev_b->next, limits->min_b, limits->max_b) )
+		if (is_prev_nbr_smaller(sent_stack, rev_b, limits->min_b, limits->max_b)
+			&& is_next_nbr_bigger(sent_stack, rev_b->next,
+					limits->min_b, limits->max_b))
 			nbr_rot_pred->rrb++;
-		if(!sent_stack->next)
+		if (!sent_stack->next)
 			sent_stack = a;
 		else
 			sent_stack = sent_stack->next;
 	}
 }
 
-/* Have to check if this is actually working (updating cur_b for every prediction) */
+/* Have to check if this is actually working
+(updating cur_b for every prediction) */
 
-void	update_cur_b(t_cmds *cmds, t_stack **cur_b_head, t_stack *fwd_b, t_stack *bwd_b)
+void	update_cur_b(t_cmds *cmds, t_stack **cur_b_head,
+		t_stack *fwd_b, t_stack *bwd_b)
 {
-	int fwd_total;
-	int rev_total;
+	int	fwd_total;
+	int	rev_total;
 
 	rev_total = 0;
 	fwd_total = 0;
@@ -88,7 +96,9 @@ void	update_cur_b(t_cmds *cmds, t_stack **cur_b_head, t_stack *fwd_b, t_stack *b
 /* Add compare rbs and rrbs and don't forget to take r and rrs 
 into consideration*/
 
-void add_new_rotatesb(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds, t_stack *cur_stack, t_stack **cur_b, t_limits *limits)
+void	add_new_rotatesb(t_stack *b, int has_rb,
+		int has_rrb, t_cmds *cmds, t_stack *cur_stack,
+		t_stack **cur_b, t_limits *limits)
 {
 	(void)b;
 	(void)cur_stack;
@@ -108,7 +118,9 @@ void add_new_rotatesb(t_stack *b, int has_rb, int has_rrb, t_cmds *cmds, t_stack
 	}
 }
 
-void update_predict_limits(t_stack *first_nbr, t_stack *cur_a, t_stack *cur_b, t_stack *a, t_stack *b, t_all *pred_limits)
+void	update_predict_limits(t_stack *first_nbr,
+		t_stack *cur_a, t_stack *cur_b, t_stack *a,
+		t_stack *b, t_all *pred_limits)
 {
 	(void)a;
 	if (first_nbr->prev->pos == cur_a->pos)

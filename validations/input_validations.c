@@ -1,31 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_push.c                                       :+:      :+:    :+:   */
+/*   input_validations.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/04 16:17:51 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/07 00:46:59 by gleal            ###   ########.fr       */
+/*   Created: 2022/02/02 23:42:18 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/06 19:36:03 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stacks.h"
+#include "validations.h"
 
-void	stack_push_from_to(t_stack **original, t_stack **destination)
+int	is_input_integer(char **stack_a_args)
 {
-	t_stack	*temp;
+	int	i;
 
-	temp = *original;
-	*original = (*original)->next;
-	if (*original)
+	i = 0;
+	if (!stack_a_args[0])
+		return (0);
+	while (stack_a_args[i])
 	{
-		if ((*original)->next)
-			(*original)->prev = temp->prev;
-		else
-			(*original)->prev = 0;
+		if (!is_integer(stack_a_args[i]))
+		{
+			printf("Error\n");
+			return (0);
+		}
+		i++;
 	}
-	temp->next = 0;
-	temp->prev = 0;
-	stacktadd_front(destination, temp);
+	return (1);
+}
+
+int	is_nbr_in_stack(int nbr, t_stack *a)
+{
+	while (a)
+	{
+		if (a->nbr == nbr)
+			return (1);
+		a = a->next;
+	}
+	return (0);
 }

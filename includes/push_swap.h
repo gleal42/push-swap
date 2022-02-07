@@ -1,11 +1,13 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
+# include "libft.h"
+# include "malloc_leak_checker.h"
 
 typedef struct s_stack
 {
-	int			nbr;
-	int			pos;
+	int				nbr;
+	int				pos;
 	struct s_stack	*prev;
 	struct s_stack	*next;
 }				t_stack;
@@ -49,15 +51,15 @@ typedef struct s_cmds
 
 typedef struct s_all
 {
-	t_stack 		*forw_a;
-	t_stack 		*rev_a;
-	t_stack 		*forw_b;
-	t_stack 		*rev_b;
-	t_rot_a			ini_rot_a;;
-	t_rot_b			ini_rot_b;;
+	t_stack			*forw_a;
+	t_stack			*rev_a;
+	t_stack			*forw_b;
+	t_stack			*rev_b;
+	t_rot_a			ini_rot_a;
+	t_rot_b			ini_rot_b;
 	t_cmds			cmds;
 	t_limits		lims;
-}				t_all;
+}					t_all;
 
 enum	e_moves
 {
@@ -68,10 +70,14 @@ enum	e_moves
 	PUSH_BACK
 };
 
-# include "libft.h"
 # include "stacks.h"
 # include "operations.h"
 # include "utils.h"
 # include "sort.h"
+# include "validations.h"
+
+void				push_swap(char **stack_a_args);
+void				prepare_stack_a(t_stack **a, char **stack_a_args);
+void				add_positions(t_stack	**a, int n);
 
 #endif

@@ -1,24 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   isinstack.c                                     :+:      :+:    :+:   */
+/*   other_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/03 16:29:58 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/03 16:31:54 by gleal            ###   ########.fr       */
+/*   Created: 2022/02/03 00:45:33 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/07 00:17:01 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stacks.h"
+#include "utils.h"
 
-int	is_nbr_in_stack(int nbr, t_stack *a)
+void	delete_stack(int *content)
 {
-	while (a)
-	{
-		if (a->nbr == nbr)
-			return (1);
-		a = a->next;
-	}
-	return (0);
+	(*content) = 0;
+	return ;
 }

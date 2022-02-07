@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "sort.h"
+#include "sort.h"
 
 /* 
 	existe um commit anterior em que merge ramp spot estava diferente (ver nome dos commits e ver se vale a pena voltar)
@@ -18,11 +18,12 @@
 	Mandou mal o maior número (pôs num sitio aleatório)
 */
 
-void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
+void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp,
+		t_stack *firstinramp)
 {
-	t_cmds init_cmds;
-	t_cmds best_cmds;
-	t_cmds off_cmds;
+	t_cmds	init_cmds;
+	t_cmds	best_cmds;
+	t_cmds	off_cmds;
 	t_stack	*first_nbr;
 	t_stack	*off_nbr;
 
@@ -47,9 +48,9 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 			off_cmds.ra--;
 		else if (off_cmds.rra || !off_cmds.ra)
 			off_cmds.rra++;
-		init_cmds=off_cmds; 
-		if ((first_nbr->prev)->pos == firstinramp->pos ||
-			(!continue_ramp_analysis(a, first_nbr, temp)))
+		init_cmds = off_cmds;
+		if ((first_nbr->prev)->pos == firstinramp->pos
+			|| (!continue_ramp_analysis(a, first_nbr, temp)))
 			break ;
 		first_nbr = first_nbr->prev;
 	}
@@ -61,29 +62,31 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp, t_stack *firstinramp)
 
 void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved)
 {
-	int has_rb;
-	int has_rrb;
-	int rev_total;
-	rev_total = 0;
+	int	has_rb;
+	int	has_rrb;
+	int	rev_total;
 
+	rev_total = 0;
 	has_rb = 0;
 	has_rrb = 0;
 	if (temp->cmds.ra)
 		temp->cmds.type = PUSH_B_FWD;
-	else 
+	else
 		temp->cmds.type = PUSH_B_BWD;
 	temp->cmds.pb++;
-	temp->cmds.total = temp->cmds.ra + temp->cmds.rb +temp->cmds.rr + temp->cmds.rra + temp->cmds.rrb +temp->cmds.rrr + temp->cmds.pb;
+	temp->cmds.total = temp->cmds.ra + temp->cmds.rb
+		+ temp->cmds.rr + temp->cmds.rra + temp->cmds.rrb
+		+ temp->cmds.rrr + temp->cmds.pb;
 	if (!b)
 		return ;
 	if (!b->next)
 	{
 		has_rb++;
 		calculate_initial_pushmoves(has_rb, has_rrb, &temp->cmds);
-			return ;
+		return ;
 	}
 	if (is_next_nbr_bigger(tobemoved, b->prev, temp->lims.min_b, temp->lims.max_b)
-			&& is_prev_nbr_smaller(tobemoved, b, temp->lims.min_b, temp->lims.max_b))
+		&& is_prev_nbr_smaller(tobemoved, b, temp->lims.min_b, temp->lims.max_b))
 	{
 		if (temp->cmds.ra || (!temp->cmds.ra && !temp->cmds.rra))
 			has_rb++;
@@ -92,27 +95,31 @@ void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved)
 	}
 	temp->forw_b = b->next;
 	temp->rev_b = b->prev->prev;
-	while (!has_rb && !has_rrb && temp->forw_b && temp->rev_b )
+	while (!has_rb && !has_rrb && temp->forw_b && temp->rev_b)
 	{
-		if(temp->cmds.ra > 0)
+		if (temp->cmds.ra > 0)
 		{
 			temp->cmds.ra--;
 			temp->cmds.rr++;
 		}
 		else
 			temp->cmds.rb++;
-		if(temp->cmds.rra > 0)
+		if (temp->cmds.rra > 0)
 		{
 			temp->cmds.rra--;
 			temp->cmds.rrr++;
 		}
 		else
 			temp->cmds.rrb++;
-	if (is_next_nbr_bigger(tobemoved, temp->forw_b->prev, temp->lims.min_b, temp->lims.max_b)
-			&& is_prev_nbr_smaller(tobemoved, temp->forw_b, temp->lims.min_b, temp->lims.max_b))
+		if (is_next_nbr_bigger(tobemoved, temp->forw_b->prev,
+				temp->lims.min_b, temp->lims.max_b)
+			&& is_prev_nbr_smaller(tobemoved, temp->forw_b,
+					temp->lims.min_b, temp->lims.max_b))
 			has_rb++;
-		if (is_next_nbr_bigger(tobemoved, temp->rev_b, temp->lims.min_b, temp->lims.max_b)
-		 && is_prev_nbr_smaller(tobemoved, temp->rev_b->next, temp->lims.min_b, temp->lims.max_b))
+		if (is_next_nbr_bigger(tobemoved, temp->rev_b,
+				temp->lims.min_b, temp->lims.max_b)
+			&& is_prev_nbr_smaller(tobemoved, temp->rev_b->next,
+					temp->lims.min_b, temp->lims.max_b))
 			has_rrb++;
 		temp->forw_b = (temp->forw_b)->next;
 		temp->rev_b = (temp->rev_b)->prev;
@@ -120,14 +127,12 @@ void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved)
 	calculate_initial_pushmoves(has_rb, has_rrb, &temp->cmds);
 }
 
-
-
 void	swap_a(t_all *temp, t_stack *firstinramp, t_stack *b)
 {
 	(void)firstinramp;
 	if (temp->cmds.ra)
 		temp->cmds.type = SWAP_FWD;
-	else 
+	else
 		temp->cmds.type = SWAP_BWD;
 	temp->cmds.sa = 1;
 	temp->cmds.total = count_moves(&temp->cmds);
@@ -153,9 +158,8 @@ void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off)
 	off->cmds = temp.cmds;
 	off->forw_b = b->next;
 	off->rev_b = b->prev;
-	while (off->forw_b &&
-			(temp.ini_rot_b.rb < off->cmds.total
-		|| temp.ini_rot_b.rrb < off->cmds.total)) 
+	while (off->forw_b && (temp.ini_rot_b.rb < off->cmds.total
+			|| temp.ini_rot_b.rrb < off->cmds.total))
 	{
 		init_cmd_list(&temp.cmds);
 		temp.ini_rot_b.rrb = 0;
