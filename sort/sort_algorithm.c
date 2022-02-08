@@ -6,11 +6,18 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:59:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/07 18:25:39 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/08 19:49:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
+
+/*
+** Checks if numbers are already sorted. Sorts them in case they are not
+** @param:	- [t_all *] struct with all the variables
+** Line-by-line comments:
+** @line-line	comment
+*/
 
 void	ft_sort_stacks(t_all *all, int max_len, int n)
 {
@@ -21,42 +28,26 @@ void	ft_sort_stacks(t_all *all, int max_len, int n)
 		if (all->a->pos == 1)
 			return ;
 		else
-			rotate_until_sorted(&(all->a), &(all->b), max_len);
+			rotate_until_sorted(all, max_len);
 	}
 	else
-		more_complex_algorithm(&(all->a), &(all->b), max_len, n);
+		more_complex_algorithm(all, max_len, n);
 }
 
-void	rotate_until_sorted(t_stack **a, t_stack **b, int max_len)
+void	rotate_until_sorted(t_all *all, int max_len)
 {
 	int		rotation_direction;
-	t_stack	*norm;
-	t_stack	*rev;
 
 	rotation_direction = 0;
-	norm = (*a)->next;
-	rev = (*a)->prev;
-	while (!rotation_direction && norm)
-	{
-		if (norm->pos == 1)
-			rotation_direction = RA;
-		else if (rev->pos == 1)
-			rotation_direction = RRA;
-		if (norm->pos == rev->pos)
-			break ;
-		norm = norm->next;
-		if (norm->pos == rev->pos)
-			break ;
-		rev = rev->prev;
-	}
-	if (!rotation_direction)
-		return ;
-	while ((*a)->pos != 1)
+	all->forw_a = (all->a)->next;
+	all->rev_a = (all->a)->prev;
+	find_rotation_direction(all, &rotation_direction);
+	while (all->a->pos != 1)
 	{
 		if (rotation_direction == RA)
-			op_ra(a, b, max_len);
+			op_ra(&all->a, &all->b, max_len);
 		else if (rotation_direction == RRA)
-			op_rra(a, b, max_len);
+			op_rra(&all->a, &all->b, max_len);
 	}
 }
 
@@ -79,7 +70,7 @@ void	rotate_until_sorted(t_stack **a, t_stack **b, int max_len)
 
 // else if (!temp.forw_a || temp.forw_a->pos == temp.rev_a->pos)
 
-void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
+void	more_complex_algorithm(t_all *all, int max_a, int n)
 {
 	t_all	off;
 	t_all	temp;
@@ -90,8 +81,8 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 	temp.lims.max_a = n;
 	temp.lims.min_b = 0;
 	temp.lims.max_b = 0;
-	temp.forw_a = *a;
-	temp.rev_a = *a;
+	temp.forw_a = all->a;
+	temp.rev_a = all->a;
 	temp.ini_rot_a.ra = 0;
 	temp.ini_rot_a.rra = 0;
 	init_cmd_list(&(off.cmds));
@@ -107,18 +98,18 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 		else
 		{
 			init_cmd_list(&(temp.cmds));
-			if (is_good_for_swap(*a, temp.forw_a, temp.lims.min_a,
+			if (is_good_for_swap(all->a, temp.forw_a, temp.lims.min_a,
 					temp.lims.max_a))
 			{
 				temp.cmds.ra = temp.ini_rot_a.ra;
-				swap_a(&temp, temp.forw_a, *b);
+				swap_a(&temp, temp.forw_a, all->a);
 				temp.ini_rot_a.ra++;
 			}
 			else
 			{
 				temp.ini_rot_a.ra++;
 				temp.cmds.ra = temp.ini_rot_a.ra;
-				merge_ramp_spot(*a, *b, &temp, temp.forw_a->next);
+				merge_ramp_spot(all->a, all->b, &temp, temp.forw_a->next);
 			}
 			if (is_temp_better(temp.cmds, off.cmds))
 				off.cmds = temp.cmds;
@@ -133,17 +124,17 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 		else
 		{
 			init_cmd_list(&(temp.cmds));
-			if (is_good_for_swap(*a, temp.rev_a->prev,
+			if (is_good_for_swap(all->a, temp.rev_a->prev,
 					temp.lims.min_a, temp.lims.max_a))
 			{
 				temp.ini_rot_a.rra++;
 				temp.cmds.rra = temp.ini_rot_a.rra;
-				swap_a(&temp, temp.rev_a->prev, *b);
+				swap_a(&temp, temp.rev_a->prev, all->b);
 			}
 			else
 			{
 				temp.cmds.rra = temp.ini_rot_a.rra;
-				merge_ramp_spot(*a, *b, &temp, temp.rev_a);
+				merge_ramp_spot(all->a, all->b, &temp, temp.rev_a);
 				temp.ini_rot_a.rra++;
 			}
 			if (is_temp_better(temp.cmds, off.cmds))
@@ -153,9 +144,9 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 		if (have_analyzed_enough(off.cmds, temp.ini_rot_a,
 				temp.forw_a, temp.rev_a))
 		{
-			execute_moves(&off.cmds, a, b, &temp.lims, max_a);
-			temp.forw_a = *a;
-			temp.rev_a = *a;
+			execute_moves(&off.cmds, &all->a, &all->b, &temp.lims, max_a);
+			temp.forw_a = all->a;
+			temp.rev_a = all->a;
 			temp.ini_rot_a.ra = 0;
 			temp.ini_rot_a.rra = 0;
 			init_cmd_list(&(off.cmds));
@@ -163,22 +154,22 @@ void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n)
 		else if (!temp.forw_a || temp.forw_a->pos == temp.rev_a->pos)
 			break ;
 	}
-	temp.forw_a = *a;
-	temp.rev_a = *a;
+	temp.forw_a = all->a;
+	temp.rev_a = all->a;
 	temp.ini_rot_a.ra = 0;
 	temp.ini_rot_a.rra = 0;
-	while (*b)
+	while ( all->b)
 	{
 		init_cmd_list(&(temp.cmds));
-		min_push_b_to_a_moves(*a, *b, &temp);
-		execute_merge_ab(&temp.cmds, a, b, &temp.lims, max_a);
+		min_push_b_to_a_moves(all->a,  all->b, &temp);
+		execute_merge_ab(&temp.cmds, &all->a, &all->b, &temp.lims, max_a);
 	}
-	if (is_stack_sorted(a, n))
+	if (is_stack_sorted(&all->a, n))
 	{
-		if ((*a)->pos == 1)
+		if ((all->a)->pos == 1)
 			return ;
 		else
-			rotate_until_sorted(a, b, max_a);
+			rotate_until_sorted(all, max_a);
 	}
 	else
 		printf("WHOOPSIE\n");

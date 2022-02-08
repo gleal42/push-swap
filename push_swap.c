@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:54:15 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/07 18:19:14 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/08 18:17:14 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int argc, char **argv)
 
 void	push_swap(char **stack_a_args)
 {
-	t_all all;
+	t_all	all;
 	int		max_len;
 	int		n;
 
@@ -46,6 +46,7 @@ void	push_swap(char **stack_a_args)
 	print_both_stacks(all.a, all.b, max_len);
 	ft_sort_stacks(&all, max_len, n);
 	stacks_clear(&(all.a), delete_stack);
+	stacks_clear(&(all.b), delete_stack);
 	check_leaks();
 	exit(EXIT_SUCCESS);
 }

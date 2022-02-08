@@ -26,6 +26,10 @@ void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max);
 void	predict_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
 void	calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
 
+// sort_algorithm_utils.c
+
+void	find_rotation_direction(t_all *all, int *rotation_direction);
+
 // update_values.c
 
 void	add_rbs(t_stack *a, t_stack *first_nbr,
