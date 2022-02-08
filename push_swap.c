@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/07 17:54:15 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/07 18:19:14 by gleal            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 int	main(int argc, char **argv)
@@ -19,22 +31,21 @@ int	main(int argc, char **argv)
 
 void	push_swap(char **stack_a_args)
 {
-	t_stack	*a;
-	t_stack	*b;
+	t_all all;
 	int		max_len;
 	int		n;
 
-	a = NULL;
-	b = NULL;
+	all.a = NULL;
+	all.b = NULL;
 	if (!is_input_integer(stack_a_args))
 		return ;
-	prepare_stack_a(&a, stack_a_args);
+	prepare_stack_a(&(all.a), stack_a_args);
 	n = nbr_strs(stack_a_args);
-	add_positions(&a, n);
+	add_positions(&(all.a), n);
 	max_len = biggest_str_len(stack_a_args);
-	print_both_stacks(a, b, max_len);
-	ft_sort_stacks(&a, &b, max_len, n);
-	stacks_clear(&a, delete_stack);
+	print_both_stacks(all.a, all.b, max_len);
+	ft_sort_stacks(&all, max_len, n);
+	stacks_clear(&(all.a), delete_stack);
 	check_leaks();
 	exit(EXIT_SUCCESS);
 }

@@ -57,8 +57,8 @@ void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off);
 
 // sort_algorithm.c
 
+void	ft_sort_stacks(t_all *all, int max_len, int n);
 void	rotate_until_sorted(t_stack **a, t_stack **b, int max_len);
-void	ft_sort_stacks(t_stack **a, t_stack **b, int max_len, int n);
 void	more_complex_algorithm(t_stack **a, t_stack **b, int max_a, int n);
 
 // validations.c

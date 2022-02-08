@@ -5,12 +5,27 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/13 21:43:16 by gleal             #+#    #+#             */
-/*   Updated: 2021/07/15 22:14:26by gleal            ###   ########.fr       */
+/*   Created: 2022/02/07 17:59:20 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/07 18:25:39 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
+
+void	ft_sort_stacks(t_all *all, int max_len, int n)
+{
+	if (all->a == 0 || all->a->next == 0)
+		return ;
+	if (is_stack_sorted(&(all->a), n))
+	{
+		if (all->a->pos == 1)
+			return ;
+		else
+			rotate_until_sorted(&(all->a), &(all->b), max_len);
+	}
+	else
+		more_complex_algorithm(&(all->a), &(all->b), max_len, n);
+}
 
 void	rotate_until_sorted(t_stack **a, t_stack **b, int max_len)
 {
@@ -43,21 +58,6 @@ void	rotate_until_sorted(t_stack **a, t_stack **b, int max_len)
 		else if (rotation_direction == RRA)
 			op_rra(a, b, max_len);
 	}
-}
-
-void	ft_sort_stacks(t_stack **a, t_stack **b, int max_len, int n)
-{
-	if (*a == 0 || (*a)->next == 0)
-		return ;
-	if (is_stack_sorted(a, n))
-	{
-		if ((*a)->pos == 1)
-			return ;
-		else
-			rotate_until_sorted(a, b, max_len);
-	}
-	else
-		more_complex_algorithm(a, b, max_len, n);
 }
 
 /*

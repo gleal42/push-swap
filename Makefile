@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC := clang
+CC := gcc
 FLAGS := -Wall -Wextra -Werror -g 
 LIBRARIES := -Llibft -lft -Lmlc -lmlc 
 INCLUDE_DIRS := libft \
@@ -25,17 +25,6 @@ INCLUDE_DIRS := libft \
 INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := push_swap
 SRCS := push_swap.c \
-		validations/input_validations.c \
-		operations/operations_push_swap.c \
-		operations/operations_rotate_bwd.c \
-		operations/operations_rotate_fwd.c \
-		sort/execute_moves.c \
-		sort/limits_max_min.c \
-		sort/predict_limits_max_min.c \
-		sort/predict_ramps.c \
-		sort/prepare_moves.c \
-		sort/sort_algorithm.c \
-		sort/parameters.c \
 		stacks/prepare_stacks.c \
 		stacks/print_stacks.c \
 		stacks/stack_last.c \
@@ -52,6 +41,17 @@ SRCS := push_swap.c \
 		stacks/stackmap.c \
 		stacks/stacknew.c \
 		stacks/stacks_clear.c \
+		validations/input_validations.c \
+		operations/operations_push_swap.c \
+		operations/operations_rotate_bwd.c \
+		operations/operations_rotate_fwd.c \
+		sort/execute_moves.c \
+		sort/limits_max_min.c \
+		sort/predict_limits_max_min.c \
+		sort/predict_ramps.c \
+		sort/prepare_moves.c \
+		sort/sort_algorithm.c \
+		sort/parameters.c \
 		utils/get_info.c \
 		utils/init_utils.c \
 		utils/other_utils.c \

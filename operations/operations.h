@@ -1,7 +1,8 @@
 #ifndef OPERATIONS_H
 # define OPERATIONS_H
 
-# include "push_swap.h"
+# include "structs.h"
+# include "stacks.h"
 
 // operations_push_swap.c
 
