@@ -11,10 +11,11 @@ int		nbr_strs(char **strs);
 
 // init_utils.c
 
+void	init_rots(t_all *all);
 void	init_rot_a(t_all *all);
-void	init_rot_b(t_all *cmds);
+void	init_rot_b(t_all *all);
+void	init_lims(t_all *all, int n);
 void	init_cmd_list(t_cmds *cmds);
-void	init_cmd_list_exc_total(t_cmds *cmds);
 
 // other_utils.c
 

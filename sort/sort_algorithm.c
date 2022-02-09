@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:59:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/08 19:49:00 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/09 16:24:01 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,27 +65,23 @@ void	rotate_until_sorted(t_all *all, int max_len)
 ** @line-line	comment
 */
 
-/* don't forget that good in samne stack doesn't work well for 2 numbers in same stack
-	separate same stack from different stacks or add extra validation in if*/
+/* don't forget that good in samne stack doesn't 
+work well for 2 numbers in same stack
+separate same stack from different stacks or add extra validation in if
+*/
 
 // else if (!temp.forw_a || temp.forw_a->pos == temp.rev_a->pos)
 
 void	more_complex_algorithm(t_all *all, int max_a, int n)
 {
-	t_all	off;
 	t_all	temp;
-	int		last;
 
-	last = 0;
-	temp.lims.min_a = 1;
-	temp.lims.max_a = n;
-	temp.lims.min_b = 0;
-	temp.lims.max_b = 0;
+	init_lims(&temp, n);
+	temp = *all;
 	temp.forw_a = all->a;
 	temp.rev_a = all->a;
-	temp.ini_rot_a.ra = 0;
-	temp.ini_rot_a.rra = 0;
-	init_cmd_list(&(off.cmds));
+	init_rots(&temp);
+	init_cmd_list(&(all.cmds));
 	while (temp.forw_a)
 	{
 		init_cmd_list(&(temp.cmds));
@@ -158,10 +154,10 @@ void	more_complex_algorithm(t_all *all, int max_a, int n)
 	temp.rev_a = all->a;
 	temp.ini_rot_a.ra = 0;
 	temp.ini_rot_a.rra = 0;
-	while ( all->b)
+	while (all->b)
 	{
 		init_cmd_list(&(temp.cmds));
-		min_push_b_to_a_moves(all->a,  all->b, &temp);
+		min_push_b_to_a_moves(all->a, all->b, &temp);
 		execute_merge_ab(&temp.cmds, &all->a, &all->b, &temp.lims, max_a);
 	}
 	if (is_stack_sorted(&all->a, n))
