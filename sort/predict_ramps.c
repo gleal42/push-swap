@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:02:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/07 01:28:48 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/09 20:11:08 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a,
 	int		has_rrb;
 
 	(void)a;
-	init_cmd_list(&nbr_rot_pred);
+	ft_bzero(&nbr_rot_pred, sizeof(t_cmds));
 	has_rb = 0;
 	has_rrb = 0;
 	if (!b || !b->next)

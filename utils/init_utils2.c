@@ -1,36 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_utils.c                                       :+:      :+:    :+:   */
+/*   init_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/25 21:45:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/09 20:32:29 by gleal            ###   ########.fr       */
+/*   Created: 2022/02/09 17:19:57 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/09 17:22:22 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	init_temp(t_all *temp, t_all *all, int n)
+void	init_stacks_iteration(t_all *all)
 {
-	*temp = *all;
-	init_rots(temp);
-	init_lims(temp, n);
-	ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
-	init_stacks_iteration(temp);
-}
-
-void	init_rots(t_all *all)
-{
-	ft_bzero(&all->ini_rot_a, sizeof(t_rot_a));
-	ft_bzero(&all->ini_rot_b, sizeof(t_rot_b));
-}
-
-void	init_lims(t_all *all, int n)
-{
-	all->lims.min_a = 1;
-	all->lims.max_a = n;
-	all->lims.min_b = 0;
-	all->lims.max_b = 0;
+	all->forw_a = all->a;
+	all->rev_a = all->a;
 }

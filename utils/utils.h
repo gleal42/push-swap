@@ -11,11 +11,16 @@ int		nbr_strs(char **strs);
 
 // init_utils.c
 
+void	init_temp(t_all *temp, t_all *all, int n);
 void	init_rots(t_all *all);
 void	init_rot_a(t_all *all);
 void	init_rot_b(t_all *all);
 void	init_lims(t_all *all, int n);
 void	init_cmd_list(t_cmds *cmds);
+
+// init_utils2.c
+
+void	init_stacks_iteration(t_all *all);
 
 // other_utils.c
 

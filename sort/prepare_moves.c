@@ -28,10 +28,10 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp,
 	t_stack	*off_nbr;
 
 	first_nbr = firstinramp;
-	init_cmds = temp->cmds;
+	init_cmds = temp->exec_cmds;
 	off_cmds = init_cmds;
 	off_nbr = firstinramp;
-	init_cmd_list(&best_cmds);
+	ft_bzero(&best_cmds, sizeof(t_cmds));
 	while (1)
 	{
 		predict_merge_moves(first_nbr, firstinramp, a, b, &init_cmds, temp);
@@ -56,7 +56,7 @@ void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp,
 	}
 	off_cmds.ra = best_cmds.ra;
 	off_cmds.rra = best_cmds.rra;
-	temp->cmds = off_cmds;
+	temp->exec_cmds = off_cmds;
 	place_in_b(b, temp, off_nbr);
 }
 
@@ -69,48 +69,48 @@ void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved)
 	rev_total = 0;
 	has_rb = 0;
 	has_rrb = 0;
-	if (temp->cmds.ra)
-		temp->cmds.type = PUSH_B_FWD;
+	if (temp->exec_cmds.ra)
+		temp->exec_cmds.type = PUSH_B_FWD;
 	else
-		temp->cmds.type = PUSH_B_BWD;
-	temp->cmds.pb++;
-	temp->cmds.total = temp->cmds.ra + temp->cmds.rb
-		+ temp->cmds.rr + temp->cmds.rra + temp->cmds.rrb
-		+ temp->cmds.rrr + temp->cmds.pb;
+		temp->exec_cmds.type = PUSH_B_BWD;
+	temp->exec_cmds.pb++;
+	temp->exec_cmds.total = temp->exec_cmds.ra + temp->exec_cmds.rb
+		+ temp->exec_cmds.rr + temp->exec_cmds.rra + temp->exec_cmds.rrb
+		+ temp->exec_cmds.rrr + temp->exec_cmds.pb;
 	if (!b)
 		return ;
 	if (!b->next)
 	{
 		has_rb++;
-		calculate_initial_pushmoves(has_rb, has_rrb, &temp->cmds);
+		calculate_initial_pushmoves(has_rb, has_rrb, &temp->exec_cmds);
 		return ;
 	}
 	if (is_next_nbr_bigger(tobemoved, b->prev, temp->lims.min_b, temp->lims.max_b)
 		&& is_prev_nbr_smaller(tobemoved, b, temp->lims.min_b, temp->lims.max_b))
 	{
-		if (temp->cmds.ra || (!temp->cmds.ra && !temp->cmds.rra))
+		if (temp->exec_cmds.ra || (!temp->exec_cmds.ra && !temp->exec_cmds.rra))
 			has_rb++;
-		else if (temp->cmds.rra)
+		else if (temp->exec_cmds.rra)
 			has_rrb++;
 	}
 	temp->forw_b = b->next;
 	temp->rev_b = b->prev->prev;
 	while (!has_rb && !has_rrb && temp->forw_b && temp->rev_b)
 	{
-		if (temp->cmds.ra > 0)
+		if (temp->exec_cmds.ra > 0)
 		{
-			temp->cmds.ra--;
-			temp->cmds.rr++;
+			temp->exec_cmds.ra--;
+			temp->exec_cmds.rr++;
 		}
 		else
-			temp->cmds.rb++;
-		if (temp->cmds.rra > 0)
+			temp->exec_cmds.rb++;
+		if (temp->exec_cmds.rra > 0)
 		{
-			temp->cmds.rra--;
-			temp->cmds.rrr++;
+			temp->exec_cmds.rra--;
+			temp->exec_cmds.rrr++;
 		}
 		else
-			temp->cmds.rrb++;
+			temp->exec_cmds.rrb++;
 		if (is_next_nbr_bigger(tobemoved, temp->forw_b->prev,
 				temp->lims.min_b, temp->lims.max_b)
 			&& is_prev_nbr_smaller(tobemoved, temp->forw_b,
@@ -124,24 +124,24 @@ void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved)
 		temp->forw_b = (temp->forw_b)->next;
 		temp->rev_b = (temp->rev_b)->prev;
 	}
-	calculate_initial_pushmoves(has_rb, has_rrb, &temp->cmds);
+	calculate_initial_pushmoves(has_rb, has_rrb, &temp->exec_cmds);
 }
 
 void	swap_a(t_all *temp, t_stack *firstinramp, t_stack *b)
 {
 	(void)firstinramp;
-	if (temp->cmds.ra)
-		temp->cmds.type = SWAP_FWD;
+	if (temp->exec_cmds.ra)
+		temp->exec_cmds.type = SWAP_FWD;
 	else
-		temp->cmds.type = SWAP_BWD;
-	temp->cmds.sa = 1;
-	temp->cmds.total = count_moves(&temp->cmds);
+		temp->exec_cmds.type = SWAP_BWD;
+	temp->exec_cmds.sa = 1;
+	temp->exec_cmds.total = count_moves(&temp->exec_cmds);
 	if (!b || !b->next)
 		return ;
 	if (!b->next->next && b->pos < b->next->pos)
 	{
-		temp->cmds.sa = 0;
-		temp->cmds.ss = 1;
+		temp->exec_cmds.sa = 0;
+		temp->exec_cmds.ss = 1;
 	}
 }
 
@@ -154,26 +154,26 @@ void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off)
 	temp.ini_rot_b.rrb = 0;
 	if (!b)
 		return ;
-	find_closest_b_spot(b, a, &temp, off->cmds.total);
-	off->cmds = temp.cmds;
+	find_closest_b_spot(b, a, &temp, off->exec_cmds.total);
+	off->exec_cmds = temp.exec_cmds;
 	off->forw_b = b->next;
 	off->rev_b = b->prev;
-	while (off->forw_b && (temp.ini_rot_b.rb < off->cmds.total
-			|| temp.ini_rot_b.rrb < off->cmds.total))
+	while (off->forw_b && (temp.ini_rot_b.rb < off->exec_cmds.total
+			|| temp.ini_rot_b.rrb < off->exec_cmds.total))
 	{
-		init_cmd_list(&temp.cmds);
+		ft_bzero(&temp.exec_cmds, sizeof(t_cmds));
 		temp.ini_rot_b.rrb = 0;
 		temp.ini_rot_b.rb++;
-		find_closest_b_spot(off->forw_b, a, &temp, off->cmds.total);
-		if (temp.cmds.total && (temp.cmds.total < off->cmds.total))
-			off->cmds = temp.cmds;
+		find_closest_b_spot(off->forw_b, a, &temp, off->exec_cmds.total);
+		if (temp.exec_cmds.total && (temp.exec_cmds.total < off->exec_cmds.total))
+			off->exec_cmds = temp.exec_cmds;
 		off->forw_b = off->forw_b->next;
-		init_cmd_list(&temp.cmds);
+		ft_bzero(&temp.exec_cmds, sizeof(t_cmds));
 		temp.ini_rot_b.rrb = temp.ini_rot_b.rb;
 		temp.ini_rot_b.rb = 0;
-		find_closest_b_spot(off->rev_b, a, &temp, off->cmds.total);
-		if (temp.cmds.total && (temp.cmds.total < off->cmds.total))
-			off->cmds = temp.cmds;
+		find_closest_b_spot(off->rev_b, a, &temp, off->exec_cmds.total);
+		if (temp.exec_cmds.total && (temp.exec_cmds.total < off->exec_cmds.total))
+			off->exec_cmds = temp.exec_cmds;
 		temp.ini_rot_b.rb = temp.ini_rot_b.rrb;
 		off->rev_b = off->rev_b->prev;
 	}

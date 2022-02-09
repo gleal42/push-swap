@@ -32,8 +32,6 @@ void	print_char(char *str, int start, int len)
 	printf("%d\n", counter);
 	return ; */
 
-/* int	counter = 0; */
-
 void	print_both_stacks(t_stack *a, t_stack *b, int max_len)
 {
 	int	i;

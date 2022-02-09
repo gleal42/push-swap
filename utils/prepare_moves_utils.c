@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/07 00:31:13 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/09 20:31:03 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max)
 	int	rev_total;
 	int	fwd_total;
 
-	init_cmd_list(&temp->cmds);
+	ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
 	good_spot_forward = 0;
 	good_spot_reverse = 0;
 	fwd_total = 0;
 	rev_total = 0;
-	temp->cmds.rb = temp->ini_rot_b.rb;
-	temp->cmds.rrb = temp->ini_rot_b.rrb;
-	temp->cmds.pa++;
-	temp->cmds.total = count_moves(&temp->cmds);
+	temp->exec_cmds.rb = temp->ini_rot_b.rb;
+	temp->exec_cmds.rrb = temp->ini_rot_b.rrb;
+	temp->exec_cmds.pa++;
+	temp->exec_cmds.total = count_moves(&temp->exec_cmds);
 	if (!a)
 		return ;
 	if (!a->next)
@@ -35,7 +35,7 @@ void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max)
 		if (cur_b->nbr > a->nbr)
 		{
 			good_spot_forward++;
-			temp->cmds.ra++;
+			temp->exec_cmds.ra++;
 		}
 		else
 			good_spot_reverse++;
@@ -45,33 +45,33 @@ void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max)
 		return ;
 	temp->forw_a = a->next;
 	temp->rev_a = a->prev->prev;
-	fwd_total = temp->cmds.total;
-	rev_total = temp->cmds.total;
+	fwd_total = temp->exec_cmds.total;
+	rev_total = temp->exec_cmds.total;
 	while (!good_spot_forward && !good_spot_reverse && temp->forw_a)
 	{
-		if (temp->cmds.rb > 0)
+		if (temp->exec_cmds.rb > 0)
 		{	
-			temp->cmds.rb--;
-			temp->cmds.rr++;
+			temp->exec_cmds.rb--;
+			temp->exec_cmds.rr++;
 		}
 		else
 		{
-			temp->cmds.ra++;
+			temp->exec_cmds.ra++;
 			fwd_total++;
 		}
-		if (temp->cmds.rrb > 0)
+		if (temp->exec_cmds.rrb > 0)
 		{
-			temp->cmds.rrb--;
-			temp->cmds.rrr++;
+			temp->exec_cmds.rrb--;
+			temp->exec_cmds.rrr++;
 		}
 		else
 		{
-			temp->cmds.rra++;
+			temp->exec_cmds.rra++;
 			rev_total++;
 		}
 		if (max && (fwd_total >= max && rev_total >= max))
 		{
-			init_cmd_list(&temp->cmds);
+			ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
 			return ;
 		}
 		if (is_next_nbr_bigger(cur_b, temp->forw_a,
@@ -101,23 +101,23 @@ void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max)
 	if (!good_spot_forward && !good_spot_reverse)
 	{
 		printf("\033[0;34m📌 Here in %s line %d\n\033[0m", __FILE__, __LINE__);
-		init_cmd_list(&temp->cmds);
+		ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
 		return ;
 	}
 	if (good_spot_forward && (fwd_total <= rev_total || !good_spot_reverse))
 	{
-		temp->cmds.rra = 0;
-		temp->cmds.rrb = temp->cmds.rrr;
-		temp->cmds.rrr = 0;
-		temp->cmds.total = fwd_total;
+		temp->exec_cmds.rra = 0;
+		temp->exec_cmds.rrb = temp->exec_cmds.rrr;
+		temp->exec_cmds.rrr = 0;
+		temp->exec_cmds.total = fwd_total;
 	}
 	else if (good_spot_reverse
 		&& (rev_total <= fwd_total || !good_spot_reverse))
 	{
-		temp->cmds.ra = 0;
-		temp->cmds.rb = temp->cmds.rr;
-		temp->cmds.rr = 0;
-		temp->cmds.total = rev_total;
+		temp->exec_cmds.ra = 0;
+		temp->exec_cmds.rb = temp->exec_cmds.rr;
+		temp->exec_cmds.rr = 0;
+		temp->exec_cmds.total = rev_total;
 	}
 }
 

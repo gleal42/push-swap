@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:49:21 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/07 18:02:01 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/09 19:08:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ typedef struct s_all
 	t_stack			*rev_b;
 	t_rot_a			ini_rot_a;
 	t_rot_b			ini_rot_b;
-	t_cmds			cmds;
+	t_cmds			exec_cmds;
+	t_cmds			pred_cmds;
 	t_limits		lims;
 }					t_all;
 
