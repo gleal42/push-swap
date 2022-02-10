@@ -59,7 +59,9 @@ void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off);
 
 void	ft_sort_stacks(t_all *all, int max_len, int n);
 void	rotate_until_sorted(t_all *all, int max_len);
+int		simple_rotate_algorithm(t_all *all, int max_a, int n);
 void	more_complex_algorithm(t_all *all, int max_a, int n);
+void	sort_a_b(t_all *all, t_all *temp, int max_a);
 
 // validations.c
 

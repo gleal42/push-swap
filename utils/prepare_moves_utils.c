@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/09 20:31:03 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/10 21:10:56 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,15 +107,15 @@ void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max)
 	if (good_spot_forward && (fwd_total <= rev_total || !good_spot_reverse))
 	{
 		temp->exec_cmds.rra = 0;
-		temp->exec_cmds.rrb = temp->exec_cmds.rrr;
+		temp->exec_cmds.rrb += temp->exec_cmds.rrr;
 		temp->exec_cmds.rrr = 0;
 		temp->exec_cmds.total = fwd_total;
 	}
 	else if (good_spot_reverse
-		&& (rev_total <= fwd_total || !good_spot_reverse))
+		&& (rev_total <= fwd_total || !good_spot_forward))
 	{
 		temp->exec_cmds.ra = 0;
-		temp->exec_cmds.rb = temp->exec_cmds.rr;
+		temp->exec_cmds.rb += temp->exec_cmds.rr;
 		temp->exec_cmds.rr = 0;
 		temp->exec_cmds.total = rev_total;
 	}

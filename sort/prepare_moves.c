@@ -150,8 +150,7 @@ void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off)
 	t_all	temp;
 
 	temp = *off;
-	temp.ini_rot_b.rb = 0;
-	temp.ini_rot_b.rrb = 0;
+	ft_bzero(&temp.ini_rot_b, sizeof(t_rot_b));
 	if (!b)
 		return ;
 	find_closest_b_spot(b, a, &temp, off->exec_cmds.total);

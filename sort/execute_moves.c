@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/04 20:54:29 by gleal             #+#    #+#             */
-/*   Updated: 2021/08/07 17:35:44 gleal            ###   ########.fr       */
+/*   Created: 2022/02/10 15:48:55 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/10 17:47:53 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,16 @@ void	execute_moves(t_cmds *cmds, t_stack **a,
 void	execute_merge_ab(t_cmds *cmds, t_stack **a,
 		t_stack **b, t_limits *lims, int max_len)
 {
+	while (cmds->rb > 0)
+	{
+		op_rb(a, b, max_len);
+		(cmds->rb)--;
+	}
+	while (cmds->rrb > 0)
+	{
+		op_rrb(a, b, max_len);
+		(cmds->rrb)--;
+	}
 	while (cmds->rr > 0)
 	{
 		op_rr(a, b, max_len);

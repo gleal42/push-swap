@@ -58,6 +58,7 @@ SRCS := push_swap.c \
 		utils/other_utils.c \
 		utils/prepare_moves_utils.c \
 		utils/sort_algorithm_utils.c \
+		utils/sort_algorithm_utils2.c \
 		utils/update_values.c
 
 OBJS := $(SRCS:.c=.o)

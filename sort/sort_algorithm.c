@@ -24,32 +24,24 @@ void	ft_sort_stacks(t_all *all, int max_len, int n)
 	ft_bzero(&all->exec_cmds, sizeof(t_cmds));
 	if (all->a == 0 || all->a->next == 0)
 		return ;
-	if (is_stack_sorted(&(all->a), n))
-	{
-		if (all->a->pos == 1)
-			return ;
-		else
-			rotate_until_sorted(all, max_len);
-	}
+	if (simple_rotate_algorithm(all, max_len, n))
+		return ;
 	else
 		more_complex_algorithm(all, max_len, n);
 }
 
-void	rotate_until_sorted(t_all *all, int max_len)
+int	simple_rotate_algorithm(t_all *all, int max_a, int n)
 {
-	int		rotation_direction;
-
-	rotation_direction = 0;
-	all->forw_a = (all->a)->next;
-	all->rev_a = (all->a)->prev;
-	find_rotation_direction(all, &rotation_direction);
-	while (all->a->pos != 1)
+	if (is_stack_sorted(&(all->a), n))
 	{
-		if (rotation_direction == RA)
-			op_ra(&all->a, &all->b, max_len);
-		else if (rotation_direction == RRA)
-			op_rra(&all->a, &all->b, max_len);
+		if (all->a->pos == 1)
+			return (1);
+		else
+			rotate_until_sorted(all, max_a);
+		return (1);
 	}
+	else
+		return (0);
 }
 
 /*
@@ -78,37 +70,9 @@ void	more_complex_algorithm(t_all *all, int max_a, int n)
 	t_all	temp;
 
 	init_temp_all(&temp, all, n);
-	while (temp.forw_a)
-	{
-		ft_bzero(&temp.exec_cmds, sizeof(t_cmds));
-		analyze_fwd(&all, &temp);
-		analyze_bwd(&all, &temp);
-		if (have_analyzed_enough(all->exec_cmds, temp.ini_rot_a,
-				temp.forw_a, temp.rev_a))
-		{
-			execute_moves(&all->exec_cmds, &all->a, &all->b, &temp.lims, max_a);
-			init_stacks_iteration(&temp, all);
-			ft_bzero(&(temp.ini_rot_a), sizeof(t_rot_a));
-			ft_bzero(&all->exec_cmds, sizeof(t_cmds));
-		}
-		else if (!temp.forw_a || temp.forw_a->pos == temp.rev_a->pos)
-			break ;
-	}
-	init_stacks_iteration(&temp, all);
-	ft_bzero(&(temp.ini_rot_a), sizeof(t_rot_a));
-	while (all->b)
-	{
-		ft_bzero(&temp.exec_cmds, sizeof(t_cmds));
-		min_push_b_to_a_moves(all->a, all->b, &temp);
-		execute_merge_ab(&temp.exec_cmds, &all->a, &all->b, &temp.lims, max_a);
-	}
-	if (is_stack_sorted(&all->a, n))
-	{
-		if ((all->a)->pos == 1)
-			return ;
-		else
-			rotate_until_sorted(all, max_a);
-	}
-	else
-		printf("WHOOPSIE\n");
+	sort_a_b(all, &temp, max_a);
+	merge_a_b(&all, &temp, max_a);
+	if (!simple_rotate_algorithm(all, max_a, n))
+		return ;
+		//printf("WHOOPSIE\n");
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/10 17:33:14 by gleal            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef UTILS_H
 # define UTILS_H
 
@@ -17,7 +29,7 @@ void	init_lims(t_all *all, int n);
 
 // init_utils2.c
 
-void	init_stacks_iteration(t_all *tobeinit, t_all *ref);
+void	init_stacks_iteration_a(t_all *tobeinit, t_all *ref);
 
 // other_utils.c
 
@@ -30,6 +42,12 @@ void	predict_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
 void	calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
 
 // sort_algorithm_utils.c
+
+void	rotate_until_sorted(t_all *all, int max_len);
+void	sort_a_b(t_all *all, t_all *temp, int max_a);
+void	merge_a_b(t_all **all, t_all *temp, int max_a);
+
+// sort_algorithm_utils2.c
 
 void	find_rotation_direction(t_all *all, int *rotation_direction);
 void	analyze_fwd(t_all **all, t_all *temp);
