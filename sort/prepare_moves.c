@@ -127,7 +127,7 @@ void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved)
 	calculate_initial_pushmoves(has_rb, has_rrb, &temp->exec_cmds);
 }
 
-void	swap_a(t_all *temp, t_stack *firstinramp, t_stack *b)
+void	swap_a(t_all *temp, t_stack *firstinramp, t_stack *a)
 {
 	(void)firstinramp;
 	if (temp->exec_cmds.ra)
@@ -136,9 +136,9 @@ void	swap_a(t_all *temp, t_stack *firstinramp, t_stack *b)
 		temp->exec_cmds.type = SWAP_BWD;
 	temp->exec_cmds.sa = 1;
 	temp->exec_cmds.total = count_moves(&temp->exec_cmds);
-	if (!b || !b->next)
+	if (!a || !a->next)
 		return ;
-	if (!b->next->next && b->pos < b->next->pos)
+	if (!a->next->next && a->pos < a->next->pos)
 	{
 		temp->exec_cmds.sa = 0;
 		temp->exec_cmds.ss = 1;

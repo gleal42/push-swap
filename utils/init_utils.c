@@ -6,19 +6,20 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 21:45:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/09 20:32:29 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/10 15:01:31 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	init_temp(t_all *temp, t_all *all, int n)
+void	init_temp_all(t_all *temp, t_all *all, int n)
 {
+	init_rots(all);
+	init_lims(all, n);
+	ft_bzero(&all->exec_cmds, sizeof(t_cmds));
+	ft_bzero(&all->pred_cmds, sizeof(t_cmds));
+	init_stacks_iteration(all, all);
 	*temp = *all;
-	init_rots(temp);
-	init_lims(temp, n);
-	ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
-	init_stacks_iteration(temp);
 }
 
 void	init_rots(t_all *all)

@@ -11,16 +11,13 @@ int		nbr_strs(char **strs);
 
 // init_utils.c
 
-void	init_temp(t_all *temp, t_all *all, int n);
+void	init_temp_all(t_all *temp, t_all *all, int n);
 void	init_rots(t_all *all);
-void	init_rot_a(t_all *all);
-void	init_rot_b(t_all *all);
 void	init_lims(t_all *all, int n);
-void	init_cmd_list(t_cmds *cmds);
 
 // init_utils2.c
 
-void	init_stacks_iteration(t_all *all);
+void	init_stacks_iteration(t_all *tobeinit, t_all *ref);
 
 // other_utils.c
 
@@ -35,6 +32,8 @@ void	calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
 // sort_algorithm_utils.c
 
 void	find_rotation_direction(t_all *all, int *rotation_direction);
+void	analyze_fwd(t_all **all, t_all *temp);
+void	analyze_bwd(t_all **all, t_all *temp);
 
 // update_values.c
 

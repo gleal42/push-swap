@@ -6,14 +6,14 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/09 17:19:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/09 17:22:22 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/10 14:59:27 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	init_stacks_iteration(t_all *all)
+void	init_stacks_iteration(t_all *tobeinit, t_all *ref)
 {
-	all->forw_a = all->a;
-	all->rev_a = all->a;
+	tobeinit->forw_a = ref->a;
+	tobeinit->rev_a = ref->a;
 }
