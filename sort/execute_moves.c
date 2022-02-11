@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 15:48:55 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 20:42:21 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/11 20:57:56 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	execute_pb_backward(t_cmds *cmds, t_stack **a,
 		op_rrb(a, b, max_len);
 	if (cmds->pb-- > 0)
 	{
-		set_lims_stack_a_pb(a, b, &lims);
-		set_lims_stack_b_pb(a, b, &lims);
+		set_lims_stack_a_pb(a, b, lims);
+		set_lims_stack_b_pb(a, b, lims);
 		op_pb(a, b, max_len);
 	}
 }

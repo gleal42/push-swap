@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 20:44:40 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/11 21:02:11 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 
 // execute_moves_utils.c
 
-void	set_lims_stack_a_pb(t_stack **a, t_stack **b, t_limits **lims);
-void	set_both_a_lims_as(t_limits ***lims, int value);
-void	set_lims_stack_b_pb(t_stack **a, t_stack **b, t_limits **lims);
-void	set_both_b_lims_as(t_limits ***lims, int value);
+void	set_lims_stack_a_pb(t_stack **a, t_stack **b, t_limits *lims);
+void	set_both_a_lims_as(t_limits *lims, int value);
+void	set_lims_stack_b_pb(t_stack **a, t_stack **b, t_limits *lims);
+void	set_both_b_lims_as(t_limits *lims, int value);
 
 // get_info.c
 
