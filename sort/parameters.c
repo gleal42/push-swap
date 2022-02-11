@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 21:52:01 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/07 01:53:11 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/11 13:41:29y gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,25 +177,17 @@ int	is_prev_nbr_smaller(t_stack *cur, t_stack *prev_one,
 
 int	is_stack_sorted(t_stack **a, int n)
 {
-	t_stack	*temp_cur;
-	t_stack	*temp_next;
+	t_stack	*temp;
 
-	temp_cur = *a;
-	temp_next = (*a)->next;
-	while (temp_next)
+	temp = *a;
+	while (temp->next)
 	{
-		if (temp_next->pos == 1)
-		{
-			if (temp_cur->pos != n)
-				return (0);
-		}
-		else
-		{
-			if (temp_next->pos < temp_cur->pos)
-				return (0);
-		}
-		temp_cur = temp_cur->next;
-		temp_next = temp_next->next;
-	}	
-	return (1);
+		if(!is_next_nbr_bigger(temp, temp->next, 1, n))
+			return (0);
+		temp = temp->next;
+	}
+	if (!is_next_nbr_bigger(temp, *a, 1, n))
+		return (0);
+	else
+		return (1);
 }
