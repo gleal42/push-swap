@@ -42,14 +42,15 @@ int		predict_rotationsb_curnbr(t_cmds *temp_cmd,
 			t_stack *cur_stack, t_stack **cur_b, t_all *temp, t_limits *limits);
 void	predict_place_in_b(t_cmds *cmds, t_stack *b,
 			t_stack *tobemoved, t_stack **cur_b, t_all *temp);
-int		predict_merge_moves(t_stack *first_nbr,
-			t_stack *firstinramp, t_stack *a, t_stack *b,
-			t_cmds *temp_cmd, t_all *temp);
+int		predict_merge_moves(t_all *all, t_all *temp, t_stack *firstinramp);
+
+//int		predict_merge_moves(t_stack *first_nbr,
+//			t_stack *firstinramp, t_stack *a, t_stack *b,
+//			t_cmds *temp_cmd, t_all *temp);
 
 // prepare_moves.c
 
-void	merge_ramp_spot(t_stack *a, t_stack *b,
-			t_all *temp, t_stack *firstinramp);
+void	merge_ramp_spot(t_all *all, t_all *temp, t_stack *firstinramp);
 void	place_in_b(t_stack *b, t_all *temp,
 			t_stack *tobemoved);
 void	swap_a(t_all *temp, t_stack *tobemoved, t_stack *b);

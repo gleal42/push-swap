@@ -5,60 +5,58 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/05 16:56:33 by gleal             #+#    #+#             */
-/*   Updated: 2021/12/19 22:23:55y gleal            ###   ########.fr       */
+/*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/11 19:47:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
 
 /* 
-	existe um commit anterior em que merge ramp spot estava diferente (ver nome dos commits e ver se vale a pena voltar)
-	Adicionar o predict_a só para o primeiro numero (para ter conta os ra e rra substituirem por rr e rrr)
+	existe um commit anterior em que merge ramp spot
+	estava diferente (ver nome dos commits e ver se vale a pena voltar)
+	Adicionar o predict_a só para o primeiro numero 
+	(para ter conta os ra e rra substituirem por rr e rrr)
 	Mandou mal o maior número (pôs num sitio aleatório)
+	tinha isto a seguir ao
+	(...)
+	best_cmds = init_cmds;
+	if (off_cmds.ra)
+		best_cmds.ra = off_cmds.ra;
+	else if (off_cmds.rra)
+		best_cmds.rra = off_cmds.rra;
 */
 
-void	merge_ramp_spot(t_stack *a, t_stack *b, t_all *temp,
-		t_stack *firstinramp)
+void	merge_ramp_spot(t_all *all, t_all *temp, t_stack *firstinramp)
 {
-	t_cmds	init_cmds;
-	t_cmds	best_cmds;
-	t_cmds	off_cmds;
-	t_stack	*first_nbr;
-	t_stack	*off_nbr;
-
-	first_nbr = firstinramp;
-	init_cmds = temp->exec_cmds;
-	off_cmds = init_cmds;
-	off_nbr = firstinramp;
-	ft_bzero(&best_cmds, sizeof(t_cmds));
+	all->ramp.first_nbr = firstinramp;
+	all->ramp.init_cmds = temp->exec_cmds;
+	all->ramp.off_nbr = firstinramp;
+	ft_bzero(&(all->ramp.best_cmds), sizeof(t_cmds));
 	while (1)
 	{
-		predict_merge_moves(first_nbr, firstinramp, a, b, &init_cmds, temp);
-		if (is_better_ramp(init_cmds, best_cmds))
+		predict_merge_moves(all, temp, firstinramp);
+		if (is_better_ramp(all->ramp.init_cmds, all->ramp.best_cmds))
 		{
-			best_cmds = init_cmds;
-			if (off_cmds.ra)
-				best_cmds.ra = off_cmds.ra;
-			else if (off_cmds.rra)
-				best_cmds.rra = off_cmds.rra;
-			off_nbr = first_nbr;
+			all->ramp.best_cmds = all->ramp.init_cmds;
+			all->ramp.off_nbr = all->ramp.first_nbr;
 		}
-		if (off_cmds.ra)
-			off_cmds.ra--;
-		else if (off_cmds.rra || !off_cmds.ra)
-			off_cmds.rra++;
-		init_cmds = off_cmds;
-		if ((first_nbr->prev)->pos == firstinramp->pos
-			|| (!continue_ramp_analysis(a, first_nbr, temp)))
+		not_rotate_fwd(&temp->exec_cmds);
+		all->ramp.init_cmds = temp->exec_cmds;
+		if ((all->ramp.first_nbr->prev)->pos == firstinramp->pos
+			|| (!continue_ramp_analysis(all->a, all->ramp.first_nbr, temp)))
 			break ;
-		first_nbr = first_nbr->prev;
+		all->ramp.first_nbr = all->ramp.first_nbr->prev;
 	}
-	off_cmds.ra = best_cmds.ra;
-	off_cmds.rra = best_cmds.rra;
-	temp->exec_cmds = off_cmds;
-	place_in_b(b, temp, off_nbr);
+	temp->exec_cmds.ra = all->ramp.best_cmds.ra;
+	temp->exec_cmds.rra = all->ramp.best_cmds.rra;
+	place_in_b(all->b, temp, all->ramp.off_nbr);
 }
+
+/*
+	quando chega ao final do loop (aquilo que aconteceu no rotate basico)
+	talvez preciso acrescentar mais uma verificacao
+*/
 
 void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved)
 {
@@ -85,10 +83,12 @@ void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved)
 		calculate_initial_pushmoves(has_rb, has_rrb, &temp->exec_cmds);
 		return ;
 	}
-	if (is_next_nbr_bigger(tobemoved, b->prev, temp->lims.min_b, temp->lims.max_b)
-		&& is_prev_nbr_smaller(tobemoved, b, temp->lims.min_b, temp->lims.max_b))
+	if (is_next_nbr_bigger(tobemoved, b->prev,
+			temp->lims.min_b, temp->lims.max_b)
+		&& is_prev_nbr_smaller(tobemoved, b,
+			temp->lims.min_b, temp->lims.max_b))
 	{
-		if (temp->exec_cmds.ra || (!temp->exec_cmds.ra && !temp->exec_cmds.rra))
+		if (temp->exec_cmds.ra || (!(temp->exec_cmds.ra) && !(temp->exec_cmds.rra)))
 			has_rb++;
 		else if (temp->exec_cmds.rra)
 			has_rrb++;
@@ -114,12 +114,12 @@ void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved)
 		if (is_next_nbr_bigger(tobemoved, temp->forw_b->prev,
 				temp->lims.min_b, temp->lims.max_b)
 			&& is_prev_nbr_smaller(tobemoved, temp->forw_b,
-					temp->lims.min_b, temp->lims.max_b))
+				temp->lims.min_b, temp->lims.max_b))
 			has_rb++;
 		if (is_next_nbr_bigger(tobemoved, temp->rev_b,
 				temp->lims.min_b, temp->lims.max_b)
 			&& is_prev_nbr_smaller(tobemoved, temp->rev_b->next,
-					temp->lims.min_b, temp->lims.max_b))
+				temp->lims.min_b, temp->lims.max_b))
 			has_rrb++;
 		temp->forw_b = (temp->forw_b)->next;
 		temp->rev_b = (temp->rev_b)->prev;
@@ -164,14 +164,16 @@ void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off)
 		temp.ini_rot_b.rrb = 0;
 		temp.ini_rot_b.rb++;
 		find_closest_b_spot(off->forw_b, a, &temp, off->exec_cmds.total);
-		if (temp.exec_cmds.total && (temp.exec_cmds.total < off->exec_cmds.total))
+		if (temp.exec_cmds.total
+			&& (temp.exec_cmds.total < off->exec_cmds.total))
 			off->exec_cmds = temp.exec_cmds;
 		off->forw_b = off->forw_b->next;
 		ft_bzero(&temp.exec_cmds, sizeof(t_cmds));
 		temp.ini_rot_b.rrb = temp.ini_rot_b.rb;
 		temp.ini_rot_b.rb = 0;
 		find_closest_b_spot(off->rev_b, a, &temp, off->exec_cmds.total);
-		if (temp.exec_cmds.total && (temp.exec_cmds.total < off->exec_cmds.total))
+		if (temp.exec_cmds.total
+			&& (temp.exec_cmds.total < off->exec_cmds.total))
 			off->exec_cmds = temp.exec_cmds;
 		temp.ini_rot_b.rb = temp.ini_rot_b.rrb;
 		off->rev_b = off->rev_b->prev;

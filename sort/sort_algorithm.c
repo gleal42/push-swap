@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/07 17:59:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/09 17:30:52by gleal            ###   ########.fr       */
+/*   Created: 2022/02/11 19:45:17 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/11 19:45:40 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ separate same stack from different stacks or add extra validation in if
 */
 
 // else if (!temp.forw_a || temp.forw_a->pos == temp.rev_a->pos)
+		//printf("WHOOPSIE\n");
 
 void	more_complex_algorithm(t_all *all, int max_a, int n)
 {
@@ -74,5 +75,4 @@ void	more_complex_algorithm(t_all *all, int max_a, int n)
 	merge_a_b(&all, &temp, max_a);
 	if (!simple_rotate_algorithm(all, max_a, n))
 		return ;
-		//printf("WHOOPSIE\n");
 }

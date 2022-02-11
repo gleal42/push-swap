@@ -6,11 +6,19 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 17:11:18 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/10 21:10:56 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/11 19:33:35 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+
+void	not_rotate_fwd(t_cmds *cmds)
+{
+	if (cmds->ra)
+		cmds->ra--;
+	else if (cmds->rra || !cmds->ra)
+		cmds->rra++;
+}
 
 void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max)
 {
@@ -41,7 +49,8 @@ void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max)
 			good_spot_reverse++;
 	}
 	if (is_next_nbr_bigger(cur_b, a, temp->lims.min_a, temp->lims.max_a)
-		&& is_prev_nbr_smaller(cur_b, a->prev, temp->lims.min_a, temp->lims.max_a))
+		&& is_prev_nbr_smaller(cur_b, a->prev,
+			temp->lims.min_a, temp->lims.max_a))
 		return ;
 	temp->forw_a = a->next;
 	temp->rev_a = a->prev->prev;
@@ -77,14 +86,14 @@ void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max)
 		if (is_next_nbr_bigger(cur_b, temp->forw_a,
 				temp->lims.min_a, temp->lims.max_a)
 			&& is_prev_nbr_smaller(cur_b, temp->forw_a->prev,
-					temp->lims.min_a, temp->lims.max_a))
+				temp->lims.min_a, temp->lims.max_a))
 			good_spot_forward++;
 		if (temp->rev_a->next)
 		{
 			if (is_prev_nbr_smaller(cur_b, temp->rev_a,
 					temp->lims.min_a, temp->lims.max_a)
 				&& is_next_nbr_bigger(cur_b, temp->rev_a->next,
-						temp->lims.min_a, temp->lims.max_a))
+					temp->lims.min_a, temp->lims.max_a))
 				good_spot_reverse++;
 		}
 		else
@@ -92,7 +101,7 @@ void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max)
 			if (is_prev_nbr_smaller(cur_b, temp->rev_a,
 					temp->lims.min_a, temp->lims.max_a)
 				&& is_next_nbr_bigger(cur_b, a, temp->lims.min_a,
-						temp->lims.max_a))
+					temp->lims.max_a))
 				good_spot_reverse++;
 		}
 		temp->rev_a = (temp->rev_a)->prev;
@@ -145,9 +154,11 @@ void	calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds)
 	rev_total = 0;
 	fwd_total = 0;
 	if (has_rb)
-		fwd_total = cmds->ra + cmds->rr + cmds->rra + cmds->rrr + cmds->rb + cmds->pb;
+		fwd_total = cmds->ra + cmds->rr
+			+ cmds->rra + cmds->rrr + cmds->rb + cmds->pb;
 	if (has_rrb)
-		rev_total = cmds->ra + cmds->rr + cmds->rra + cmds->rrr + cmds->rrb + cmds->pb;
+		rev_total = cmds->ra + cmds->rr
+			+ cmds->rra + cmds->rrr + cmds->rrb + cmds->pb;
 	if ((fwd_total <= rev_total && has_rb) || !has_rrb)
 	{
 		cmds->rrb = 0;

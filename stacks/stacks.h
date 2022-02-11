@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   stacks.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/11 19:42:41 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/11 19:43:01 by gleal            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STACKS_H
 # define STACKS_H
 
@@ -17,7 +29,7 @@ void		stackdelone(t_stack *stack, void (*del)(int *));
 void		stackiter(t_stack *stack, void (*f)(int));
 void		stack_swap(t_stack **head);
 
-t_stack		*stackmap(t_stack *stack, int(*f)(int), void (*del)(int *));
+t_stack		*stackmap(t_stack *stack, int (*f)(int), void (*del)(int *));
 
 void		stacks_clear(t_stack **stack, void (*del)(int *));
 

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/20 10:34:23 by bcosters          #+#    #+#             */
-/*   Updated: 2022/02/06 19:29:21 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/11 14:31:51 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ typedef struct s_call
 # define ARRAY_SIZE 1024
 
 t_call				g_allocs_array[ARRAY_SIZE];
-static	void		*(*g_real_malloc)(unsigned long) = 0;
-static	void		(*g_real_free)(void *) = 0;
+static void			*(*g_real_malloc)(unsigned long) = 0;
+static void			(*g_real_free)(void *) = 0;
 
 /*
 **	HELPER FUNCTIONS

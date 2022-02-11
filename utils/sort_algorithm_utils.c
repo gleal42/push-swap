@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:01:10 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/10 17:58:04 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/11 19:36:24 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	sort_a_b(t_all *all, t_all *temp, int max_a)
 		if (have_analyzed_enough(all->exec_cmds, temp->ini_rot_a,
 				temp->forw_a, temp->rev_a))
 		{
-			execute_moves(&all->exec_cmds, &all->a, &all->b, &temp->lims, max_a);
+			execute_moves(&all->exec_cmds, &all->a,
+				&all->b, &temp->lims, max_a);
 			init_stacks_iteration_a(temp, all);
 			ft_bzero(&(temp->ini_rot_a), sizeof(t_rot_a));
 			ft_bzero(&all->exec_cmds, sizeof(t_cmds));
@@ -57,6 +58,7 @@ void	merge_a_b(t_all **all, t_all *temp, int max_a)
 	{
 		ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
 		min_push_b_to_a_moves((*all)->a, (*all)->b, temp);
-		execute_merge_ab(&temp->exec_cmds, &(*all)->a, &(*all)->b, &temp->lims, max_a);
+		execute_merge_ab(&temp->exec_cmds, &(*all)->a,
+			&(*all)->b, &temp->lims, max_a);
 	}
 }

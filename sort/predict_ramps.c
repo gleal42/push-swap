@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:02:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/09 20:11:08 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/11 19:25:02 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,43 +178,51 @@ first prediction pode ser com aquele predictmoves
 /* 2nd while line 20 maybe cur_a->next is not
 the best here (for the cases where there is no next) */
 
-int	predict_merge_moves(t_stack *first_nbr, t_stack *firstinramp,
-		t_stack *a, t_stack *b, t_cmds *temp_cmd, t_all *temp)
+//int	predict_merge_moves(t_all *all, t_all *temp, t_stack *firstinramp, t_stack *first_nbr, t_stack *firstinramp,
+//		t_stack *a, t_stack *b, t_cmds *temp_cmd)
+
+//int	predict_merge_moves(t_stack *first_nbr, t_stack *firstinramp,
+//		t_stack *a, t_stack *b, t_cmds *temp_cmd, t_all *temp)
+
+//predict_merge_moves(all, temp, firstinramp, all->ramp.first_nbr, all->a, all->b, &all->ramp.init_cmds);
+//predict_merge_moves(all->ramp.first_nbr, firstinramp, all->a, all->b, &all->ramp.init_cmds, temp);
+
+int	predict_merge_moves(t_all *all, t_all *temp, t_stack *firstinramp)
 {
 	t_stack		*cur_a;
 	t_stack		*cur_b;
 	t_limits	pred_limits;
 
-	cur_a = first_nbr;
-	cur_b = b;
+	cur_a = all->ramp.first_nbr;
+	cur_b = all->b;
 	pred_limits = temp->lims;
 	while (cur_a->pos != firstinramp->pos)
 	{
-		temp_cmd->pb++;
-		if (cur_a->pos == first_nbr->pos)
-			predict_place_in_b(temp_cmd, b, cur_a, &cur_b, temp);
+		(&all->ramp.init_cmds)->pb++;
+		if (cur_a->pos == all->ramp.first_nbr->pos)
+			predict_place_in_b(&all->ramp.init_cmds, all->b, cur_a, &cur_b, temp);
 		else
-			predict_rotationsb_curnbr(temp_cmd, a, b,
-				first_nbr, cur_a, &cur_b, temp, &pred_limits);
+			predict_rotationsb_curnbr(&all->ramp.init_cmds, all->a, all->b,
+				all->ramp.first_nbr, cur_a, &cur_b, temp, &pred_limits);
 		if (!cur_a->next)
-			cur_a = a;
+			cur_a = all->a;
 		else
 			cur_a = cur_a->next;
 	}
-	while (!is_next_nbr_bigger(first_nbr->prev, cur_a,
+	while (!is_next_nbr_bigger(all->ramp.first_nbr->prev, cur_a,
 			pred_limits.min_a, pred_limits.max_a))
 	{
-		temp_cmd->pb++;
-		if (cur_a->pos == first_nbr->pos)
-			predict_place_in_b(temp_cmd, b, cur_a, &cur_b, temp);
+		(&all->ramp.init_cmds)->pb++;
+		if (cur_a->pos == all->ramp.first_nbr->pos)
+			predict_place_in_b(&all->ramp.init_cmds, all->b, cur_a, &cur_b, temp);
 		else
-			predict_rotationsb_curnbr(temp_cmd, a, b,
-				first_nbr, cur_a, &cur_b, temp, &pred_limits);
+			predict_rotationsb_curnbr(&all->ramp.init_cmds, all->a, all->b,
+				all->ramp.first_nbr, cur_a, &cur_b, temp, &pred_limits);
 		if (!cur_a->next)
-			cur_a = a;
+			cur_a = all->a;
 		else
 			cur_a = cur_a->next;
 	}
-	temp_cmd->total = count_moves(temp_cmd);
+	(&all->ramp.init_cmds)->total = count_moves(&all->ramp.init_cmds);
 	return (0);
 }

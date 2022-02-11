@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/10 17:33:14 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/11 19:27:40 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	delete_stack(int *content);
 
 // prepare_moves_utils.c
 
+void	not_rotate_fwd(t_cmds *cmds);
 void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max);
 void	predict_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
 void	calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 15:34:05 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/10 15:45:35 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/11 15:52:06 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	analyze_fwd(t_all **all, t_all *temp)
 		{
 			temp->ini_rot_a.ra++;
 			temp->exec_cmds.ra = temp->ini_rot_a.ra;
-			merge_ramp_spot((*all)->a, (*all)->b, temp, temp->forw_a->next);
+			merge_ramp_spot(*all, temp, temp->forw_a->next);
 		}
 		if (is_temp_better(temp->exec_cmds, (*all)->exec_cmds))
 			(*all)->exec_cmds = temp->exec_cmds;
@@ -82,7 +82,7 @@ void	analyze_bwd(t_all **all, t_all *temp)
 		else
 		{
 			temp->exec_cmds.rra = temp->ini_rot_a.rra;
-			merge_ramp_spot((*all)->a, (*all)->b, temp, temp->rev_a);
+			merge_ramp_spot(*all, temp, temp->rev_a);
 			temp->ini_rot_a.rra++;
 		}
 		if (is_temp_better(temp->exec_cmds, (*all)->exec_cmds))

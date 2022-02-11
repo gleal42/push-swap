@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:13:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/07 00:41:58 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/11 19:35:17 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ void	add_rbs(t_stack *a, t_stack *first_nbr,
 	sent_stack = first_nbr;
 	while (sent_stack->pos != cur_stack->pos)
 	{
-		if (is_prev_nbr_smaller(sent_stack, forw_b, limits->min_b, limits->max_b)
+		if (is_prev_nbr_smaller(sent_stack, forw_b,
+				limits->min_b, limits->max_b)
 			&& is_next_nbr_bigger(sent_stack, forw_b->next,
-					limits->min_b, limits->max_b))
+				limits->min_b, limits->max_b))
 			nbr_rot_pred->rb++;
 		if (!sent_stack->next)
 			sent_stack = a;
@@ -36,8 +37,9 @@ void	add_rbs(t_stack *a, t_stack *first_nbr,
 			sent_stack = sent_stack->next;
 	}
 }
-/* este foi copiado de cima, ver se faz sentido ou que modificações é preciso fazer.
-* utilizar os prev era top
+/* este foi copiado de cima, ver se faz sentido
+ou que modificações é preciso fazer.
+utilizar os prev era top
  */
 
 void	add_rrbs(t_stack *a, t_stack *first_nbr,
@@ -51,7 +53,7 @@ void	add_rrbs(t_stack *a, t_stack *first_nbr,
 	{
 		if (is_prev_nbr_smaller(sent_stack, rev_b, limits->min_b, limits->max_b)
 			&& is_next_nbr_bigger(sent_stack, rev_b->next,
-					limits->min_b, limits->max_b))
+				limits->min_b, limits->max_b))
 			nbr_rot_pred->rrb++;
 		if (!sent_stack->next)
 			sent_stack = a;
