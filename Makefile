@@ -52,6 +52,7 @@ SRCS := push_swap.c \
 		sort/prepare_moves.c \
 		sort/sort_algorithm.c \
 		sort/parameters.c \
+		utils/execute_moves_utils.c \
 		utils/get_info.c \
 		utils/init_utils.c \
 		utils/init_utils2.c \

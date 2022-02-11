@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:49:21 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 18:07:10 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/11 20:10:42 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,20 @@ typedef struct s_rot_b
 	int			rrb;
 }				t_rot_b;
 
+//typedef struct s_stacklims
+//{
+//	int			min;
+//	int			max;
+//}				t_stacklims;
+
 typedef struct s_limits
 {
 	int			min_a;
 	int			max_a;
 	int			min_b;
 	int			max_b;
+	//t_stacklims	a;
+	//t_stacklims	b;
 }				t_limits;
 
 typedef struct s_cmds

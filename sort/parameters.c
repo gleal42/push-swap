@@ -14,17 +14,17 @@
 
 int	is_cmd_table_clean(t_cmds cmds)
 {
-	if (cmds.sa == 0
-		&& cmds.sb == 0
-		&& cmds.ss == 0
-		&& cmds.ra == 0
-		&& cmds.rb == 0
-		&& cmds.rr == 0
-		&& cmds.pa == 0
-		&& cmds.pb == 0
-		&& cmds.rra == 0
-		&& cmds.rrr == 0
-		&& cmds.rrb == 0)
+	if (cmds.sa <= 0
+		&& cmds.sb <= 0
+		&& cmds.ss <= 0
+		&& cmds.ra <= 0
+		&& cmds.rb <= 0
+		&& cmds.rr <= 0
+		&& cmds.pa <= 0
+		&& cmds.pb <= 0
+		&& cmds.rra <= 0
+		&& cmds.rrr <= 0
+		&& cmds.rrb <= 0)
 		return (1);
 	else
 		return (0);
