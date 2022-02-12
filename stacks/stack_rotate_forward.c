@@ -12,9 +12,9 @@
 
 #include "stacks.h"
 
-void	stack_rotate_forward(t_stack **stack)
+void	stack_rotate_forward(t_elem **stack)
 {
-	t_stack	*second_stack;
+	t_elem	*second_stack;
 
 	if (*stack == NULL || (*stack)->next == NULL)
 		return ;
@@ -24,10 +24,10 @@ void	stack_rotate_forward(t_stack **stack)
 	(*stack)->prev->next = 0;
 }
 
-/* void	stack_rotate_forward(t_stack **stack)
+/* void	stack_rotate_forward(t_elem **stack)
 {
-	t_stack	*last_stack;
-	t_stack	*first_stack;
+	t_elem	*last_stack;
+	t_elem	*first_stack;
 
 	last_stack = stack_second_to_last(*stack);
 	first_stack = last_stack->next;

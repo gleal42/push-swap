@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stackadd_back.c                                 :+:      :+:    :+:   */
+/*   elem_add_back.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,9 +12,9 @@
 
 #include "stacks.h"
 
-void	stackadd_back(t_stack **stack, t_stack *new_stack)
+void	elem_add_back(t_elem **stack, t_elem *new_stack)
 {
-	t_stack	*head;
+	t_elem	*head;
 
 	head = *stack;
 	if (!stack || !new_stack)

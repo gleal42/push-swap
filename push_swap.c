@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:54:15 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 17:44:28 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 21:16:39 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,26 @@ void	push_swap(char **stack_a_args)
 	t_all	all;
 	int		n;
 
-	all.a = NULL;
-	all.b = NULL;
+	all.a.head = NULL;
+	all.b.head = NULL;
 	if (!is_input_integer(stack_a_args))
 		return ;
-	prepare_stack_a(&(all.a), stack_a_args);
+	prepare_stack_a(&(all.a.head), stack_a_args);
 	n = nbr_strs(stack_a_args);
-	add_positions(&(all.a), n);
+	add_positions(&(all.a.head), n);
 	max_len = biggest_str_len(stack_a_args);
-	print_both_stacks(all.a, all.b);
+	print_both_stacks(all.a.head, all.b.head);
 	ft_sort_stacks(&all, n);
-	stacks_clear(&(all.a), delete_stack);
-	stacks_clear(&(all.b), delete_stack);
+	stack_clear(&(all.a.head), delete_stack);
+	stack_clear(&(all.b.head), delete_stack);
 	check_leaks();
 	exit(EXIT_SUCCESS);
 }
 
-void	add_positions(t_stack	**a, int n)
+void	add_positions(t_elem	**a, int n)
 {
-	t_stack		*first;
-	t_stack		*next_min;
+	t_elem		*first;
+	t_elem		*next_min;
 	int			i;
 
 	i = 1;

@@ -12,7 +12,7 @@
 
 #include "stacks.h"
 
-void	print_single_stack(t_stack *stack)
+void	print_single_stack(t_elem *stack)
 {
 	while (stack)
 	{
@@ -32,7 +32,7 @@ void	print_char(char *str, int start, int len)
 	printf("%d\n", counter);
 	return ; */
 
-void	print_both_stacks(t_stack *a, t_stack *b)
+void	print_both_stacks(t_elem *a, t_elem *b)
 {
 	int	i;
 	int	prt;

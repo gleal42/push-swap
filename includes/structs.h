@@ -6,41 +6,23 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:49:21 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 18:08:06 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 21:12:15 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-typedef struct s_rot_a
+typedef struct s_rot
 {
-	int			ra;
-	int			rra;
-}				t_rot_a;
-
-typedef struct s_rot_b
-{
-	int			rb;
-	int			rrb;
-}				t_rot_b;
-
-/*
-	typedef struct s_stacklims
-	{
-		int			min;
-		int			max;
-	}				t_stacklims;
-		t_stacklims	a;
-		t_stacklims	b;
-*/
+	int			r;
+	int			rrev;
+}				t_rot;
 
 typedef struct s_limits
 {
-	int			min_a;
-	int			max_a;
-	int			min_b;
-	int			max_b;
+	int			min;
+	int			max;
 }				t_limits;
 
 typedef struct s_cmds
@@ -60,34 +42,36 @@ typedef struct s_cmds
 	int				type;
 }				t_cmds;
 
-typedef struct s_stack
+typedef struct s_elem
 {
 	int				nbr;
 	int				pos;
-	struct s_stack	*prev;
-	struct s_stack	*next;
-}				t_stack;
+	struct s_elem	*prev;
+	struct s_elem	*next;
+}				t_elem;
 
 typedef struct s_ramp
 {
 	t_cmds	init_cmds;
 	t_cmds	best_cmds;
-	t_stack	*first_nbr;
-	t_stack	*off_nbr;
+	t_elem	*first_nbr;
+	t_elem	*off_nbr;
 }				t_ramp;
+
+typedef struct s_stack
+{
+	t_elem		*head;
+	t_elem		*forw;
+	t_elem		*rev;
+	t_rot		ini_rot;
+	t_limits	lims;
+	t_ramp		ramp;
+}				t_stack;
 
 typedef struct s_all
 {
-	t_stack			*a;
-	t_stack			*b;
-	t_stack			*forw_a;
-	t_stack			*rev_a;
-	t_stack			*forw_b;
-	t_stack			*rev_b;
-	t_rot_a			ini_rot_a;
-	t_rot_b			ini_rot_b;
-	t_limits		lims;
-	t_ramp			ramp;
+	t_stack			a;
+	t_stack			b;
 	t_cmds			exec_cmds;
 }					t_all;
 

@@ -6,16 +6,16 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/03 16:48:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 19:42:25 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 21:16:39 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stacks.h"
 
-t_stack	*stackmap(t_stack *stack, int (*f)(int), void (*del)(int *))
+t_elem	*stackmap(t_elem *stack, int (*f)(int), void (*del)(int *))
 {
-	t_stack	*first_s;
-	t_stack	*new_s;
+	t_elem	*first_s;
+	t_elem	*new_s;
 
 	if (!stack || !f)
 		return (0);
@@ -25,10 +25,10 @@ t_stack	*stackmap(t_stack *stack, int (*f)(int), void (*del)(int *))
 		new_s = stacknew(f(stack->nbr));
 		if (!new_s)
 		{
-			stacks_clear(&first_s, del);
+			stack_clear(&first_s, del);
 			return (0);
 		}
-		stackadd_back(&first_s, new_s);
+		elem_add_back(&first_s, new_s);
 		stack = stack->next;
 	}
 	return (first_s);

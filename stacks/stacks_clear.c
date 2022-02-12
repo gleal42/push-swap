@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stacks_clear.c                                     :+:      :+:    :+:   */
+/*   stack_clear.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/03 16:40:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/04 17:12:34 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 21:01:30 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stacks.h"
 
-void	stacks_clear(t_stack **stack, void (*del)(int *))
+void	stack_clear(t_elem **stack, void (*del)(int *))
 {
-	t_stack	*deleter;
+	t_elem	*deleter;
 
 	if (!stack || !del || !*stack)
 		return ;

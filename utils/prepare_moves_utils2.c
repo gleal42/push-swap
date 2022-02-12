@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:30:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 20:40:27 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 21:01:30 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	calculate_initial_pushmoves(int closer_fwd, int closer_bwd, t_cmds *cmds)
 	}
 }
 
-void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max)
+void	find_closest_b_spot(t_elem *cur_b, t_elem *a, t_all *temp, int max)
 {
 	int	good_spot_forward;
 	int	good_spot_reverse;

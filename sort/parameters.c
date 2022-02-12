@@ -54,7 +54,7 @@ int	is_better_ramp(t_cmds temp_cmd, t_cmds off_cmd)
 		return (0);
 }
 
-int	continue_ramp_analysis(t_stack *a, t_stack	*first_nbr, t_all *temp)
+int	continue_ramp_analysis(t_elem *a, t_elem	*first_nbr, t_all *temp)
 {
 	(void)a;
 	if (is_prev_nbr_smaller(first_nbr, first_nbr->prev,
@@ -64,18 +64,18 @@ int	continue_ramp_analysis(t_stack *a, t_stack	*first_nbr, t_all *temp)
 		return (0);
 }
 
-int	have_analyzed_enough(t_cmds off, t_rot_a ini_rot_a,
-		t_stack *forw_a, t_stack *rev_a)
+int	have_analyzed_enough(t_cmds off, t_rot ini_rot,
+		t_elem *forw, t_elem *rev)
 {
 	if (off.total)
 	{
-		if (off.total < ini_rot_a.ra)
+		if (off.total < ini_rot.r)
 			return (1);
-		if (off.total < ini_rot_a.rra)
+		if (off.total < ini_rot.rrev)
 			return (1);
-		if (!forw_a)
+		if (!forw)
 			return (1);
-		if (forw_a->pos == rev_a->pos)
+		if (forw->pos == rev->pos)
 			return (1);
 	}
 	return (0);
@@ -108,7 +108,7 @@ int	is_temp_better(t_cmds temp, t_cmds off)
 		return (0);
 }
 
-int	is_good_for_swap(t_stack *first, t_stack *to_be_swaped,
+int	is_good_for_swap(t_elem *first, t_elem *to_be_swaped,
 		int min_stack, int max_stack)
 {
 	if (!first)
@@ -147,7 +147,7 @@ int	is_good_for_swap(t_stack *first, t_stack *to_be_swaped,
 	return (0);
 }
 
-int	is_next_nbr_bigger(t_stack *cur, t_stack *next_one,
+int	is_next_nbr_bigger(t_elem *cur, t_elem *next_one,
 		int min_stack, int max_stack)
 {
 	if (!next_one)
@@ -161,7 +161,7 @@ int	is_next_nbr_bigger(t_stack *cur, t_stack *next_one,
 	return (0);
 }
 
-int	is_prev_nbr_smaller(t_stack *cur, t_stack *prev_one,
+int	is_prev_nbr_smaller(t_elem *cur, t_elem *prev_one,
 		int min_stack, int max_stack)
 {
 	if (!prev_one)
@@ -175,9 +175,9 @@ int	is_prev_nbr_smaller(t_stack *cur, t_stack *prev_one,
 	return (0);
 }
 
-int	is_stack_sorted(t_stack **a, int n)
+int	is_stack_sorted(t_elem **a, int n)
 {
-	t_stack	*temp;
+	t_elem	*temp;
 
 	temp = *a;
 	while (temp->next)

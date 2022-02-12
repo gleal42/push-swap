@@ -12,11 +12,11 @@
 
 #include "stacks.h"
 
-t_stack	*stacknew(int nbr)
+t_elem	*stacknew(int nbr)
 {
-	t_stack	*head;
+	t_elem	*head;
 
-	head = (t_stack *)malloc(sizeof(t_stack));
+	head = (t_elem *)malloc(sizeof(t_elem));
 	if (!head)
 		return (0);
 	head->nbr = nbr;

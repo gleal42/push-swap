@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:13:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 19:35:17 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 21:01:30 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 * Check if it is considering the right numbers
 */
 
-void	add_rbs(t_stack *a, t_stack *first_nbr,
-		t_stack *cur_stack, t_stack *forw_b,
+void	add_rbs(t_elem *a, t_elem *first_nbr,
+		t_elem *cur_stack, t_elem *forw_b,
 		t_cmds *nbr_rot_pred, t_limits *limits)
 {
-	t_stack	*sent_stack;
+	t_elem	*sent_stack;
 
 	sent_stack = first_nbr;
 	while (sent_stack->pos != cur_stack->pos)
@@ -42,11 +42,11 @@ ou que modificações é preciso fazer.
 utilizar os prev era top
  */
 
-void	add_rrbs(t_stack *a, t_stack *first_nbr,
-		t_stack *cur_stack, t_stack *rev_b,
+void	add_rrbs(t_elem *a, t_elem *first_nbr,
+		t_elem *cur_stack, t_elem *rev_b,
 		t_cmds *nbr_rot_pred, t_limits *limits)
 {
-	t_stack	*sent_stack;
+	t_elem	*sent_stack;
 
 	sent_stack = first_nbr;
 	while (sent_stack->pos != cur_stack->pos)
@@ -65,8 +65,8 @@ void	add_rrbs(t_stack *a, t_stack *first_nbr,
 /* Have to check if this is actually working
 (updating cur_b for every prediction) */
 
-void	update_cur_b(t_cmds *cmds, t_stack **cur_b_head,
-		t_stack *fwd_b, t_stack *bwd_b)
+void	update_cur_b(t_cmds *cmds, t_elem **cur_b_head,
+		t_elem *fwd_b, t_elem *bwd_b)
 {
 	int	fwd_total;
 	int	rev_total;
@@ -98,9 +98,9 @@ void	update_cur_b(t_cmds *cmds, t_stack **cur_b_head,
 /* Add compare rbs and rrbs and don't forget to take r and rrs 
 into consideration*/
 
-void	add_new_rotatesb(t_stack *b, int has_rb,
-		int has_rrb, t_cmds *cmds, t_stack *cur_stack,
-		t_stack **cur_b, t_limits *limits)
+void	add_new_rotatesb(t_elem *b, int has_rb,
+		int has_rrb, t_cmds *cmds, t_elem *cur_stack,
+		t_elem **cur_b, t_limits *limits)
 {
 	(void)b;
 	(void)cur_stack;
@@ -120,9 +120,9 @@ void	add_new_rotatesb(t_stack *b, int has_rb,
 	}
 }
 
-void	update_predict_limits(t_stack *first_nbr,
-		t_stack *cur_a, t_stack *cur_b, t_stack *a,
-		t_stack *b, t_all *pred_limits)
+void	update_predict_limits(t_elem *first_nbr,
+		t_elem *cur_a, t_elem *cur_b, t_elem *a,
+		t_elem *b, t_all *pred_limits)
 {
 	(void)a;
 	if (first_nbr->prev->pos == cur_a->pos)

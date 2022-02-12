@@ -6,13 +6,13 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/04 15:54:25 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 17:38:21 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 21:01:30 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "operations.h"
 
-int	op_rra(t_stack **a, t_stack **b)
+int	op_rra(t_elem **a, t_elem **b)
 {
 	stack_rotate_forward(a);
 	ft_putstr_fd("rra\n", 1);
@@ -20,7 +20,7 @@ int	op_rra(t_stack **a, t_stack **b)
 	return (0);
 }
 
-int	op_rrb(t_stack **a, t_stack **b)
+int	op_rrb(t_elem **a, t_elem **b)
 {
 	stack_rotate_forward(b);
 	ft_putstr_fd("rrb\n", 1);
@@ -28,7 +28,7 @@ int	op_rrb(t_stack **a, t_stack **b)
 	return (0);
 }
 
-int	op_rrr(t_stack **a, t_stack **b)
+int	op_rrr(t_elem **a, t_elem **b)
 {
 	stack_rotate_forward(a);
 	stack_rotate_forward(b);

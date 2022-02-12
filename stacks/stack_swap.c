@@ -12,10 +12,10 @@
 
 #include "stacks.h"
 
-void	stack_swap(t_stack **head)
+void	stack_swap(t_elem **head)
 {
-	t_stack	*second_stack;
-	t_stack	*third_stack;
+	t_elem	*second_stack;
+	t_elem	*third_stack;
 
 	if (*head == 0 || (*head)->next == 0)
 		return ;

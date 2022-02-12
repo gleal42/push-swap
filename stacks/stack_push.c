@@ -6,15 +6,15 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/04 16:17:51 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/07 00:46:59 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 21:01:30 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stacks.h"
 
-void	stack_push_from_to(t_stack **original, t_stack **destination)
+void	stack_push_from_to(t_elem **original, t_elem **destination)
 {
-	t_stack	*temp;
+	t_elem	*temp;
 
 	temp = *original;
 	*original = (*original)->next;

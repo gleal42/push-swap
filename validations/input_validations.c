@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/02 23:42:18 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/06 19:36:03 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 21:01:30 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	is_input_integer(char **stack_a_args)
 	return (1);
 }
 
-int	is_nbr_in_stack(int nbr, t_stack *a)
+int	is_nbr_in_stack(int nbr, t_elem *a)
 {
 	while (a)
 	{

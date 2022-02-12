@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 15:34:05 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 15:52:06 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 23:34:08 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 void	find_rotation_direction(t_all *all, int *rotation_direction)
 {
-	while (!(*rotation_direction) && all->forw_a)
+	while (!(*rotation_direction) && all->a.forw)
 	{
-		if (all->forw_a->pos == 1)
+		if (all->a.forw->pos == 1)
 			(*rotation_direction) = RA;
-		else if (all->rev_a->pos == 1)
+		else if (all->a.rev->pos == 1)
 			(*rotation_direction) = RRA;
-		if (all->forw_a->pos == all->rev_a->pos)
+		if (all->a.forw->pos == all->a.rev->pos)
 			break ;
-		all->forw_a = all->forw_a->next;
-		if (all->forw_a->pos == all->rev_a->pos)
+		all->a.forw = all->a.forw->next;
+		if (all->a.forw->pos == all->a.rev->pos)
 			break ;
-		all->rev_a = all->rev_a->prev;
+		all->a.rev = all->a.rev->prev;
 	}
 	if (!(*rotation_direction))
 		return ;
@@ -33,60 +33,60 @@ void	find_rotation_direction(t_all *all, int *rotation_direction)
 
 void	analyze_fwd(t_all **all, t_all *temp)
 {
-	if (is_next_nbr_bigger(temp->forw_a, (temp->forw_a)->next,
-			temp->lims.min_a, temp->lims.max_a))
+	if (is_next_nbr_bigger(temp->a.forw, (temp->a.forw)->next,
+			temp->a.lims.min, temp->a.lims.max))
 	{
-		temp->ini_rot_a.ra++;
-		temp->forw_a = temp->forw_a->next;
+		temp->a.ini_rot.r++;
+		temp->a.forw = temp->a.forw->next;
 	}
 	else
 	{
 		ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
-		if (is_good_for_swap((*all)->a, temp->forw_a, temp->lims.min_a,
-				temp->lims.max_a))
+		if (is_good_for_swap((*all)->a.head, temp->a.forw, temp->a.lims.min,
+				temp->a.lims.max))
 		{
-			temp->exec_cmds.ra = temp->ini_rot_a.ra;
-			swap_a(temp, temp->forw_a, (*all)->a);
-			temp->ini_rot_a.ra++;
+			temp->exec_cmds.ra = temp->a.ini_rot.r;
+			swap_a(temp, temp->a.forw, (*all)->a.head);
+			temp->a.ini_rot.r++;
 		}
 		else
 		{
-			temp->ini_rot_a.ra++;
-			temp->exec_cmds.ra = temp->ini_rot_a.ra;
-			merge_ramp_spot(*all, temp, temp->forw_a->next);
+			temp->a.ini_rot.r++;
+			temp->exec_cmds.ra = temp->a.ini_rot.r;
+			merge_ramp_spot(*all, temp, temp->a.forw->next);
 		}
 		if (is_temp_better(temp->exec_cmds, (*all)->exec_cmds))
 			(*all)->exec_cmds = temp->exec_cmds;
-		temp->forw_a = temp->forw_a->next;
+		temp->a.forw = temp->a.forw->next;
 	}
 }
 
 void	analyze_bwd(t_all **all, t_all *temp)
 {
-	if (is_prev_nbr_smaller(temp->rev_a, temp->rev_a->prev,
-			temp->lims.min_a, temp->lims.max_a))
+	if (is_prev_nbr_smaller(temp->a.rev, temp->a.rev->prev,
+			temp->a.lims.min, temp->a.lims.max))
 	{
-		temp->ini_rot_a.rra++;
-		temp->rev_a = temp->rev_a->prev;
+		temp->a.ini_rot.rrev++;
+		temp->a.rev = temp->a.rev->prev;
 	}
 	else
 	{
 		ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
-		if (is_good_for_swap((*all)->a, temp->rev_a->prev,
-				temp->lims.min_a, temp->lims.max_a))
+		if (is_good_for_swap((*all)->a.head, temp->a.rev->prev,
+				temp->a.lims.min, temp->a.lims.max))
 		{
-			temp->ini_rot_a.rra++;
-			temp->exec_cmds.rra = temp->ini_rot_a.rra;
-			swap_a(temp, temp->rev_a->prev, (*all)->a);
+			temp->a.ini_rot.rrev++;
+			temp->exec_cmds.rra = temp->a.ini_rot.rrev;
+			swap_a(temp, temp->a.rev->prev, (*all)->a.head);
 		}
 		else
 		{
-			temp->exec_cmds.rra = temp->ini_rot_a.rra;
-			merge_ramp_spot(*all, temp, temp->rev_a);
-			temp->ini_rot_a.rra++;
+			temp->exec_cmds.rra = temp->a.ini_rot.rrev;
+			merge_ramp_spot(*all, temp, temp->a.rev);
+			temp->a.ini_rot.rrev++;
 		}
 		if (is_temp_better(temp->exec_cmds, (*all)->exec_cmds))
 			(*all)->exec_cmds = temp->exec_cmds;
-		temp->rev_a = temp->rev_a->prev;
+		temp->a.rev = temp->a.rev->prev;
 	}
 }

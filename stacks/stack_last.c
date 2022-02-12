@@ -12,7 +12,7 @@
 
 #include "stacks.h"
 
-t_stack	*stack_last(t_stack *stack)
+t_elem	*stack_last(t_elem *stack)
 {
 	if (!stack)
 		return (0);

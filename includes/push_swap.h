@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 15:47:22 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 17:44:53 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 21:01:30 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		max_len;
 # include "validations.h"
 
 void				push_swap(char **stack_a_args);
-void				prepare_stack_a(t_stack **a, char **stack_a_args);
-void				add_positions(t_stack	**a, int n);
+void				prepare_stack_a(t_elem **a, char **stack_a_args);
+void				add_positions(t_elem	**a, int n);
 
 #endif

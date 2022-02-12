@@ -12,7 +12,7 @@
 
 #include "stacks.h"
 
-void	stackdelone(t_stack *stack, void (*del)(int *))
+void	stackdelone(t_elem *stack, void (*del)(int *))
 {
 	if (!stack || !del)
 		return ;

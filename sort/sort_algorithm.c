@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:45:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 17:31:01 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 21:18:59 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 void	ft_sort_stacks(t_all *all, int n)
 {
 	ft_bzero(&all->exec_cmds, sizeof(t_cmds));
-	if (all->a == 0 || all->a->next == 0)
+	if (all->a.head == 0 || all->a.head->next == 0)
 		return ;
 	if (simple_rotate_algorithm(all, n))
 		return ;
@@ -32,9 +32,9 @@ void	ft_sort_stacks(t_all *all, int n)
 
 int	simple_rotate_algorithm(t_all *all, int n)
 {
-	if (is_stack_sorted(&(all->a), n))
+	if (is_stack_sorted(&(all->a.head), n))
 	{
-		if (all->a->pos == 1)
+		if (all->a.head->pos == 1)
 			return (1);
 		else
 			rotate_until_sorted(all);
@@ -52,8 +52,8 @@ int	simple_rotate_algorithm(t_all *all, int n)
 ** 			2.1 In case we can swap a number nearby we do it
 ** 			2.2 In case there are no numbers nearby to swap push to B
 ** 				(rotating b to push it in the right place)
-** @param:	- [t_stack *] a
-**			- [t_stack *] b
+** @param:	- [t_elem *] a
+**			- [t_elem *] b
 ** Line-by-line comments:
 ** @line-line	comment
 */

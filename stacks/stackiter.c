@@ -12,7 +12,7 @@
 
 #include "stacks.h"
 
-void	stackiter(t_stack *stack, void (*f)(int))
+void	stackiter(t_elem *stack, void (*f)(int))
 {
 	if (!stack || !f)
 		return ;

@@ -6,34 +6,34 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 17:14:37 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 17:18:49 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 23:22:45 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	set_lims_stack_b_pa(t_stack **a, t_stack **b, t_limits *lims)
+void	set_lims_stack_b_pa(t_elem **a, t_elem **b, t_all *temp)
 {
 	if (!((*b)->next))
-		set_both_b_lims_as(lims, 0);
+		set_both_lims_as(&temp->b.lims, 0);
 	else
 	{
-		if ((*b)->pos == lims->max_b)
-			pa_adjust_max_b(*a, lims);
-		if ((*b)->pos == lims->min_b)
-			pa_adjust_min_b(*a, lims);
+		if ((*b)->pos == temp->b.lims.max)
+			pa_adjust_max_b(*a, temp);
+		if ((*b)->pos == temp->b.lims.min)
+			pa_adjust_min_b(*a, temp);
 	}
 }
 
-void	set_lims_stack_a_pa(t_stack **a, t_stack **b, t_limits *lims)
+void	set_lims_stack_a_pa(t_elem **a, t_elem **b, t_all *temp)
 {
 	if (!(*a))
-		set_both_a_lims_as(lims, (*b)->pos);
+		set_both_a_lims_as(&temp->a.lims, (*b)->pos);
 	else
 	{
-		if ((*b)->pos > lims->max_a)
-			lims->max_a = (*b)->pos;
-		else if ((*b)->pos < lims->min_a)
-			lims->min_a = (*b)->pos;
+		if ((*b)->pos > temp->a.lims.max)
+			temp->a.lims.max = (*b)->pos;
+		else if ((*b)->pos < temp->a.lims.min)
+			temp->a.lims.min = (*b)->pos;
 	}
 }

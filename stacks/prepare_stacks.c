@@ -6,15 +6,15 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 00:21:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/07 00:51:12 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 21:16:39 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stacks.h"
 
-void	prepare_stack_a(t_stack **a, char **stack_a_args)
+void	prepare_stack_a(t_elem **a, char **stack_a_args)
 {
-	t_stack	*next_nbr;
+	t_elem	*next_nbr;
 	int		nbr;
 	int		i;
 
@@ -24,18 +24,18 @@ void	prepare_stack_a(t_stack **a, char **stack_a_args)
 		nbr = ft_atoi(stack_a_args[i]);
 		if (is_nbr_in_stack(nbr, *a))
 		{
-			stacks_clear(a, delete_stack);
+			stack_clear(a, delete_stack);
 			ft_putstr_fd("Error\n", 2);
 			exit(EXIT_FAILURE);
 		}
 		next_nbr = stacknew(nbr);
 		if (!next_nbr)
 		{
-			stacks_clear(a, delete_stack);
+			stack_clear(a, delete_stack);
 			ft_putstr_fd("Error\n", 2);
 			exit(EXIT_FAILURE);
 		}
-		stackadd_back(a, next_nbr);
+		elem_add_back(a, next_nbr);
 		i++;
 	}
 }

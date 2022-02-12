@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:02:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 18:36:09 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 23:48:57 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@
 		return (0);
 	} */
 
-int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a,
-		t_stack *b, t_stack *first_nbr, t_stack *cur_stack,
-		t_stack **cur_b, t_all *temp, t_limits *limits)
+int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_elem *a,
+		t_elem *b, t_elem *first_nbr, t_elem *cur_stack,
+		t_elem **cur_b, t_all *temp, t_limits *limits)
 {
 	t_cmds	nbr_rot_pred;
 	int		has_rb;
@@ -108,8 +108,8 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a,
 * Basically the same as place_in_b but for prediction (check)
  */
 
-void	predict_place_in_b(t_cmds *cmds, t_stack *b,
-		t_stack *tobemoved, t_stack **cur_b, t_all *temp)
+void	predict_place_in_b(t_cmds *cmds, t_elem *b,
+		t_elem *tobemoved, t_elem **cur_b, t_all *temp)
 {
 	int	has_rb;
 	int	has_rrb;
@@ -182,44 +182,44 @@ first prediction pode ser com aquele predictmoves
 /* 2nd while line 20 maybe cur_a->next is not
 the best here (for the cases where there is no next) */
 
-int	predict_merge_moves(t_all *all, t_all *temp, t_stack *firstinramp)
+int	predict_merge_moves(t_all *all, t_all *temp, t_elem *firstinramp)
 {
-	t_stack		*cur_a;
-	t_stack		*cur_b;
+	t_elem		*cur_a;
+	t_elem		*cur_b;
 	t_limits	pred_limits;
 
-	cur_a = all->ramp.first_nbr;
+	cur_a = all->a.ramp.first_nbr;
 	cur_b = all->b;
 	pred_limits = temp->lims;
 	while (cur_a->pos != firstinramp->pos)
 	{
-		(&all->ramp.init_cmds)->pb++;
-		if (cur_a->pos == all->ramp.first_nbr->pos)
-			predict_place_in_b(&all->ramp.init_cmds,
+		(&all->a.ramp.init_cmds)->pb++;
+		if (cur_a->pos == all->a.ramp.first_nbr->pos)
+			predict_place_in_b(&all->a.ramp.init_cmds,
 				all->b, cur_a, &cur_b, temp);
 		else
-			predict_rotationsb_curnbr(&all->ramp.init_cmds, all->a, all->b,
-				all->ramp.first_nbr, cur_a, &cur_b, temp, &pred_limits);
+			predict_rotationsb_curnbr(&all->a.ramp.init_cmds, all->a, all->b,
+				all->a.ramp.first_nbr, cur_a, &cur_b, temp, &pred_limits);
 		if (!cur_a->next)
 			cur_a = all->a;
 		else
 			cur_a = cur_a->next;
 	}
-	while (!is_next_nbr_bigger(all->ramp.first_nbr->prev, cur_a,
+	while (!is_next_nbr_bigger(all->a.ramp.first_nbr->prev, cur_a,
 			pred_limits.min_a, pred_limits.max_a))
 	{
-		(&all->ramp.init_cmds)->pb++;
-		if (cur_a->pos == all->ramp.first_nbr->pos)
-			predict_place_in_b(&all->ramp.init_cmds,
+		(&all->a.ramp.init_cmds)->pb++;
+		if (cur_a->pos == all->a.ramp.first_nbr->pos)
+			predict_place_in_b(&all->a.ramp.init_cmds,
 				all->b, cur_a, &cur_b, temp);
 		else
-			predict_rotationsb_curnbr(&all->ramp.init_cmds, all->a, all->b,
-				all->ramp.first_nbr, cur_a, &cur_b, temp, &pred_limits);
+			predict_rotationsb_curnbr(&all->a.ramp.init_cmds, all->a, all->b,
+				all->a.ramp.first_nbr, cur_a, &cur_b, temp, &pred_limits);
 		if (!cur_a->next)
 			cur_a = all->a;
 		else
 			cur_a = cur_a->next;
 	}
-	(&all->ramp.init_cmds)->total = count_moves(&all->ramp.init_cmds);
+	(&all->a.ramp.init_cmds)->total = count_moves(&all->a.ramp.init_cmds);
 	return (0);
 }

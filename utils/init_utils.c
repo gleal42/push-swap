@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 21:45:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 17:18:26 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 22:54:36 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,20 @@ void	init_temp_all(t_all *temp, t_all *all, int n)
 	init_rots(all);
 	init_lims(all, n);
 	ft_bzero(&all->exec_cmds, sizeof(t_cmds));
-	init_stacks_iteration_a(all, all);
+	init_stacks_iteration(&all->a, all->a.head);
 	*temp = *all;
 }
 
 void	init_rots(t_all *all)
 {
-	ft_bzero(&all->ini_rot_a, sizeof(t_rot_a));
-	ft_bzero(&all->ini_rot_b, sizeof(t_rot_b));
+	ft_bzero(&all->a.ini_rot, sizeof(t_rot));
+	ft_bzero(&all->b.ini_rot, sizeof(t_rot));
 }
 
 void	init_lims(t_all *all, int n)
 {
-	all->lims.min_a = 1;
-	all->lims.max_a = n;
-	all->lims.min_b = 0;
-	all->lims.max_b = 0;
+	all->a.lims.min = 1;
+	all->a.lims.max = n;
+	all->b.lims.min = 0;
+	all->b.lims.max = 0;
 }

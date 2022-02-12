@@ -12,7 +12,7 @@
 
 #include "stacks.h"
 
-int	stack_size(t_stack *stack)
+int	stack_size(t_elem *stack)
 {
 	int	count;
 
