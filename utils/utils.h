@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 17:41:24 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 20:49:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,22 @@ void	init_stacks_iteration_a(t_all *tobeinit, t_all *ref);
 
 void	delete_stack(int *content);
 
+// predict_ramps_utils.c
+
+void	predict_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
+
 // prepare_moves_utils.c
 
 void	not_rotate_fwd(t_cmds *cmds);
-void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max);
-void	predict_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
+void	init_push_b(t_all *temp);
+int	is_good_to_place_no_rot_b(t_stack *b, t_stack *tobemoved, t_limits lims);
+void	add_double_rots_a(t_cmds *cmds);
+void	check_if_found_rot(t_all *temp, t_stack *tobemoved, int *fwd, int *bwd);
+
+// prepare_moves_utils2.c
+
 void	calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
+void	find_closest_b_spot(t_stack *cur_b, t_stack *a, t_all *temp, int max);
 
 // sort_algorithm_utils.c
 

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:49:21 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 21:10:58 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 18:08:06 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ typedef struct s_all
 	t_stack			*rev_b;
 	t_rot_a			ini_rot_a;
 	t_rot_b			ini_rot_b;
-	t_cmds			exec_cmds;
 	t_limits		lims;
 	t_ramp			ramp;
+	t_cmds			exec_cmds;
 }					t_all;
 
 enum	e_moves

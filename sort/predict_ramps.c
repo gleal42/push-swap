@@ -6,15 +6,17 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:02:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 19:25:02 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 18:36:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
 
 /* We need:
-* To have something to update the current b (because when we rotate the head changes)
-* To keep track of the numbers we have already pushed (in case we need to go backwards)
+* To have something to update the
+* current b (because when we rotate the head changes)
+* To keep track of the numbers we have
+* already pushed (in case we need to go backwards)
 */
 /* After first return (0);
 	if (!b->next)
@@ -44,7 +46,7 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a,
 	if (is_next_nbr_bigger(cur_stack, (*cur_b)->prev,
 			limits->min_b, limits->max_b)
 		&& is_prev_nbr_smaller(cur_stack, (*cur_b),
-				limits->min_b, limits->max_b))
+			limits->min_b, limits->max_b))
 		return (0);
 	if (!(*cur_b)->next)
 		temp->forw_b = b;
@@ -55,22 +57,24 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a,
 	{
 		if (!has_rb)
 		{
-			add_rbs(a, first_nbr, cur_stack, temp->forw_b, &nbr_rot_pred, limits);
+			add_rbs(a, first_nbr, cur_stack,
+				temp->forw_b, &nbr_rot_pred, limits);
 			if (is_next_nbr_bigger(cur_stack, temp->forw_b->prev,
 					limits->min_b, limits->max_b)
 				&& is_prev_nbr_smaller(cur_stack, temp->forw_b,
-						limits->min_b, limits->max_b))
+					limits->min_b, limits->max_b))
 				has_rb++;
 		}
 		if (!has_rrb)
 		{
-			add_rrbs(a, first_nbr, cur_stack, temp->rev_b, &nbr_rot_pred, limits);
+			add_rrbs(a, first_nbr, cur_stack,
+				temp->rev_b, &nbr_rot_pred, limits);
 			if (temp->rev_b->next)
 			{
 				if (is_next_nbr_bigger(cur_stack, temp->rev_b,
 						limits->min_b, limits->max_b)
 					&& is_prev_nbr_smaller(cur_stack,
-							temp->rev_b->next, limits->min_b, limits->max_b))
+						temp->rev_b->next, limits->min_b, limits->max_b))
 					has_rrb++;
 			}
 			else
@@ -78,7 +82,7 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a,
 				if (is_next_nbr_bigger(cur_stack, temp->rev_b,
 						limits->min_b, limits->max_b)
 					&& is_prev_nbr_smaller(cur_stack, b,
-							limits->min_b, limits->max_b))
+						limits->min_b, limits->max_b))
 					has_rrb++;
 			}
 		}
@@ -94,7 +98,7 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_stack *a,
 	}
 	update_cur_b(&nbr_rot_pred, cur_b, temp->forw_b, temp->rev_b);
 	add_new_rotatesb(b, has_rb, has_rrb, &nbr_rot_pred,
-			cur_stack, cur_b, limits);
+		cur_stack, cur_b, limits);
 	temp_cmd->rb += nbr_rot_pred.rb;
 	temp_cmd->rrb += nbr_rot_pred.rrb;
 	return (0);
@@ -123,7 +127,7 @@ void	predict_place_in_b(t_cmds *cmds, t_stack *b,
 	}
 	if (is_next_nbr_bigger(tobemoved, b->prev, temp->lims.min_b,
 			temp->lims.max_b) && is_prev_nbr_smaller(tobemoved, b,
-				temp->lims.min_b, temp->lims.max_b))
+			temp->lims.min_b, temp->lims.max_b))
 	{
 		if (cmds->ra || (!cmds->ra && !cmds->rra))
 			has_rb++;
@@ -151,12 +155,12 @@ void	predict_place_in_b(t_cmds *cmds, t_stack *b,
 		if (is_next_nbr_bigger(tobemoved, temp->forw_b->prev,
 				temp->lims.min_b, temp->lims.max_b)
 			&& is_prev_nbr_smaller(tobemoved, temp->forw_b,
-					temp->lims.min_b, temp->lims.max_b))
+				temp->lims.min_b, temp->lims.max_b))
 			has_rb++;
 		if (is_next_nbr_bigger(tobemoved, temp->rev_b,
 				temp->lims.min_b, temp->lims.max_b)
 			&& is_prev_nbr_smaller(tobemoved, temp->rev_b->next,
-					temp->lims.min_b, temp->lims.max_b))
+				temp->lims.min_b, temp->lims.max_b))
 			has_rrb++;
 		if (!temp->forw_b->next)
 			temp->forw_b = b;
@@ -178,15 +182,6 @@ first prediction pode ser com aquele predictmoves
 /* 2nd while line 20 maybe cur_a->next is not
 the best here (for the cases where there is no next) */
 
-//int	predict_merge_moves(t_all *all, t_all *temp, t_stack *firstinramp, t_stack *first_nbr, t_stack *firstinramp,
-//		t_stack *a, t_stack *b, t_cmds *temp_cmd)
-
-//int	predict_merge_moves(t_stack *first_nbr, t_stack *firstinramp,
-//		t_stack *a, t_stack *b, t_cmds *temp_cmd, t_all *temp)
-
-//predict_merge_moves(all, temp, firstinramp, all->ramp.first_nbr, all->a, all->b, &all->ramp.init_cmds);
-//predict_merge_moves(all->ramp.first_nbr, firstinramp, all->a, all->b, &all->ramp.init_cmds, temp);
-
 int	predict_merge_moves(t_all *all, t_all *temp, t_stack *firstinramp)
 {
 	t_stack		*cur_a;
@@ -200,7 +195,8 @@ int	predict_merge_moves(t_all *all, t_all *temp, t_stack *firstinramp)
 	{
 		(&all->ramp.init_cmds)->pb++;
 		if (cur_a->pos == all->ramp.first_nbr->pos)
-			predict_place_in_b(&all->ramp.init_cmds, all->b, cur_a, &cur_b, temp);
+			predict_place_in_b(&all->ramp.init_cmds,
+				all->b, cur_a, &cur_b, temp);
 		else
 			predict_rotationsb_curnbr(&all->ramp.init_cmds, all->a, all->b,
 				all->ramp.first_nbr, cur_a, &cur_b, temp, &pred_limits);
@@ -214,7 +210,8 @@ int	predict_merge_moves(t_all *all, t_all *temp, t_stack *firstinramp)
 	{
 		(&all->ramp.init_cmds)->pb++;
 		if (cur_a->pos == all->ramp.first_nbr->pos)
-			predict_place_in_b(&all->ramp.init_cmds, all->b, cur_a, &cur_b, temp);
+			predict_place_in_b(&all->ramp.init_cmds,
+				all->b, cur_a, &cur_b, temp);
 		else
 			predict_rotationsb_curnbr(&all->ramp.init_cmds, all->a, all->b,
 				all->ramp.first_nbr, cur_a, &cur_b, temp, &pred_limits);

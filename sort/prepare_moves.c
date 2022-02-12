@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 19:47:00 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 20:51:58 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,71 +60,24 @@ void	merge_ramp_spot(t_all *all, t_all *temp, t_stack *firstinramp)
 
 void	place_in_b(t_stack *b, t_all *temp, t_stack *tobemoved)
 {
-	int	has_rb;
-	int	has_rrb;
-	int	rev_total;
+	int	closer_fwd;
+	int	closer_bwd;
 
-	rev_total = 0;
-	has_rb = 0;
-	has_rrb = 0;
-	if (temp->exec_cmds.ra)
-		temp->exec_cmds.type = PUSH_B_FWD;
-	else
-		temp->exec_cmds.type = PUSH_B_BWD;
-	temp->exec_cmds.pb++;
-	temp->exec_cmds.total = temp->exec_cmds.ra + temp->exec_cmds.rb
-		+ temp->exec_cmds.rr + temp->exec_cmds.rra + temp->exec_cmds.rrb
-		+ temp->exec_cmds.rrr + temp->exec_cmds.pb;
-	if (!b)
+	closer_fwd = 0;
+	closer_bwd = 0;
+	init_push_b(temp);
+	if (is_good_to_place_no_rot_b(b, tobemoved, temp->lims))
 		return ;
-	if (!b->next)
-	{
-		has_rb++;
-		calculate_initial_pushmoves(has_rb, has_rrb, &temp->exec_cmds);
-		return ;
-	}
-	if (is_next_nbr_bigger(tobemoved, b->prev,
-			temp->lims.min_b, temp->lims.max_b)
-		&& is_prev_nbr_smaller(tobemoved, b,
-			temp->lims.min_b, temp->lims.max_b))
-	{
-		if (temp->exec_cmds.ra || (!(temp->exec_cmds.ra) && !(temp->exec_cmds.rra)))
-			has_rb++;
-		else if (temp->exec_cmds.rra)
-			has_rrb++;
-	}
 	temp->forw_b = b->next;
 	temp->rev_b = b->prev->prev;
-	while (!has_rb && !has_rrb && temp->forw_b && temp->rev_b)
+	while (!closer_fwd && !closer_bwd && temp->forw_b)
 	{
-		if (temp->exec_cmds.ra > 0)
-		{
-			temp->exec_cmds.ra--;
-			temp->exec_cmds.rr++;
-		}
-		else
-			temp->exec_cmds.rb++;
-		if (temp->exec_cmds.rra > 0)
-		{
-			temp->exec_cmds.rra--;
-			temp->exec_cmds.rrr++;
-		}
-		else
-			temp->exec_cmds.rrb++;
-		if (is_next_nbr_bigger(tobemoved, temp->forw_b->prev,
-				temp->lims.min_b, temp->lims.max_b)
-			&& is_prev_nbr_smaller(tobemoved, temp->forw_b,
-				temp->lims.min_b, temp->lims.max_b))
-			has_rb++;
-		if (is_next_nbr_bigger(tobemoved, temp->rev_b,
-				temp->lims.min_b, temp->lims.max_b)
-			&& is_prev_nbr_smaller(tobemoved, temp->rev_b->next,
-				temp->lims.min_b, temp->lims.max_b))
-			has_rrb++;
+		add_double_rots_a(&temp->exec_cmds);
+		check_if_found_rot(temp, tobemoved, &closer_fwd, &closer_bwd);
 		temp->forw_b = (temp->forw_b)->next;
 		temp->rev_b = (temp->rev_b)->prev;
 	}
-	calculate_initial_pushmoves(has_rb, has_rrb, &temp->exec_cmds);
+	calculate_initial_pushmoves(closer_fwd, closer_bwd, &temp->exec_cmds);
 }
 
 void	swap_a(t_all *temp, t_stack *firstinramp, t_stack *a)
