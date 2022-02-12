@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:54:15 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/08 18:17:14 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 17:44:28 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ int	main(int argc, char **argv)
 ** @12	Might be useful to improve algorithm (sort/parameters.c)
 */
 
+
 void	push_swap(char **stack_a_args)
 {
 	t_all	all;
-	int		max_len;
 	int		n;
 
 	all.a = NULL;
@@ -43,8 +43,8 @@ void	push_swap(char **stack_a_args)
 	n = nbr_strs(stack_a_args);
 	add_positions(&(all.a), n);
 	max_len = biggest_str_len(stack_a_args);
-	print_both_stacks(all.a, all.b, max_len);
-	ft_sort_stacks(&all, max_len, n);
+	print_both_stacks(all.a, all.b);
+	ft_sort_stacks(&all, n);
 	stacks_clear(&(all.a), delete_stack);
 	stacks_clear(&(all.b), delete_stack);
 	check_leaks();

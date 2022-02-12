@@ -6,13 +6,14 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 15:47:22 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/10 15:47:23 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 17:44:53 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
+int		max_len;
 # include "libft.h"
 # include "structs.h"
 # include "colours.h"

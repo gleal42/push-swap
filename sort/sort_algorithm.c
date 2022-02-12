@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:45:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 19:45:40 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 17:31:01 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,25 @@
 ** @line-line	comment
 */
 
-void	ft_sort_stacks(t_all *all, int max_len, int n)
+void	ft_sort_stacks(t_all *all, int n)
 {
 	ft_bzero(&all->exec_cmds, sizeof(t_cmds));
 	if (all->a == 0 || all->a->next == 0)
 		return ;
-	if (simple_rotate_algorithm(all, max_len, n))
+	if (simple_rotate_algorithm(all, n))
 		return ;
 	else
-		more_complex_algorithm(all, max_len, n);
+		more_complex_algorithm(all, n);
 }
 
-int	simple_rotate_algorithm(t_all *all, int max_a, int n)
+int	simple_rotate_algorithm(t_all *all, int n)
 {
 	if (is_stack_sorted(&(all->a), n))
 	{
 		if (all->a->pos == 1)
 			return (1);
 		else
-			rotate_until_sorted(all, max_a);
+			rotate_until_sorted(all);
 		return (1);
 	}
 	else
@@ -66,13 +66,13 @@ separate same stack from different stacks or add extra validation in if
 // else if (!temp.forw_a || temp.forw_a->pos == temp.rev_a->pos)
 		//printf("WHOOPSIE\n");
 
-void	more_complex_algorithm(t_all *all, int max_a, int n)
+void	more_complex_algorithm(t_all *all, int n)
 {
 	t_all	temp;
 
 	init_temp_all(&temp, all, n);
-	sort_a_b(all, &temp, max_a);
-	merge_a_b(&all, &temp, max_a);
-	if (!simple_rotate_algorithm(all, max_a, n))
+	sort_a_b(all, &temp);
+	merge_a_b(&all, &temp);
+	if (!simple_rotate_algorithm(all, n))
 		return ;
 }

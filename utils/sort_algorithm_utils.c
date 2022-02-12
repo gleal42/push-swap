@@ -6,13 +6,13 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:01:10 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 19:36:24 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 17:35:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	rotate_until_sorted(t_all *all, int max_len)
+void	rotate_until_sorted(t_all *all)
 {
 	int		rotation_direction;
 
@@ -23,13 +23,13 @@ void	rotate_until_sorted(t_all *all, int max_len)
 	while (all->a->pos != 1)
 	{
 		if (rotation_direction == RA)
-			op_ra(&all->a, &all->b, max_len);
+			op_ra(&all->a, &all->b);
 		else if (rotation_direction == RRA)
-			op_rra(&all->a, &all->b, max_len);
+			op_rra(&all->a, &all->b);
 	}
 }
 
-void	sort_a_b(t_all *all, t_all *temp, int max_a)
+void	sort_a_b(t_all *all, t_all *temp)
 {
 	while (temp->forw_a)
 	{
@@ -40,7 +40,7 @@ void	sort_a_b(t_all *all, t_all *temp, int max_a)
 				temp->forw_a, temp->rev_a))
 		{
 			execute_moves(&all->exec_cmds, &all->a,
-				&all->b, &temp->lims, max_a);
+				&all->b, &temp->lims);
 			init_stacks_iteration_a(temp, all);
 			ft_bzero(&(temp->ini_rot_a), sizeof(t_rot_a));
 			ft_bzero(&all->exec_cmds, sizeof(t_cmds));
@@ -50,7 +50,7 @@ void	sort_a_b(t_all *all, t_all *temp, int max_a)
 	}
 }
 
-void	merge_a_b(t_all **all, t_all *temp, int max_a)
+void	merge_a_b(t_all **all, t_all *temp)
 {
 	init_stacks_iteration_a(temp, *all);
 	ft_bzero(&(temp->ini_rot_a), sizeof(t_rot_a));
@@ -59,6 +59,6 @@ void	merge_a_b(t_all **all, t_all *temp, int max_a)
 		ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
 		min_push_b_to_a_moves((*all)->a, (*all)->b, temp);
 		execute_merge_ab(&temp->exec_cmds, &(*all)->a,
-			&(*all)->b, &temp->lims, max_a);
+			&(*all)->b, &temp->lims);
 	}
 }

@@ -6,23 +6,23 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 15:48:55 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 17:01:17 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 17:42:05 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
 
 void	execute_moves(t_cmds *cmds, t_stack **a,
-		t_stack **b, t_limits *lims, int max_len)
+		t_stack **b, t_limits *lims)
 {
 	if (cmds->type == PUSH_B_FWD)
-		execute_pb_forward(cmds, a, b, lims, max_len);
+		execute_pb_forward(cmds, a, b, lims);
 	else if (cmds->type == PUSH_B_BWD)
-		execute_pb_backward(cmds, a, b, lims, max_len);
+		execute_pb_backward(cmds, a, b, lims);
 	else if (cmds->type == SWAP_FWD)
-		execute_swap_forward(cmds, a, b, max_len);
+		execute_swap_forward(cmds, a, b);
 	else if (cmds->type == SWAP_BWD)
-		execute_swap_backward(cmds, a, b, max_len);
+		execute_swap_backward(cmds, a, b);
 }
 
 /* 
@@ -33,79 +33,79 @@ void	execute_moves(t_cmds *cmds, t_stack **a,
 */
 
 void	execute_pb_backward(t_cmds *cmds, t_stack **a,
-		t_stack **b, t_limits *lims, int max_len)
+		t_stack **b, t_limits *lims)
 {
 	while (cmds->rrr-- > 0)
-		op_rrr(a, b, max_len);
+		op_rrr(a, b);
 	while (cmds->rra-- > 0)
-		op_rra(a, b, max_len);
+		op_rra(a, b);
 	while (cmds->rb-- > 0)
-		op_rb(a, b, max_len);
+		op_rb(a, b);
 	while (cmds->rrb-- > 0)
-		op_rrb(a, b, max_len);
+		op_rrb(a, b);
 	if (cmds->pb-- > 0)
 	{
 		set_lims_stack_a_pb(a, b, lims);
 		set_lims_stack_b_pb(a, b, lims);
-		op_pb(a, b, max_len);
+		op_pb(a, b);
 	}
 }
 
 void	execute_pb_forward(t_cmds *cmds, t_stack **a,
-		t_stack **b, t_limits *lims, int max_len)
+		t_stack **b, t_limits *lims)
 {
 	while (cmds->rr-- > 0)
-		op_rr(a, b, max_len);
+		op_rr(a, b);
 	while (cmds->ra-- > 0)
-		op_ra(a, b, max_len);
+		op_ra(a, b);
 	while (cmds->rb-- > 0)
-		op_rb(a, b, max_len);
+		op_rb(a, b);
 	while (cmds->rrb-- > 0)
-		op_rrb(a, b, max_len);
+		op_rrb(a, b);
 	if (cmds->pb-- > 0)
 	{
 		set_lims_stack_a_pb(a, b, lims);
 		set_lims_stack_b_pb(a, b, lims);
-		op_pb(a, b, max_len);
+		op_pb(a, b);
 	}
 }
 
 void	execute_swap_forward(t_cmds *cmds, t_stack **a,
-		t_stack **b, int max_len)
+		t_stack **b)
 {
 	while (cmds->ra)
 	{
-		op_ra(a, b, max_len);
+		op_ra(a, b);
 		cmds->ra--;
 	}
 	while (cmds->sa)
 	{
-		op_sa(a, b, max_len);
+		op_sa(a, b);
 		cmds->sa--;
 	}
 	while (cmds->ss)
 	{
-		op_ss(a, b, max_len);
+		op_ss(a, b);
 		cmds->ss--;
 	}
 }
 
 void	execute_swap_backward(t_cmds *cmds, t_stack **a,
-		t_stack **b, int max_len)
+		t_stack **b)
 {
 	while (cmds->rra)
 	{
-		op_rra(a, b, max_len);
+		op_rra(a, b);
 		cmds->rra--;
 	}
 	while (cmds->sa)
 	{
-		op_sa(a, b, max_len);
+		op_sa(a, b);
 		cmds->sa--;
 	}
 	while (cmds->ss)
 	{
-		op_ss(a, b, max_len);
+		op_ss(a, b);
 		cmds->ss--;
 	}
 }

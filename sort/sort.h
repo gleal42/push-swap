@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 21:09:55 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 17:45:29 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@
 // execute_moves.c
 
 void	execute_pb_backward(t_cmds *cmds, t_stack **a,
-			t_stack **b, t_limits *lims, int max_len);
+			t_stack **b, t_limits *lims);
 void	execute_pb_forward(t_cmds *cmds, t_stack **a,
-			t_stack **b, t_limits *lims, int max_len);
+			t_stack **b, t_limits *lims);
 void	execute_swap_forward(t_cmds *cmds, t_stack **a,
-			t_stack **b, int max_len);
+			t_stack **b);
 void	execute_swap_backward(t_cmds *cmds, t_stack **a,
-			t_stack **b, int max_len);
+			t_stack **b);
 void	execute_moves(t_cmds *cmds, t_stack **a,
-			t_stack **b, t_limits *lims, int max_len);
+			t_stack **b, t_limits *lims);
 void	execute_merge_ab(t_cmds *cmds, t_stack **a,
-			t_stack **b, t_limits *lims, int max_len);
+			t_stack **b, t_limits *lims);
 
 // limits_max_min.c
 
@@ -70,11 +70,11 @@ void	min_push_b_to_a_moves(t_stack *a, t_stack *b, t_all *off);
 
 // sort_algorithm.c
 
-void	ft_sort_stacks(t_all *all, int max_len, int n);
-void	rotate_until_sorted(t_all *all, int max_len);
-int		simple_rotate_algorithm(t_all *all, int max_a, int n);
-void	more_complex_algorithm(t_all *all, int max_a, int n);
-void	sort_a_b(t_all *all, t_all *temp, int max_a);
+void	ft_sort_stacks(t_all *all, int n);
+void	rotate_until_sorted(t_all *all);
+int		simple_rotate_algorithm(t_all *all, int n);
+void	more_complex_algorithm(t_all *all, int n);
+void	sort_a_b(t_all *all, t_all *temp);
 
 // validations.c
 

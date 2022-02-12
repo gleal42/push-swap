@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:42:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 19:43:01 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 17:33:06 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,5 @@ void		stack_rotate_forward(t_stack **stack);
 void		stack_rotate_backward(t_stack **stack);
 
 void		print_single_stack(t_stack *stack);
-void		print_both_stacks(t_stack *a, t_stack *b, int max_len);
+void		print_both_stacks(t_stack *a, t_stack *b);
 #endif

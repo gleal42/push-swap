@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 17:24:38 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 17:41:24 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ void	calculate_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
 
 // sort_algorithm_utils.c
 
-void	rotate_until_sorted(t_all *all, int max_len);
-void	sort_a_b(t_all *all, t_all *temp, int max_a);
-void	merge_a_b(t_all **all, t_all *temp, int max_a);
+void	rotate_until_sorted(t_all *all);
+void	sort_a_b(t_all *all, t_all *temp);
+void	merge_a_b(t_all **all, t_all *temp);
 
 // sort_algorithm_utils2.c
 
