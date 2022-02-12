@@ -6,11 +6,24 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 15:48:55 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 20:57:56 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/12 17:01:17 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
+
+void	execute_moves(t_cmds *cmds, t_stack **a,
+		t_stack **b, t_limits *lims, int max_len)
+{
+	if (cmds->type == PUSH_B_FWD)
+		execute_pb_forward(cmds, a, b, lims, max_len);
+	else if (cmds->type == PUSH_B_BWD)
+		execute_pb_backward(cmds, a, b, lims, max_len);
+	else if (cmds->type == SWAP_FWD)
+		execute_swap_forward(cmds, a, b, max_len);
+	else if (cmds->type == SWAP_BWD)
+		execute_swap_backward(cmds, a, b, max_len);
+}
 
 /* 
 	idea create t_stack_lims with min and max for each one of the stacks 
@@ -41,57 +54,20 @@ void	execute_pb_backward(t_cmds *cmds, t_stack **a,
 void	execute_pb_forward(t_cmds *cmds, t_stack **a,
 		t_stack **b, t_limits *lims, int max_len)
 {
-	while (cmds->rr > 0)
-	{
+	while (cmds->rr-- > 0)
 		op_rr(a, b, max_len);
-		(cmds->rr)--;
-	}
-	while (cmds->ra > 0)
-	{
+	while (cmds->ra-- > 0)
 		op_ra(a, b, max_len);
-		(cmds->ra)--;
-	}
-	while (cmds->rb > 0)
-	{
+	while (cmds->rb-- > 0)
 		op_rb(a, b, max_len);
-		(cmds->rb)--;
-	}
-	while (cmds->rrb > 0)
-	{
+	while (cmds->rrb-- > 0)
 		op_rrb(a, b, max_len);
-		(cmds->rrb)--;
-	}
-	if (cmds->pb > 0)
+	if (cmds->pb-- > 0)
 	{
-		if (!((*a)->next))
-		{
-			lims->max_b = 0;
-			lims->min_b = 0;
-		}
-		else
-		{
-			if ((*a)->pos == lims->max_a)
-				pa_adjust_max_a(*b, lims);
-			if ((*a)->pos == lims->min_a)
-				pa_adjust_min_a(*b, lims);
-		}
-		if (!(*b))
-		{
-			lims->max_b = (*a)->pos;
-			lims->min_b = (*a)->pos;
-		}
-		else
-		{
-			if ((*a)->pos > lims->max_b)
-				lims->max_b = (*a)->pos;
-			else if ((*a)->pos < lims->min_b)
-				lims->min_b = (*a)->pos;
-		}
+		set_lims_stack_a_pb(a, b, lims);
+		set_lims_stack_b_pb(a, b, lims);
 		op_pb(a, b, max_len);
-		(cmds->pb)--;
 	}
-	if (!is_cmd_table_clean(*cmds))
-		printf("Didn't execute all the commands!\n");
 }
 
 void	execute_swap_forward(t_cmds *cmds, t_stack **a,
@@ -112,8 +88,6 @@ void	execute_swap_forward(t_cmds *cmds, t_stack **a,
 		op_ss(a, b, max_len);
 		cmds->ss--;
 	}
-	if (!is_cmd_table_clean(*cmds))
-		printf("Didn't execute all the commands!\n");
 }
 
 void	execute_swap_backward(t_cmds *cmds, t_stack **a,
@@ -133,84 +107,5 @@ void	execute_swap_backward(t_cmds *cmds, t_stack **a,
 	{
 		op_ss(a, b, max_len);
 		cmds->ss--;
-	}
-	if (!is_cmd_table_clean(*cmds))
-		printf("Didn't execute all the commands!\n");
-}
-
-void	execute_moves(t_cmds *cmds, t_stack **a,
-		t_stack **b, t_limits *lims, int max_len)
-{
-	if (cmds->type == PUSH_B_FWD)
-		execute_pb_forward(cmds, a, b, lims, max_len);
-	else if (cmds->type == PUSH_B_BWD)
-		execute_pb_backward(cmds, a, b, lims, max_len);
-	else if (cmds->type == SWAP_FWD)
-		execute_swap_forward(cmds, a, b, max_len);
-	else if (cmds->type == SWAP_BWD)
-		execute_swap_backward(cmds, a, b, max_len);
-}
-
-void	execute_merge_ab(t_cmds *cmds, t_stack **a,
-		t_stack **b, t_limits *lims, int max_len)
-{
-	while (cmds->rb > 0)
-	{
-		op_rb(a, b, max_len);
-		(cmds->rb)--;
-	}
-	while (cmds->rrb > 0)
-	{
-		op_rrb(a, b, max_len);
-		(cmds->rrb)--;
-	}
-	while (cmds->rr > 0)
-	{
-		op_rr(a, b, max_len);
-		(cmds->rr)--;
-	}
-	while (cmds->ra > 0)
-	{
-		op_ra(a, b, max_len);
-		(cmds->ra)--;
-	}
-	while (cmds->rrr > 0)
-	{
-		op_rrr(a, b, max_len);
-		(cmds->rrr)--;
-	}
-	while (cmds->rra > 0)
-	{
-		op_rra(a, b, max_len);
-		(cmds->rra)--;
-	}
-	if (cmds->pa > 0)
-	{
-		if (!((*b)->next))
-		{
-			lims->max_b = 0;
-			lims->min_b = 0;
-		}
-		else
-		{
-			if ((*b)->pos == lims->max_b)
-				pa_adjust_max_b(*a, lims);
-			if ((*b)->pos == lims->min_b)
-				pa_adjust_min_b(*a, lims);
-		}
-		if (!(*a))
-		{
-			lims->max_a = (*b)->pos;
-			lims->min_a = (*b)->pos;
-		}
-		else
-		{
-			if ((*b)->pos > lims->max_a)
-				lims->max_a = (*b)->pos;
-			else if ((*b)->pos < lims->min_a)
-				lims->min_a = (*b)->pos;
-		}
-		op_pa(a, b, max_len);
-		(cmds->pa)--;
 	}
 }
