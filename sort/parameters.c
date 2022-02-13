@@ -54,11 +54,11 @@ int	is_better_ramp(t_cmds temp_cmd, t_cmds off_cmd)
 		return (0);
 }
 
-int	continue_ramp_analysis(t_elem *a, t_elem	*first_nbr, t_all *temp)
+int	continue_ramp_analysis(t_elem *a, t_elem *first_nbr, t_all *temp)
 {
 	(void)a;
 	if (is_prev_nbr_smaller(first_nbr, first_nbr->prev,
-			temp->lims.min_a, temp->lims.max_a))
+			temp->a.lims.min, temp->a.lims.max))
 		return (1);
 	else
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:02:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 23:48:57 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/13 16:58:14 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 
 int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_elem *a,
 		t_elem *b, t_elem *first_nbr, t_elem *cur_stack,
-		t_elem **cur_b, t_all *temp, t_limits *limits)
+		t_elem **cur_b, t_all *temp, t_limits *lims_b)
 {
 	t_cmds	nbr_rot_pred;
 	int		has_rb;
@@ -44,61 +44,60 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_elem *a,
 	if (!b || !b->next)
 		return (0);
 	if (is_next_nbr_bigger(cur_stack, (*cur_b)->prev,
-			limits->min_b, limits->max_b)
+			lims_b->min, lims_b->max)
 		&& is_prev_nbr_smaller(cur_stack, (*cur_b),
-			limits->min_b, limits->max_b))
+			lims_b->min, lims_b->max))
 		return (0);
 	if (!(*cur_b)->next)
-		temp->forw_b = b;
+		temp->b.forw = b;
 	else
-		temp->forw_b = (*cur_b)->next;
-	temp->rev_b = (*cur_b)->prev->prev;
+		temp->b.forw = (*cur_b)->next;
+	temp->b.rev = (*cur_b)->prev->prev;
 	while (!has_rb && !has_rrb)
 	{
 		if (!has_rb)
 		{
 			add_rbs(a, first_nbr, cur_stack,
-				temp->forw_b, &nbr_rot_pred, limits);
-			if (is_next_nbr_bigger(cur_stack, temp->forw_b->prev,
-					limits->min_b, limits->max_b)
-				&& is_prev_nbr_smaller(cur_stack, temp->forw_b,
-					limits->min_b, limits->max_b))
+				temp->b.forw, &nbr_rot_pred, lims_b);
+			if (is_next_nbr_bigger(cur_stack, temp->b.forw->prev,
+					lims_b->min, lims_b->max)
+				&& is_prev_nbr_smaller(cur_stack, temp->b.forw,
+					lims_b->min, lims_b->max))
 				has_rb++;
 		}
 		if (!has_rrb)
 		{
 			add_rrbs(a, first_nbr, cur_stack,
-				temp->rev_b, &nbr_rot_pred, limits);
-			if (temp->rev_b->next)
+				temp->b.rev, &nbr_rot_pred, lims_b);
+			if (temp->b.rev->next)
 			{
-				if (is_next_nbr_bigger(cur_stack, temp->rev_b,
-						limits->min_b, limits->max_b)
+				if (is_next_nbr_bigger(cur_stack, temp->b.rev,
+						lims_b->min, lims_b->max)
 					&& is_prev_nbr_smaller(cur_stack,
-						temp->rev_b->next, limits->min_b, limits->max_b))
+						temp->b.rev->next, lims_b->min, lims_b->max))
 					has_rrb++;
 			}
 			else
 			{
-				if (is_next_nbr_bigger(cur_stack, temp->rev_b,
-						limits->min_b, limits->max_b)
+				if (is_next_nbr_bigger(cur_stack, temp->b.rev,
+						lims_b->min, lims_b->max)
 					&& is_prev_nbr_smaller(cur_stack, b,
-						limits->min_b, limits->max_b))
+						lims_b->min, lims_b->max))
 					has_rrb++;
 			}
 		}
 		if (!has_rb)
 		{
-			if (temp->forw_b->next)
-				temp->forw_b = temp->forw_b->next;
+			if (temp->b.forw->next)
+				temp->b.forw = temp->b.forw->next;
 			else
-				temp->forw_b = b;
+				temp->b.forw = b;
 		}
 		if (!has_rrb)
-			temp->rev_b = (temp->rev_b)->prev;
+			temp->b.rev = (temp->b.rev)->prev;
 	}
-	update_cur_b(&nbr_rot_pred, cur_b, temp->forw_b, temp->rev_b);
-	add_new_rotatesb(b, has_rb, has_rrb, &nbr_rot_pred,
-		cur_stack, cur_b, limits);
+	update_cur_b(&nbr_rot_pred, cur_b, temp->b.forw, temp->b.rev);
+	add_new_rotatesb(has_rb, has_rrb, &nbr_rot_pred);
 	temp_cmd->rb += nbr_rot_pred.rb;
 	temp_cmd->rrb += nbr_rot_pred.rrb;
 	return (0);
@@ -125,17 +124,17 @@ void	predict_place_in_b(t_cmds *cmds, t_elem *b,
 		predict_initial_pushmoves(has_rb, has_rrb, cmds);
 		return ;
 	}
-	if (is_next_nbr_bigger(tobemoved, b->prev, temp->lims.min_b,
-			temp->lims.max_b) && is_prev_nbr_smaller(tobemoved, b,
-			temp->lims.min_b, temp->lims.max_b))
+	if (is_next_nbr_bigger(tobemoved, b->prev, temp->b.lims.min,
+			temp->b.lims.max) && is_prev_nbr_smaller(tobemoved, b,
+			temp->b.lims.min, temp->b.lims.max))
 	{
 		if (cmds->ra || (!cmds->ra && !cmds->rra))
 			has_rb++;
 		else if (cmds->rra)
 			has_rrb++;
 	}
-	temp->forw_b = b->next;
-	temp->rev_b = b->prev->prev;
+	temp->b.forw = b->next;
+	temp->b.rev = b->prev->prev;
 	while (!has_rb && !has_rrb)
 	{
 		if (cmds->ra > 0)
@@ -152,24 +151,24 @@ void	predict_place_in_b(t_cmds *cmds, t_elem *b,
 		}
 		else
 			cmds->rrb++;
-		if (is_next_nbr_bigger(tobemoved, temp->forw_b->prev,
-				temp->lims.min_b, temp->lims.max_b)
-			&& is_prev_nbr_smaller(tobemoved, temp->forw_b,
-				temp->lims.min_b, temp->lims.max_b))
+		if (is_next_nbr_bigger(tobemoved, temp->b.forw->prev,
+				temp->b.lims.min, temp->b.lims.max)
+			&& is_prev_nbr_smaller(tobemoved, temp->b.forw,
+				temp->b.lims.min, temp->b.lims.max))
 			has_rb++;
-		if (is_next_nbr_bigger(tobemoved, temp->rev_b,
-				temp->lims.min_b, temp->lims.max_b)
-			&& is_prev_nbr_smaller(tobemoved, temp->rev_b->next,
-				temp->lims.min_b, temp->lims.max_b))
+		if (is_next_nbr_bigger(tobemoved, temp->b.rev,
+				temp->b.lims.min, temp->b.lims.max)
+			&& is_prev_nbr_smaller(tobemoved, temp->b.rev->next,
+				temp->b.lims.min, temp->b.lims.max))
 			has_rrb++;
-		if (!temp->forw_b->next)
-			temp->forw_b = b;
+		if (!temp->b.forw->next)
+			temp->b.forw = b;
 		else
-			temp->forw_b = (temp->forw_b)->next;
-		temp->rev_b = (temp->rev_b)->prev;
+			temp->b.forw = (temp->b.forw)->next;
+		temp->b.rev = (temp->b.rev)->prev;
 	}
 	predict_initial_pushmoves(has_rb, has_rrb, cmds);
-	update_cur_b(cmds, cur_b, temp->forw_b, temp->rev_b);
+	update_cur_b(cmds, cur_b, temp->b.forw, temp->b.rev);
 	cmds->total = count_moves(cmds);
 }
 
@@ -186,37 +185,39 @@ int	predict_merge_moves(t_all *all, t_all *temp, t_elem *firstinramp)
 {
 	t_elem		*cur_a;
 	t_elem		*cur_b;
-	t_limits	pred_limits;
+	t_limits	pred_lim_a;
+	t_limits	pred_lim_b;
 
 	cur_a = all->a.ramp.first_nbr;
-	cur_b = all->b;
-	pred_limits = temp->lims;
+	cur_b = all->b.head;
+	pred_lim_a = temp->a.lims;
+	pred_lim_b = temp->b.lims;
 	while (cur_a->pos != firstinramp->pos)
 	{
 		(&all->a.ramp.init_cmds)->pb++;
 		if (cur_a->pos == all->a.ramp.first_nbr->pos)
 			predict_place_in_b(&all->a.ramp.init_cmds,
-				all->b, cur_a, &cur_b, temp);
+				all->b.head, cur_a, &cur_b, temp);
 		else
-			predict_rotationsb_curnbr(&all->a.ramp.init_cmds, all->a, all->b,
-				all->a.ramp.first_nbr, cur_a, &cur_b, temp, &pred_limits);
+			predict_rotationsb_curnbr(&all->a.ramp.init_cmds, all->a.head, all->b.head,
+				all->a.ramp.first_nbr, cur_a, &cur_b, temp, &pred_lim_b);
 		if (!cur_a->next)
-			cur_a = all->a;
+			cur_a = all->a.head;
 		else
 			cur_a = cur_a->next;
 	}
 	while (!is_next_nbr_bigger(all->a.ramp.first_nbr->prev, cur_a,
-			pred_limits.min_a, pred_limits.max_a))
+			pred_lim_a.min, pred_lim_a.max))
 	{
 		(&all->a.ramp.init_cmds)->pb++;
 		if (cur_a->pos == all->a.ramp.first_nbr->pos)
 			predict_place_in_b(&all->a.ramp.init_cmds,
-				all->b, cur_a, &cur_b, temp);
+				all->b.head, cur_a, &cur_b, temp);
 		else
-			predict_rotationsb_curnbr(&all->a.ramp.init_cmds, all->a, all->b,
-				all->a.ramp.first_nbr, cur_a, &cur_b, temp, &pred_limits);
+			predict_rotationsb_curnbr(&all->a.ramp.init_cmds, all->a.head, all->b.head,
+				all->a.ramp.first_nbr, cur_a, &cur_b, temp, &pred_lim_b);
 		if (!cur_a->next)
-			cur_a = all->a;
+			cur_a = all->a.head;
 		else
 			cur_a = cur_a->next;
 	}

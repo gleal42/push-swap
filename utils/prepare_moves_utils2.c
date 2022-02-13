@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:30:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 21:01:30 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/13 16:21:03 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	find_closest_b_spot(t_elem *cur_b, t_elem *a, t_all *temp, int max)
 	good_spot_reverse = 0;
 	fwd_total = 0;
 	rev_total = 0;
-	temp->exec_cmds.rb = temp->ini_rot_b.rb;
-	temp->exec_cmds.rrb = temp->ini_rot_b.rrb;
+	temp->exec_cmds.rb = temp->b.ini_rot.r;
+	temp->exec_cmds.rrb = temp->b.ini_rot.rrev;
 	temp->exec_cmds.pa++;
 	temp->exec_cmds.total = count_moves(&temp->exec_cmds);
 	if (!a)
@@ -69,15 +69,15 @@ void	find_closest_b_spot(t_elem *cur_b, t_elem *a, t_all *temp, int max)
 		else
 			good_spot_reverse++;
 	}
-	if (is_next_nbr_bigger(cur_b, a, temp->lims.min_a, temp->lims.max_a)
+	if (is_next_nbr_bigger(cur_b, a, temp->a.lims.min, temp->a.lims.max)
 		&& is_prev_nbr_smaller(cur_b, a->prev,
-			temp->lims.min_a, temp->lims.max_a))
+			temp->a.lims.min, temp->a.lims.max))
 		return ;
-	temp->forw_a = a->next;
-	temp->rev_a = a->prev->prev;
+	temp->a.forw = a->next;
+	temp->a.rev = a->prev->prev;
 	fwd_total = temp->exec_cmds.total;
 	rev_total = temp->exec_cmds.total;
-	while (!good_spot_forward && !good_spot_reverse && temp->forw_a)
+	while (!good_spot_forward && !good_spot_reverse && temp->a.forw)
 	{
 		if (temp->exec_cmds.rb > 0)
 		{	
@@ -104,29 +104,29 @@ void	find_closest_b_spot(t_elem *cur_b, t_elem *a, t_all *temp, int max)
 			ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
 			return ;
 		}
-		if (is_next_nbr_bigger(cur_b, temp->forw_a,
-				temp->lims.min_a, temp->lims.max_a)
-			&& is_prev_nbr_smaller(cur_b, temp->forw_a->prev,
-				temp->lims.min_a, temp->lims.max_a))
+		if (is_next_nbr_bigger(cur_b, temp->a.forw,
+				temp->a.lims.min, temp->a.lims.max)
+			&& is_prev_nbr_smaller(cur_b, temp->a.forw->prev,
+				temp->a.lims.min, temp->a.lims.max))
 			good_spot_forward++;
-		if (temp->rev_a->next)
+		if (temp->a.rev->next)
 		{
-			if (is_prev_nbr_smaller(cur_b, temp->rev_a,
-					temp->lims.min_a, temp->lims.max_a)
-				&& is_next_nbr_bigger(cur_b, temp->rev_a->next,
-					temp->lims.min_a, temp->lims.max_a))
+			if (is_prev_nbr_smaller(cur_b, temp->a.rev,
+					temp->a.lims.min, temp->a.lims.max)
+				&& is_next_nbr_bigger(cur_b, temp->a.rev->next,
+					temp->a.lims.max, temp->a.lims.max))
 				good_spot_reverse++;
 		}
 		else
 		{
-			if (is_prev_nbr_smaller(cur_b, temp->rev_a,
-					temp->lims.min_a, temp->lims.max_a)
-				&& is_next_nbr_bigger(cur_b, a, temp->lims.min_a,
-					temp->lims.max_a))
+			if (is_prev_nbr_smaller(cur_b, temp->a.rev,
+					temp->a.lims.max, temp->a.lims.max)
+				&& is_next_nbr_bigger(cur_b, a, temp->a.lims.min,
+					temp->a.lims.max))
 				good_spot_reverse++;
 		}
-		temp->rev_a = (temp->rev_a)->prev;
-		temp->forw_a = (temp->forw_a)->next;
+		temp->a.rev = (temp->a.rev)->prev;
+		temp->a.forw = (temp->a.forw)->next;
 	}
 	if (!good_spot_forward && !good_spot_reverse)
 	{

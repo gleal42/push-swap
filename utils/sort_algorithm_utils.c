@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:01:10 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 23:06:00 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/13 16:47:46 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	rotate_until_sorted(t_all *all)
 	while (all->a.head->pos != 1)
 	{
 		if (rotation_direction == RA)
-			op_ra(&all->a.head, &all->b);
+			op_ra(&all->a.head, &all->b.head);
 		else if (rotation_direction == RRA)
-			op_rra(&all->a.head, &all->b);
+			op_rra(&all->a.head, &all->b.head);
 	}
 }
 
@@ -40,7 +40,7 @@ void	sort_a_b(t_all *all, t_all *temp)
 				temp->a.forw, temp->a.rev))
 		{
 			execute_moves(&all->exec_cmds, &all->a, &all->b, temp);
-			init_stacks_iteration(&temp->a, &all->a.head);
+			init_stacks_iteration(&temp->a, all->a.head);
 			ft_bzero(&(temp->a.ini_rot), sizeof(t_rot));
 			ft_bzero(&all->exec_cmds, sizeof(t_cmds));
 		}

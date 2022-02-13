@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 23:44:01 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/13 16:09:11 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,8 @@ void	add_rrbs(t_elem *a, t_elem *first_nbr,
 			t_cmds *nbr_rot_pred, t_limits *limits);
 void	update_cur_b(t_cmds *cmds, t_elem **cur_b_head,
 			t_elem *fwd_b, t_elem *bwd_b);
-void	add_new_rotatesb(t_elem *b, int has_rb,
-			int has_rrb, t_cmds *cmds, t_elem *cur_stack,
-			t_elem **cur_b, t_limits *limits);
+void	add_new_rotatesb(int has_rb,
+		int has_rrb, t_cmds *cmds);
 void	update_predict_limits(t_elem *first_nbr,
 			t_elem *cur_a, t_elem *cur_b, t_elem *a,
 			t_elem *b, t_all *pred_limits);

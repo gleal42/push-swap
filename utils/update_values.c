@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:13:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 21:01:30 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/13 16:31:23 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 void	add_rbs(t_elem *a, t_elem *first_nbr,
 		t_elem *cur_stack, t_elem *forw_b,
-		t_cmds *nbr_rot_pred, t_limits *limits)
+		t_cmds *nbr_rot_pred, t_limits *lims_b)
 {
 	t_elem	*sent_stack;
 
@@ -27,9 +27,9 @@ void	add_rbs(t_elem *a, t_elem *first_nbr,
 	while (sent_stack->pos != cur_stack->pos)
 	{
 		if (is_prev_nbr_smaller(sent_stack, forw_b,
-				limits->min_b, limits->max_b)
+				lims_b->min, lims_b->max)
 			&& is_next_nbr_bigger(sent_stack, forw_b->next,
-				limits->min_b, limits->max_b))
+				lims_b->min, lims_b->max))
 			nbr_rot_pred->rb++;
 		if (!sent_stack->next)
 			sent_stack = a;
@@ -44,16 +44,16 @@ utilizar os prev era top
 
 void	add_rrbs(t_elem *a, t_elem *first_nbr,
 		t_elem *cur_stack, t_elem *rev_b,
-		t_cmds *nbr_rot_pred, t_limits *limits)
+		t_cmds *nbr_rot_pred, t_limits *lims_b)
 {
 	t_elem	*sent_stack;
 
 	sent_stack = first_nbr;
 	while (sent_stack->pos != cur_stack->pos)
 	{
-		if (is_prev_nbr_smaller(sent_stack, rev_b, limits->min_b, limits->max_b)
+		if (is_prev_nbr_smaller(sent_stack, rev_b, lims_b->min, lims_b->max)
 			&& is_next_nbr_bigger(sent_stack, rev_b->next,
-				limits->min_b, limits->max_b))
+				lims_b->min, lims_b->max))
 			nbr_rot_pred->rrb++;
 		if (!sent_stack->next)
 			sent_stack = a;
@@ -98,14 +98,9 @@ void	update_cur_b(t_cmds *cmds, t_elem **cur_b_head,
 /* Add compare rbs and rrbs and don't forget to take r and rrs 
 into consideration*/
 
-void	add_new_rotatesb(t_elem *b, int has_rb,
-		int has_rrb, t_cmds *cmds, t_elem *cur_stack,
-		t_elem **cur_b, t_limits *limits)
+void	add_new_rotatesb(int has_rb,
+		int has_rrb, t_cmds *cmds)
 {
-	(void)b;
-	(void)cur_stack;
-	(void)cur_b;
-	(void)limits;
 	if ((cmds->rb <= cmds->rrb && has_rb) || !has_rrb)
 	{
 		cmds->rrb = 0;
@@ -127,26 +122,26 @@ void	update_predict_limits(t_elem *first_nbr,
 	(void)a;
 	if (first_nbr->prev->pos == cur_a->pos)
 	{
-		pred_limits->lims.max_b = 0;
-		pred_limits->lims.min_b = 0;
+		pred_limits->b.lims.max = 0;
+		pred_limits->b.lims.min = 0;
 	}
 	else
 	{
-		if (cur_a->pos == pred_limits->lims.max_a)
-			pa_predict_adjust_max_a(b, cur_b, &pred_limits->lims);
-		if (cur_a->pos == pred_limits->lims.min_a)
-			pa_predict_adjust_min_a(b, cur_b, &pred_limits->lims);
+		if (cur_a->pos == pred_limits->a.lims.max)
+			pa_predict_adjust_max_a(b, cur_b, &pred_limits->a.lims, &pred_limits->b.lims);
+		if (cur_a->pos == pred_limits->a.lims.min)
+			pa_predict_adjust_min_a(b, cur_b, &pred_limits->a.lims, &pred_limits->b.lims);
 	}
 	if (!b)
 	{
-		pred_limits->lims.max_b = cur_a->pos;
-		pred_limits->lims.min_b = cur_a->pos;
+		pred_limits->b.lims.max = cur_a->pos;
+		pred_limits->b.lims.min = cur_a->pos;
 	}
 	else
 	{
-		if (cur_a->pos > pred_limits->lims.max_b)
-			pred_limits->lims.max_b = cur_a->pos;
-		else if (cur_a->pos < pred_limits->lims.min_b)
-			pred_limits->lims.min_b = cur_a->pos;
+		if (cur_a->pos > pred_limits->b.lims.max)
+			pred_limits->b.lims.max = cur_a->pos;
+		else if (cur_a->pos < pred_limits->b.lims.min)
+			pred_limits->b.lims.min = cur_a->pos;
 	}
 }

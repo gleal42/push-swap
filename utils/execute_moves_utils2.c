@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 17:14:37 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 23:22:45 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/13 16:45:34 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	set_lims_stack_b_pa(t_elem **a, t_elem **b, t_all *temp)
 void	set_lims_stack_a_pa(t_elem **a, t_elem **b, t_all *temp)
 {
 	if (!(*a))
-		set_both_a_lims_as(&temp->a.lims, (*b)->pos);
+		set_both_lims_as(&temp->a.lims, (*b)->pos);
 	else
 	{
 		if ((*b)->pos > temp->a.lims.max)

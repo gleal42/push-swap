@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 23:45:31 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/13 16:43:45 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,16 @@ void	pa_adjust_min_b(t_elem *a, t_all *temp);
 
 // predict_limits_max_min.c
 
-void	pa_predict_adjust_max_a(t_elem *a, t_elem *cur_b, t_limits *lims);
-void	pa_predict_adjust_min_a(t_elem *a, t_elem *b, t_limits *lims);
-void	pa_predict_adjust_max_b(t_elem *a, t_elem *b, t_limits *lims);
-void	pa_predict_adjust_min_b(t_elem *a, t_elem *b, t_limits *lims);
+void	pa_predict_adjust_max_a(t_elem *b, t_elem *cur_b, t_limits *lims_a, t_limits *lims_b);
+void	pa_predict_adjust_min_a(t_elem *b, t_elem *cur_b, t_limits *lims_a, t_limits *lims_b);
+void	pa_predict_adjust_max_b(t_elem *a, t_elem *b, t_limits *lims_a, t_limits *lims_b);
+void	pa_predict_adjust_min_b(t_elem *a, t_elem *cur_a, t_limits *lims_a, t_limits *lims_b);
 
 // predict_ramps.c
 
-int		predict_rotationsb_curnbr(t_cmds *temp_cmd,
-			t_elem *a, t_elem *b, t_elem *first_nbr,
-			t_elem *cur_stack, t_elem **cur_b, t_all *temp, t_limits *limits);
+int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_elem *a,
+		t_elem *b, t_elem *first_nbr, t_elem *cur_stack,
+		t_elem **cur_b, t_all *temp, t_limits *lims_b);
 void	predict_place_in_b(t_cmds *cmds, t_elem *b,
 			t_elem *tobemoved, t_elem **cur_b, t_all *temp);
 int		predict_merge_moves(t_all *all, t_all *temp, t_elem *firstinramp);
