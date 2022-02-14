@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:45:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 21:18:59 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/14 19:17:23 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,37 @@ void	more_complex_algorithm(t_all *all, int n)
 	merge_a_b(&all, &temp);
 	if (!simple_rotate_algorithm(all, n))
 		return ;
+}
+
+void	sort_a_b(t_all *all, t_all *temp)
+{
+	while (temp->a.forw)
+	{
+		ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
+		analyze_fwd(&all, temp);
+		analyze_bwd(&all, temp);
+		if (have_analyzed_enough(all->exec_cmds, temp->a.ini_rot,
+				temp->a.forw, temp->a.rev))
+		{
+			execute_moves(&all->exec_cmds, &all->a, &all->b, temp);
+			init_stacks_iteration(&temp->a, all->a.head);
+			ft_bzero(&(temp->a.ini_rot), sizeof(t_rot));
+			ft_bzero(&all->exec_cmds, sizeof(t_cmds));
+		}
+		else if (!temp->a.forw || temp->a.forw->pos == temp->a.rev->pos)
+			break ;
+	}
+}
+
+void	merge_a_b(t_all **all, t_all *temp)
+{
+	init_stacks_iteration(&temp->a, (*all)->a.head);
+	ft_bzero(&(temp->a.ini_rot), sizeof(t_rot));
+	while ((*all)->b.head)
+	{
+		ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
+		min_push_b_to_a_moves((*all)->a.head, (*all)->b.head, temp);
+		execute_merge_ab(&temp->exec_cmds, &(*all)->a.head,
+			&(*all)->b.head, temp);
+	}
 }

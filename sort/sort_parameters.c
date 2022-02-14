@@ -5,30 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/25 21:52:01 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 13:41:29y gleal            ###   ########.fr       */
+/*   Created: 2022/02/14 16:07:28 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/14 18:54:48 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
-
-int	is_cmd_table_clean(t_cmds cmds)
-{
-	if (cmds.sa <= 0
-		&& cmds.sb <= 0
-		&& cmds.ss <= 0
-		&& cmds.ra <= 0
-		&& cmds.rb <= 0
-		&& cmds.rr <= 0
-		&& cmds.pa <= 0
-		&& cmds.pb <= 0
-		&& cmds.rra <= 0
-		&& cmds.rrr <= 0
-		&& cmds.rrb <= 0)
-		return (1);
-	else
-		return (0);
-}
 
 /*  
 * See which is best metric for every size of ramp
@@ -106,88 +88,4 @@ int	is_temp_better(t_cmds temp, t_cmds off)
 		return (1);
 	else
 		return (0);
-}
-
-int	is_good_for_swap(t_elem *first, t_elem *to_be_swaped,
-		int min_stack, int max_stack)
-{
-	if (!first)
-		return (0);
-	if (!first->next)
-		return (0);
-	if (!first->next->next)
-		return (0);
-	if (!to_be_swaped->next)
-	{
-		if (is_next_nbr_bigger(to_be_swaped, first->next,
-				min_stack, max_stack)
-			&& is_prev_nbr_smaller(first, to_be_swaped->prev,
-					min_stack, max_stack))
-			return (1);
-	}
-	else
-	{
-		if (!to_be_swaped->next->next)
-		{
-			if (is_next_nbr_bigger(to_be_swaped, first,
-					min_stack, max_stack)
-				&& is_prev_nbr_smaller(to_be_swaped->next,
-						to_be_swaped->prev, min_stack, max_stack))
-				return (1);
-		}
-		else
-		{
-			if (is_next_nbr_bigger(to_be_swaped, to_be_swaped->next->next,
-					min_stack, max_stack)
-				&& is_prev_nbr_smaller(to_be_swaped->next,
-						to_be_swaped->prev, min_stack, max_stack))
-				return (1);
-		}
-	}
-	return (0);
-}
-
-int	is_next_nbr_bigger(t_elem *cur, t_elem *next_one,
-		int min_stack, int max_stack)
-{
-	if (!next_one)
-		return (1);
-	if (cur->pos <= min_stack && next_one->pos >= max_stack)
-		return (0);
-	if (next_one->pos > cur->pos)
-		return (1);
-	if (cur->pos >= max_stack && next_one->pos <= min_stack)
-		return (1);
-	return (0);
-}
-
-int	is_prev_nbr_smaller(t_elem *cur, t_elem *prev_one,
-		int min_stack, int max_stack)
-{
-	if (!prev_one)
-		return (1);
-	if (cur->pos >= max_stack && prev_one->pos <= min_stack)
-		return (0);
-	if (prev_one->pos < cur->pos)
-		return (1);
-	if (cur->pos <= min_stack && prev_one->pos >= max_stack)
-		return (1);
-	return (0);
-}
-
-int	is_stack_sorted(t_elem **a, int n)
-{
-	t_elem	*temp;
-
-	temp = *a;
-	while (temp->next)
-	{
-		if(!is_next_nbr_bigger(temp, temp->next, 1, n))
-			return (0);
-		temp = temp->next;
-	}
-	if (!is_next_nbr_bigger(temp, *a, 1, n))
-		return (0);
-	else
-		return (1);
 }

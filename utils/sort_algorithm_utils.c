@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:01:10 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/13 16:47:46 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/14 20:03:50 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,35 +29,81 @@ void	rotate_until_sorted(t_all *all)
 	}
 }
 
-void	sort_a_b(t_all *all, t_all *temp)
+void	find_rotation_direction(t_all *all, int *rotation_direction)
 {
-	while (temp->a.forw)
+	while (!(*rotation_direction) && all->a.forw)
+	{
+		if (all->a.forw->pos == 1)
+			(*rotation_direction) = RA;
+		else if (all->a.rev->pos == 1)
+			(*rotation_direction) = RRA;
+		if (all->a.forw->pos == all->a.rev->pos)
+			break ;
+		all->a.forw = all->a.forw->next;
+		if (all->a.forw->pos == all->a.rev->pos)
+			break ;
+		all->a.rev = all->a.rev->prev;
+	}
+	if (!(*rotation_direction))
+		return ;
+}
+
+void	analyze_fwd(t_all **all, t_all *temp)
+{
+	if (is_next_nbr_bigger(temp->a.forw, (temp->a.forw)->next,
+			temp->a.lims.min, temp->a.lims.max))
+	{
+		temp->a.ini_rot.r++;
+		temp->a.forw = temp->a.forw->next;
+	}
+	else
 	{
 		ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
-		analyze_fwd(&all, temp);
-		analyze_bwd(&all, temp);
-		if (have_analyzed_enough(all->exec_cmds, temp->a.ini_rot,
-				temp->a.forw, temp->a.rev))
+		if (is_good_for_swap((*all)->a.head, temp->a.forw, temp->a.lims.min,
+				temp->a.lims.max))
 		{
-			execute_moves(&all->exec_cmds, &all->a, &all->b, temp);
-			init_stacks_iteration(&temp->a, all->a.head);
-			ft_bzero(&(temp->a.ini_rot), sizeof(t_rot));
-			ft_bzero(&all->exec_cmds, sizeof(t_cmds));
+			temp->exec_cmds.ra = temp->a.ini_rot.r;
+			swap_a(temp, temp->a.forw, (*all)->a.head);
+			temp->a.ini_rot.r++;
 		}
-		else if (!temp->a.forw || temp->a.forw->pos == temp->a.rev->pos)
-			break ;
+		else
+		{
+			temp->a.ini_rot.r++;
+			temp->exec_cmds.ra = temp->a.ini_rot.r;
+			merge_ramp_spot(*all, temp, temp->a.forw->next);
+		}
+		if (is_temp_better(temp->exec_cmds, (*all)->exec_cmds))
+			(*all)->exec_cmds = temp->exec_cmds;
+		temp->a.forw = temp->a.forw->next;
 	}
 }
 
-void	merge_a_b(t_all **all, t_all *temp)
+void	analyze_bwd(t_all **all, t_all *temp)
 {
-	init_stacks_iteration(&temp->a, (*all)->a.head);
-	ft_bzero(&(temp->a.ini_rot), sizeof(t_rot));
-	while ((*all)->b.head)
+	if (is_prev_nbr_smaller(temp->a.rev, temp->a.rev->prev,
+			temp->a.lims.min, temp->a.lims.max))
+	{
+		temp->a.ini_rot.rrev++;
+		temp->a.rev = temp->a.rev->prev;
+	}
+	else
 	{
 		ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
-		min_push_b_to_a_moves((*all)->a.head, (*all)->b.head, temp);
-		execute_merge_ab(&temp->exec_cmds, &(*all)->a.head,
-			&(*all)->b.head, temp);
+		if (is_good_for_swap((*all)->a.head, temp->a.rev->prev,
+				temp->a.lims.min, temp->a.lims.max))
+		{
+			temp->a.ini_rot.rrev++;
+			temp->exec_cmds.rra = temp->a.ini_rot.rrev;
+			swap_a(temp, temp->a.rev->prev, (*all)->a.head);
+		}
+		else
+		{
+			temp->exec_cmds.rra = temp->a.ini_rot.rrev;
+			merge_ramp_spot(*all, temp, temp->a.rev);
+			temp->a.ini_rot.rrev++;
+		}
+		if (is_temp_better(temp->exec_cmds, (*all)->exec_cmds))
+			(*all)->exec_cmds = temp->exec_cmds;
+		temp->a.rev = temp->a.rev->prev;
 	}
 }
