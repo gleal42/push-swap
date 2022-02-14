@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 23:29:13 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/14 15:57:12 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ void	merge_ramp_spot(t_all *all, t_all *temp, t_elem *firstinramp)
 		all->a.ramp.first_nbr = all->a.ramp.first_nbr->prev;
 	}
 	temp->exec_cmds.ra = all->a.ramp.best_cmds.ra;
+	temp->exec_cmds.ra += all->a.ramp.best_cmds.rr;
 	temp->exec_cmds.rra = all->a.ramp.best_cmds.rra;
+	temp->exec_cmds.rra += all->a.ramp.best_cmds.rrr;
 	place_in_b(all->b.head, temp, all->a.ramp.off_nbr);
 }
 

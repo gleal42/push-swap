@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:54:15 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 21:16:39 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/14 15:20:39 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	main(int argc, char **argv)
 ** 		duplicate validation done inside
 ** @12	Might be useful to improve algorithm (sort/parameters.c)
 */
-
 
 void	push_swap(char **stack_a_args)
 {
