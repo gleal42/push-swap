@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 02:06:14 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/15 19:27:50 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	pa_adjust_min_b(t_elem *a, t_all *temp);
 
 // predict_limits_max_min.c
 
-void	pred_pb_max_a(t_elem *b, t_elem *cur_b, t_lims *lims_a, t_lims *lims_b);
-void	pred_pb_min_a(t_elem *b, t_elem *cur_b, t_lims *lims_a, t_lims *lims_b);
+void	pred_push_orig_max(t_elem *ori_head, t_stack *ori, t_stack *end);
+void	pred_push_orig_min(t_elem *ori_head, t_stack *ori, t_stack *end);
 void	predict_pb_max_b(t_elem *a, t_elem *b, t_lims *lims_a, t_lims *lims_b);
 void	predict_pb_min_b(t_elem *a, t_elem *cur_a,
 			t_lims *lims_a, t_lims *lims_b);

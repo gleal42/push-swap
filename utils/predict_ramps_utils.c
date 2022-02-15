@@ -6,36 +6,11 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:22:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 02:00:06 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/15 19:05:24 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
-
-void	pred_lims_update(t_elem *first_nbr, t_elem *cur_a, t_elem *cur_b, t_elem *b, t_all *pred)
-{
-	if (first_nbr->prev->pos == cur_a->pos)
-		set_both_lims_as(&pred->a.lims, 0);
-	else
-	{
-		if (cur_a->pos == pred->a.lims.max)
-			pred_pb_max_a(b, cur_b, &pred->a.lims, &pred->b.lims);
-		if (cur_a->pos == pred->a.lims.min)
-			pred_pb_min_a(b, cur_b, &pred->a.lims, &pred->b.lims);
-	}
-	if (!b)
-	{
-		if (first_nbr->pos == cur_a->pos)
-			set_both_lims_as(&pred->b.lims, cur_a->pos);
-	}
-	else
-	{
-		if (cur_a->pos > pred->b.lims.max)
-			pred->b.lims.max = cur_a->pos;
-		else if (cur_a->pos < pred->b.lims.min)
-			pred->b.lims.min = cur_a->pos;
-	}
-}
 
 /* 
 * Basically the same as place_in_b but for prediction (check)

@@ -48,7 +48,7 @@ SRCS := push_swap.c \
 		sort/execute_moves.c \
 		sort/execute_moves2.c \
 		sort/limits_max_min.c \
-		sort/predict_limits_max_min.c \
+		sort/predict_limits.c \
 		sort/predict_ramps.c \
 		sort/prepare_moves.c \
 		sort/sort_algorithm.c \

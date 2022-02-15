@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 01:50:47 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/15 17:58:02 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	delete_stack(int *content);
 
 // predict_ramps_utils.c
 
-void	pred_lims_update(t_elem *first_nbr, t_elem *cur_a, t_elem *cur_b, t_elem *b, t_all *pred);
+void	pred_lims_update(t_elem *first_nbr, t_elem *b, t_all *pred);
 void	pred_ini_rots(t_cmds *cmds, t_elem *b,
 		t_elem *tobemoved, t_elem **cur_b, t_all *pred);
 int	pred_other_rots(t_cmds *temp_cmd, t_elem *a,
@@ -91,6 +91,5 @@ void	update_cur_b(t_cmds *cmds, t_elem **cur_b_head,
 			t_elem *fwd_b, t_elem *bwd_b);
 void	add_new_rotatesb(int has_rb,
 		int has_rrb, t_cmds *cmds);
-void	pred_lims_update(t_elem *first_nbr, t_elem *cur_a, t_elem *cur_b, t_elem *b, t_all *pred);
 
 #endif
