@@ -6,13 +6,13 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/07 17:25:03 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/14 23:18:51 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/15 00:49:33 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
 
-void	pb_adjust_max_a(t_elem *b, t_limits *lims_a, t_limits *lims_b)
+void	pb_adjust_max_a(t_elem *b, t_lims *lims_a, t_lims *lims_b)
 {
 	t_elem	*check_fwd;
 	t_elem	*check_bckd;
@@ -53,7 +53,7 @@ void	pb_adjust_max_a(t_elem *b, t_limits *lims_a, t_limits *lims_b)
 	}
 }
 
-void	pb_adjust_min_a(t_elem *b, t_limits *lims_a, t_limits *lims_b)
+void	pb_adjust_min_a(t_elem *b, t_lims *lims_a, t_lims *lims_b)
 {
 	t_elem	*check_fwd;
 	t_elem	*check_bckd;

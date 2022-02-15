@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:07:10 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/14 23:41:52 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/15 00:49:33 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	init_push_b(t_all *all)
 		+ all->pred_cmds.rrr + all->pred_cmds.pb;
 }
 
-int	is_good_to_place_wo_rot_b(t_elem *b, t_elem *tobemoved, t_limits lims_b)
+int	is_good_to_place_wo_rot_b(t_elem *b, t_elem *tobemoved, t_lims lims_b)
 {
 	if (!b || !b->next)
 		return (1);

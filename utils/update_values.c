@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:13:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/14 22:23:37 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/15 00:49:33 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 void	add_rbs(t_elem *a, t_elem *first_nbr,
 		t_elem *cur_stack, t_elem *forw_b,
-		t_cmds *nbr_rot_pred, t_limits *lims_b)
+		t_cmds *nbr_rot_pred, t_lims *lims_b)
 {
 	t_elem	*sent_stack;
 
@@ -44,7 +44,7 @@ utilizar os prev era top
 
 void	add_rrbs(t_elem *a, t_elem *first_nbr,
 		t_elem *cur_stack, t_elem *rev_b,
-		t_cmds *nbr_rot_pred, t_limits *lims_b)
+		t_cmds *nbr_rot_pred, t_lims *lims_b)
 {
 	t_elem	*sent_stack;
 

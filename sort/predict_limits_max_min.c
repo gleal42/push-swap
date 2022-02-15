@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 16:54:39 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/14 22:08:57 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/15 02:00:37 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 ** look at the numbers that were already pushed
 */
 
-void	pa_predict_adjust_max_a(t_elem *b, t_elem *cur_b, t_limits *lims_a, t_limits *lims_b)
+void	pred_pb_max_a(t_elem *b, t_elem *cur_b, t_lims *lims_a, t_lims *lims_b)
 {
 	t_elem	*check_fwd;
 	t_elem	*check_bckd;
@@ -64,7 +64,7 @@ void	pa_predict_adjust_max_a(t_elem *b, t_elem *cur_b, t_limits *lims_a, t_limit
 	}
 }
 
-void	pa_predict_adjust_min_a(t_elem *b, t_elem *cur_b, t_limits *lims_a, t_limits *lims_b)
+void	pred_pb_min_a(t_elem *b, t_elem *cur_b, t_lims *lims_a, t_lims *lims_b)
 {
 	t_elem	*check_fwd;
 	t_elem	*check_bckd;
@@ -108,7 +108,7 @@ void	pa_predict_adjust_min_a(t_elem *b, t_elem *cur_b, t_limits *lims_a, t_limit
 	}
 }
 
-void	pa_predict_adjust_max_b(t_elem *a, t_elem *b, t_limits *lims_a, t_limits *lims_b)
+void	predict_pb_max_b(t_elem *a, t_elem *b, t_lims *lims_a, t_lims *lims_b)
 {
 	t_elem	*check_fwd;
 	t_elem	*check_bckd;
@@ -153,7 +153,7 @@ void	pa_predict_adjust_max_b(t_elem *a, t_elem *b, t_limits *lims_a, t_limits *l
 	}
 }
 
-void	pa_predict_adjust_min_b(t_elem *a, t_elem *cur_a, t_limits *lims_a, t_limits *lims_b)
+void	predict_pb_min_b(t_elem *a, t_elem *cur_a, t_lims *lims_a, t_lims *lims_b)
 {
 	t_elem	*check_fwd;
 	t_elem	*check_bckd;

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 00:00:55 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/15 02:06:59 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	merge_ramp_spot(t_all *all, t_elem *firstinramp)
 	ft_bzero(&(all->a.ramp.best_cmds), sizeof(t_cmds));
 	while (1)
 	{
-		predict_merge_moves(all, firstinramp);
+		pred_ramp_moves(all, firstinramp);
 		if (is_better_ramp(all->a.ramp.init_cmds, all->a.ramp.best_cmds))
 		{
 			all->a.ramp.best_cmds = all->a.ramp.init_cmds;
@@ -44,7 +44,8 @@ void	merge_ramp_spot(t_all *all, t_elem *firstinramp)
 		rotate_bwd(&all->pred_cmds);
 		all->a.ramp.init_cmds = all->pred_cmds;
 		if ((all->a.ramp.first_nbr->prev)->pos == firstinramp->pos
-			|| (!continue_ramp_analysis(all->a.head, all->a.ramp.first_nbr, all)))
+			|| (!continue_ramp_analysis(all->a.head,
+					all->a.ramp.first_nbr, all)))
 			break ;
 		all->a.ramp.first_nbr = all->a.ramp.first_nbr->prev;
 	}

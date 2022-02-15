@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 00:01:26 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/15 02:06:14 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,41 +21,39 @@
 // execute_moves.c
 
 void	execute_pb_backward(t_cmds *cmds, t_elem **a,
-		t_elem **b, t_all *temp);
+			t_elem **b, t_all *temp);
 void	execute_pb_forward(t_cmds *cmds, t_elem **a,
-		t_elem **b, t_all *temp);
+			t_elem **b, t_all *temp);
 void	execute_swap_forward(t_cmds *cmds, t_elem **a,
 			t_elem **b);
 void	execute_swap_backward(t_cmds *cmds, t_elem **a,
 			t_elem **b);
 void	execute_moves(t_cmds *cmds, t_stack *a, t_stack *b, t_all *temp);
 void	execute_merge_ab(t_cmds *cmds, t_elem **a,
-		t_elem **b, t_all *temp);
+			t_elem **b, t_all *temp);
 
 // limits_max_min.c
 
-void	pb_adjust_max_a(t_elem *b, t_limits *lims_a, t_limits *lims_b);
-void	pb_adjust_min_a(t_elem *b, t_limits *lims_a, t_limits *lims_b);
+void	pb_adjust_max_a(t_elem *b, t_lims *lims_a, t_lims *lims_b);
+void	pb_adjust_min_a(t_elem *b, t_lims *lims_a, t_lims *lims_b);
 void	pa_adjust_max_b(t_elem *a, t_all *temp);
 void	pa_adjust_min_b(t_elem *a, t_all *temp);
 
 // predict_limits_max_min.c
 
-void	pa_predict_adjust_max_a(t_elem *b, t_elem *cur_b, t_limits *lims_a, t_limits *lims_b);
-void	pa_predict_adjust_min_a(t_elem *b, t_elem *cur_b, t_limits *lims_a, t_limits *lims_b);
-void	pa_predict_adjust_max_b(t_elem *a, t_elem *b, t_limits *lims_a, t_limits *lims_b);
-void	pa_predict_adjust_min_b(t_elem *a, t_elem *cur_a, t_limits *lims_a, t_limits *lims_b);
+void	pred_pb_max_a(t_elem *b, t_elem *cur_b, t_lims *lims_a, t_lims *lims_b);
+void	pred_pb_min_a(t_elem *b, t_elem *cur_b, t_lims *lims_a, t_lims *lims_b);
+void	predict_pb_max_b(t_elem *a, t_elem *b, t_lims *lims_a, t_lims *lims_b);
+void	predict_pb_min_b(t_elem *a, t_elem *cur_a,
+			t_lims *lims_a, t_lims *lims_b);
 
 // predict_ramps.c
 
-int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_elem *a,
-		t_elem *b, t_elem *first_nbr, t_elem *cur_stack,
-		t_elem **cur_b, t_all *temp, t_limits *lims_b);
-void	predict_place_in_b(t_cmds *cmds, t_elem *b,
-			t_elem *tobemoved, t_elem **cur_b, t_all *temp);
-int		predict_merge_moves(t_all *all, t_elem *firstinramp);
+int		pred_ramp_moves(t_all *all, t_elem *firstinramp);
+void	pred_fst_ramp_rots(t_all *pred, t_all *all, t_elem *firstinramp);
+void	pred_scd_ramp_rots(t_all *pred, t_all *all);
 
-//int		predict_merge_moves(t_elem *first_nbr,
+//int		pred_ramp_moves(t_elem *first_nbr,
 //			t_elem *firstinramp, t_elem *a, t_elem *b,
 //			t_cmds *temp_cmd, t_all *temp);
 

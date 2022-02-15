@@ -38,7 +38,7 @@ void	set_lims_stack_b_pb(t_elem **a, t_elem **b, t_all *all)
 	}
 }
 
-void	set_both_lims_as(t_limits *lims, int value)
+void	set_both_lims_as(t_lims *lims, int value)
 {
 	lims->min = value;
 	lims->max = value;
