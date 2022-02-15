@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/13 16:43:45 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/15 00:01:26 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	predict_rotationsb_curnbr(t_cmds *temp_cmd, t_elem *a,
 		t_elem **cur_b, t_all *temp, t_limits *lims_b);
 void	predict_place_in_b(t_cmds *cmds, t_elem *b,
 			t_elem *tobemoved, t_elem **cur_b, t_all *temp);
-int		predict_merge_moves(t_all *all, t_all *temp, t_elem *firstinramp);
+int		predict_merge_moves(t_all *all, t_elem *firstinramp);
 
 //int		predict_merge_moves(t_elem *first_nbr,
 //			t_elem *firstinramp, t_elem *a, t_elem *b,
@@ -61,19 +61,19 @@ int		predict_merge_moves(t_all *all, t_all *temp, t_elem *firstinramp);
 
 // prepare_moves.c
 
-void	merge_ramp_spot(t_all *all, t_all *temp, t_elem *firstinramp);
+void	merge_ramp_spot(t_all *all, t_elem *firstinramp);
 void	place_in_b(t_elem *b, t_all *temp,
 			t_elem *tobemoved);
-void	swap_a(t_all *temp, t_elem *tobemoved, t_elem *b);
+void	swap_a(t_all *all, t_elem *a);
 void	min_push_b_to_a_moves(t_elem *a, t_elem *b, t_all *off);
 
 // sort_algorithm.c
 
 void	ft_sort_stacks(t_all *all, int n);
-void	rotate_until_sorted(t_all *all);
 int		simple_rotate_algorithm(t_all *all, int n);
 void	more_complex_algorithm(t_all *all, int n);
-void	sort_a_b(t_all *all, t_all *temp);
+void	sort_a_b(t_all *all);
+void	merge_a_b(t_all **all);
 
 // validations.c
 

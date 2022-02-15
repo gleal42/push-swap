@@ -6,16 +6,19 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 16:54:39 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/13 16:41:39 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/14 22:08:57 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
 
-/* We can change the way it analyzes B in order to see if we need to go 
-forward of backward instead of just going blindly (because B will be organized (i think))
-For the adjust function we can simply
-look at the numbers that were already pushed */
+/* We can change the way it analyzes B
+** in order to see if we need to go 
+** forward of backward instead of just going blindly
+** (because B will be organized (i think))
+** For the adjust function we can simply
+** look at the numbers that were already pushed
+*/
 
 void	pa_predict_adjust_max_a(t_elem *b, t_elem *cur_b, t_limits *lims_a, t_limits *lims_b)
 {

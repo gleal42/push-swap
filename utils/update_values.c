@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:13:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/13 16:31:23 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/14 22:23:37 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,36 +112,5 @@ void	add_new_rotatesb(int has_rb,
 		cmds->rb = 0;
 		cmds->ra += cmds->rr;
 		cmds->rr = 0;
-	}
-}
-
-void	update_predict_limits(t_elem *first_nbr,
-		t_elem *cur_a, t_elem *cur_b, t_elem *a,
-		t_elem *b, t_all *pred_limits)
-{
-	(void)a;
-	if (first_nbr->prev->pos == cur_a->pos)
-	{
-		pred_limits->b.lims.max = 0;
-		pred_limits->b.lims.min = 0;
-	}
-	else
-	{
-		if (cur_a->pos == pred_limits->a.lims.max)
-			pa_predict_adjust_max_a(b, cur_b, &pred_limits->a.lims, &pred_limits->b.lims);
-		if (cur_a->pos == pred_limits->a.lims.min)
-			pa_predict_adjust_min_a(b, cur_b, &pred_limits->a.lims, &pred_limits->b.lims);
-	}
-	if (!b)
-	{
-		pred_limits->b.lims.max = cur_a->pos;
-		pred_limits->b.lims.min = cur_a->pos;
-	}
-	else
-	{
-		if (cur_a->pos > pred_limits->b.lims.max)
-			pred_limits->b.lims.max = cur_a->pos;
-		else if (cur_a->pos < pred_limits->b.lims.min)
-			pred_limits->b.lims.min = cur_a->pos;
 	}
 }

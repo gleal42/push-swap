@@ -12,29 +12,29 @@
 
 #include "utils.h"
 
-void	set_lims_stack_a_pb(t_elem **a, t_elem **b, t_all *temp)
+void	set_lims_stack_a_pb(t_elem **a, t_elem **b, t_all *all)
 {
 	if (!((*a)->next))
-		set_both_lims_as(&temp->a.lims, 0);
+		set_both_lims_as(&all->a.lims, 0);
 	else
 	{
-		if ((*a)->pos == temp->a.lims.max)
-			pb_adjust_max_a(*b , &(temp->a.lims), &(temp->b.lims));
-		if ((*a)->pos == temp->a.lims.min)
-			pb_adjust_min_a(*b, &(temp->a.lims), &(temp->b.lims));
+		if ((*a)->pos == all->a.lims.max)
+			pb_adjust_max_a(*b , &(all->a.lims), &(all->b.lims));
+		if ((*a)->pos == all->a.lims.min)
+			pb_adjust_min_a(*b, &(all->a.lims), &(all->b.lims));
 	}
 }
 
-void	set_lims_stack_b_pb(t_elem **a, t_elem **b, t_all *temp)
+void	set_lims_stack_b_pb(t_elem **a, t_elem **b, t_all *all)
 {
 	if (!(*b))
-		set_both_lims_as(&temp->b.lims, (*a)->pos);
+		set_both_lims_as(&all->b.lims, (*a)->pos);
 	else
 	{
-		if ((*a)->pos > temp->b.lims.max)
-			temp->b.lims.max = (*a)->pos;
-		else if ((*a)->pos < temp->b.lims.min)
-			temp->b.lims.min = (*a)->pos;
+		if ((*a)->pos > all->b.lims.max)
+			all->b.lims.max = (*a)->pos;
+		else if ((*a)->pos < all->b.lims.min)
+			all->b.lims.min = (*a)->pos;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/07 17:25:03 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 23:20:21 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/14 23:18:51 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,38 +94,38 @@ void	pb_adjust_min_a(t_elem *b, t_limits *lims_a, t_limits *lims_b)
 	}
 }
 
-void	pa_adjust_max_b(t_elem *a, t_all *temp)
+void	pa_adjust_max_b(t_elem *a, t_all *all)
 {
 	t_elem	*check_fwd;
 	t_elem	*check_bckd;
 	int		repeat;
 
-	temp->b.lims.max--;
+	all->b.lims.max--;
 	if (!a)
 		return ;
-	if (temp->a.lims.max < temp->b.lims.max)
+	if (all->a.lims.max < all->b.lims.max)
 		return ;
 	else
 	{
 		repeat = 1;
 		while (repeat)
 		{
-			if (a->pos == temp->b.lims.max)
-				temp->b.lims.max--;
+			if (a->pos == all->b.lims.max)
+				all->b.lims.max--;
 			else
 				repeat = 0;
 			check_fwd = a->next;
 			check_bckd = a->prev;
 			while (check_fwd)
 			{
-				if (check_fwd->pos == temp->b.lims.max)
+				if (check_fwd->pos == all->b.lims.max)
 				{
-					temp->b.lims.max--;
+					all->b.lims.max--;
 					repeat++;
 				}
-				else if (check_bckd->pos == temp->b.lims.max)
+				else if (check_bckd->pos == all->b.lims.max)
 				{
-					temp->b.lims.max--;
+					all->b.lims.max--;
 					repeat++;
 				}
 				check_fwd = check_fwd->next;
@@ -135,38 +135,38 @@ void	pa_adjust_max_b(t_elem *a, t_all *temp)
 	}
 }
 
-void	pa_adjust_min_b(t_elem *a, t_all *temp)
+void	pa_adjust_min_b(t_elem *a, t_all *all)
 {
 	t_elem	*check_fwd;
 	t_elem	*check_bckd;
 	int		repeat;
 
-	temp->b.lims.min++;
+	all->b.lims.min++;
 	if (!a)
 		return ;
-	if (temp->a.lims.min > temp->b.lims.min)
+	if (all->a.lims.min > all->b.lims.min)
 		return ;
 	else
 	{
 		repeat = 1;
 		while (repeat)
 		{
-			if (a->pos == temp->b.lims.min)
-				temp->b.lims.min++;
+			if (a->pos == all->b.lims.min)
+				all->b.lims.min++;
 			else
 				repeat = 0;
 			check_fwd = a->next;
 			check_bckd = a->prev;
 			while (check_fwd)
 			{
-				if (check_fwd->pos == temp->b.lims.min)
+				if (check_fwd->pos == all->b.lims.min)
 				{
-					temp->b.lims.min++;
+					all->b.lims.min++;
 					repeat++;
 				}
-				else if (check_bckd->pos == temp->b.lims.min)
+				else if (check_bckd->pos == all->b.lims.min)
 				{
-					temp->b.lims.min++;
+					all->b.lims.min++;
 					repeat++;
 				}
 				check_fwd = check_fwd->next;

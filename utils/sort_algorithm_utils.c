@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:01:10 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/14 20:03:50 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/15 00:06:05 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,62 +48,62 @@ void	find_rotation_direction(t_all *all, int *rotation_direction)
 		return ;
 }
 
-void	analyze_fwd(t_all **all, t_all *temp)
+void	analyze_fwd(t_all **all)
 {
-	if (is_next_nbr_bigger(temp->a.forw, (temp->a.forw)->next,
-			temp->a.lims.min, temp->a.lims.max))
+	if (is_next_nbr_bigger((*all)->a.forw, ((*all)->a.forw)->next,
+			(*all)->a.lims.min, (*all)->a.lims.max))
 	{
-		temp->a.ini_rot.r++;
-		temp->a.forw = temp->a.forw->next;
+		(*all)->a.ini_rot.r++;
+		(*all)->a.forw = (*all)->a.forw->next;
 	}
 	else
 	{
-		ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
-		if (is_good_for_swap((*all)->a.head, temp->a.forw, temp->a.lims.min,
-				temp->a.lims.max))
+		ft_bzero(&(*all)->pred_cmds, sizeof(t_cmds));
+		if (is_good_for_swap((*all)->a.head, (*all)->a.forw, (*all)->a.lims.min,
+				(*all)->a.lims.max))
 		{
-			temp->exec_cmds.ra = temp->a.ini_rot.r;
-			swap_a(temp, temp->a.forw, (*all)->a.head);
-			temp->a.ini_rot.r++;
+			(*all)->pred_cmds.ra = (*all)->a.ini_rot.r;
+			swap_a(*all, (*all)->a.head);
+			(*all)->a.ini_rot.r++;
 		}
 		else
 		{
-			temp->a.ini_rot.r++;
-			temp->exec_cmds.ra = temp->a.ini_rot.r;
-			merge_ramp_spot(*all, temp, temp->a.forw->next);
+			(*all)->a.ini_rot.r++;
+			(*all)->pred_cmds.ra = (*all)->a.ini_rot.r;
+			merge_ramp_spot(*all, (*all)->a.forw->next);
 		}
-		if (is_temp_better(temp->exec_cmds, (*all)->exec_cmds))
-			(*all)->exec_cmds = temp->exec_cmds;
-		temp->a.forw = temp->a.forw->next;
+		if (is_temp_better((*all)->pred_cmds, (*all)->exec_cmds))
+			(*all)->exec_cmds = (*all)->pred_cmds;
+		(*all)->a.forw = (*all)->a.forw->next;
 	}
 }
 
-void	analyze_bwd(t_all **all, t_all *temp)
+void	analyze_bwd(t_all **all)
 {
-	if (is_prev_nbr_smaller(temp->a.rev, temp->a.rev->prev,
-			temp->a.lims.min, temp->a.lims.max))
+	if (is_prev_nbr_smaller((*all)->a.rev, (*all)->a.rev->prev,
+			(*all)->a.lims.min, (*all)->a.lims.max))
 	{
-		temp->a.ini_rot.rrev++;
-		temp->a.rev = temp->a.rev->prev;
+		(*all)->a.ini_rot.rrev++;
+		(*all)->a.rev = (*all)->a.rev->prev;
 	}
 	else
 	{
-		ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
-		if (is_good_for_swap((*all)->a.head, temp->a.rev->prev,
-				temp->a.lims.min, temp->a.lims.max))
+		ft_bzero(&(*all)->pred_cmds, sizeof(t_cmds));
+		if (is_good_for_swap((*all)->a.head, (*all)->a.rev->prev,
+				(*all)->a.lims.min, (*all)->a.lims.max))
 		{
-			temp->a.ini_rot.rrev++;
-			temp->exec_cmds.rra = temp->a.ini_rot.rrev;
-			swap_a(temp, temp->a.rev->prev, (*all)->a.head);
+			(*all)->a.ini_rot.rrev++;
+			(*all)->pred_cmds.rra = (*all)->a.ini_rot.rrev;
+			swap_a(*all, (*all)->a.head);
 		}
 		else
 		{
-			temp->exec_cmds.rra = temp->a.ini_rot.rrev;
-			merge_ramp_spot(*all, temp, temp->a.rev);
-			temp->a.ini_rot.rrev++;
+			(*all)->pred_cmds.rra = (*all)->a.ini_rot.rrev;
+			merge_ramp_spot(*all, (*all)->a.rev);
+			(*all)->a.ini_rot.rrev++;
 		}
-		if (is_temp_better(temp->exec_cmds, (*all)->exec_cmds))
-			(*all)->exec_cmds = temp->exec_cmds;
-		temp->a.rev = temp->a.rev->prev;
+		if (is_temp_better((*all)->pred_cmds, (*all)->exec_cmds))
+			(*all)->exec_cmds = (*all)->pred_cmds;
+		(*all)->a.rev = (*all)->a.rev->prev;
 	}
 }

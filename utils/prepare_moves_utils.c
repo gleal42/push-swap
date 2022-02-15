@@ -6,13 +6,13 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:07:10 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 23:32:40 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/14 23:41:52 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	not_rotate_fwd(t_cmds *cmds)
+void	rotate_bwd(t_cmds *cmds)
 {
 	if (cmds->ra)
 		cmds->ra--;
@@ -20,19 +20,19 @@ void	not_rotate_fwd(t_cmds *cmds)
 		cmds->rra++;
 }
 
-void	init_push_b(t_all *temp)
+void	init_push_b(t_all *all)
 {
-	if (temp->exec_cmds.ra)
-		temp->exec_cmds.type = PUSH_B_FWD;
+	if (all->pred_cmds.ra)
+		all->pred_cmds.type = PUSH_B_FWD;
 	else
-		temp->exec_cmds.type = PUSH_B_BWD;
-	temp->exec_cmds.pb++;
-	temp->exec_cmds.total = temp->exec_cmds.ra + temp->exec_cmds.rb
-		+ temp->exec_cmds.rr + temp->exec_cmds.rra + temp->exec_cmds.rrb
-		+ temp->exec_cmds.rrr + temp->exec_cmds.pb;
+		all->pred_cmds.type = PUSH_B_BWD;
+	all->pred_cmds.pb++;
+	all->pred_cmds.total = all->pred_cmds.ra + all->pred_cmds.rb
+		+ all->pred_cmds.rr + all->pred_cmds.rra + all->pred_cmds.rrb
+		+ all->pred_cmds.rrr + all->pred_cmds.pb;
 }
 
-int	is_good_to_place_no_rot_b(t_elem *b, t_elem *tobemoved, t_limits lims_b)
+int	is_good_to_place_wo_rot_b(t_elem *b, t_elem *tobemoved, t_limits lims_b)
 {
 	if (!b || !b->next)
 		return (1);
@@ -60,16 +60,16 @@ void	add_double_rots_a(t_cmds *cmds)
 		cmds->rrb++;
 }
 
-void	check_if_found_rot(t_all *temp, t_elem *tobemoved, int *fwd, int *bwd)
+void	check_if_found_rot(t_all *all, t_elem *tobemoved, int *fwd, int *bwd)
 {
-	if (is_next_nbr_bigger(tobemoved, temp->b.forw->prev,
-			temp->b.lims.min, temp->b.lims.max)
-		&& is_prev_nbr_smaller(tobemoved, temp->b.forw,
-			temp->b.lims.min, temp->b.lims.max))
+	if (is_next_nbr_bigger(tobemoved, all->b.forw->prev,
+			all->b.lims.min, all->b.lims.max)
+		&& is_prev_nbr_smaller(tobemoved, all->b.forw,
+			all->b.lims.min, all->b.lims.max))
 		(*fwd)++;
-	if (is_next_nbr_bigger(tobemoved, temp->b.rev,
-			temp->b.lims.min, temp->b.lims.max)
-		&& is_prev_nbr_smaller(tobemoved, temp->b.rev->next,
-			temp->b.lims.min, temp->b.lims.max))
+	if (is_next_nbr_bigger(tobemoved, all->b.rev,
+			all->b.lims.min, all->b.lims.max)
+		&& is_prev_nbr_smaller(tobemoved, all->b.rev->next,
+			all->b.lims.min, all->b.lims.max))
 		(*bwd)++;
 }

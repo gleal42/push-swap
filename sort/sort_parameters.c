@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parameters.c                                       :+:      :+:    :+:   */
+/*   sort_parameters.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:07:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/14 18:54:48 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/14 23:20:29 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,11 @@ int	is_better_ramp(t_cmds temp_cmd, t_cmds off_cmd)
 		return (0);
 }
 
-int	continue_ramp_analysis(t_elem *a, t_elem *first_nbr, t_all *temp)
+int	continue_ramp_analysis(t_elem *a, t_elem *first_nbr, t_all *all)
 {
 	(void)a;
 	if (is_prev_nbr_smaller(first_nbr, first_nbr->prev,
-			temp->a.lims.min, temp->a.lims.max))
+			all->a.lims.min, all->a.lims.max))
 		return (1);
 	else
 		return (0);

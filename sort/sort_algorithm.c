@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:45:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/14 19:17:23 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/14 23:55:43 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 void	ft_sort_stacks(t_all *all, int n)
 {
-	ft_bzero(&all->exec_cmds, sizeof(t_cmds));
+	ft_bzero(&all->pred_cmds, sizeof(t_cmds));
 	if (all->a.head == 0 || all->a.head->next == 0)
 		return ;
 	if (simple_rotate_algorithm(all, n))
@@ -70,42 +70,43 @@ void	more_complex_algorithm(t_all *all, int n)
 {
 	t_all	temp;
 
-	init_temp_all(&temp, all, n);
-	sort_a_b(all, &temp);
-	merge_a_b(&all, &temp);
+	init_all(&temp, all, n);
+	sort_a_b(all);
+	merge_a_b(&all);
 	if (!simple_rotate_algorithm(all, n))
 		return ;
 }
 
-void	sort_a_b(t_all *all, t_all *temp)
+void	sort_a_b(t_all *all)
 {
-	while (temp->a.forw)
+	while (all->a.forw)
 	{
-		ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
-		analyze_fwd(&all, temp);
-		analyze_bwd(&all, temp);
-		if (have_analyzed_enough(all->exec_cmds, temp->a.ini_rot,
-				temp->a.forw, temp->a.rev))
+		ft_bzero(&all->pred_cmds, sizeof(t_cmds));
+		analyze_fwd(&all);
+		analyze_bwd(&all);
+		if (have_analyzed_enough(all->exec_cmds, all->a.ini_rot,
+				all->a.forw, all->a.rev))
 		{
-			execute_moves(&all->exec_cmds, &all->a, &all->b, temp);
-			init_stacks_iteration(&temp->a, all->a.head);
-			ft_bzero(&(temp->a.ini_rot), sizeof(t_rot));
+			execute_moves(&all->exec_cmds, &all->a, &all->b, all);
+			init_stacks_iteration(&all->a, all->a.head);
+			ft_bzero(&(all->a.ini_rot), sizeof(t_rot));
+			ft_bzero(&all->pred_cmds, sizeof(t_cmds));
 			ft_bzero(&all->exec_cmds, sizeof(t_cmds));
 		}
-		else if (!temp->a.forw || temp->a.forw->pos == temp->a.rev->pos)
+		else if (!all->a.forw || all->a.forw->pos == all->a.rev->pos)
 			break ;
 	}
 }
 
-void	merge_a_b(t_all **all, t_all *temp)
+void	merge_a_b(t_all **all)
 {
-	init_stacks_iteration(&temp->a, (*all)->a.head);
-	ft_bzero(&(temp->a.ini_rot), sizeof(t_rot));
+	init_stacks_iteration(&(*all)->a, (*all)->a.head);
+	ft_bzero(&((*all)->a.ini_rot), sizeof(t_rot));
 	while ((*all)->b.head)
 	{
-		ft_bzero(&temp->exec_cmds, sizeof(t_cmds));
-		min_push_b_to_a_moves((*all)->a.head, (*all)->b.head, temp);
-		execute_merge_ab(&temp->exec_cmds, &(*all)->a.head,
-			&(*all)->b.head, temp);
+		ft_bzero(&(*all)->pred_cmds, sizeof(t_cmds));
+		min_push_b_to_a_moves((*all)->a.head, (*all)->b.head, *all);
+		execute_merge_ab(&(*all)->pred_cmds, &(*all)->a.head,
+			&(*all)->b.head, *all);
 	}
 }
