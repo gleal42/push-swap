@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:02:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 02:05:18 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/15 23:42:08 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	pred_ramp_moves(t_all *all, t_elem *fst)
 	pred.a.head = all->a.ramp.first_nbr;
 	pred.b.head = all->b.head;
 	pred_fst_ramp_rots(&pred, all, fst);
-	pred_scd_ramp_rots(&pred, all);
+	pred_scd_ramp_rots(&pred, all, fst);
 	(&all->a.ramp.init_cmds)->total = count_moves(&all->a.ramp.init_cmds);
 	return (0);
 }
@@ -39,7 +39,7 @@ void	pred_fst_ramp_rots(t_all *pred, t_all *all, t_elem *fst)
 	while (pred->a.head->pos != fst->pos)
 	{
 		(&all->a.ramp.init_cmds)->pb++;
-		pred_lims_update(fst, pred->a.head, pred->b.head, all->b.head, pred);
+		pred_lims_update(fst, all->b.head, pred);
 		if (pred->a.head->pos == all->a.ramp.first_nbr->pos)
 			pred_ini_rots(&all->a.ramp.init_cmds,
 				all->b.head, pred->a.head, &pred->b.head, pred);
@@ -54,12 +54,13 @@ void	pred_fst_ramp_rots(t_all *pred, t_all *all, t_elem *fst)
 	}
 }
 
-void	pred_scd_ramp_rots(t_all *pred, t_all *all)
+void	pred_scd_ramp_rots(t_all *pred, t_all *all, t_elem *fst)
 {
 	while (!is_next_nbr_bigger(all->a.ramp.first_nbr->prev, pred->a.head,
 			pred->a.lims.min, pred->a.lims.max))
 	{
 		(&all->a.ramp.init_cmds)->pb++;
+		pred_lims_update(fst, all->b.head, pred);
 		if (pred->a.head->pos == all->a.ramp.first_nbr->pos)
 			pred_ini_rots(&all->a.ramp.init_cmds,
 				all->b.head, pred->a.head, &pred->b.head, all);
