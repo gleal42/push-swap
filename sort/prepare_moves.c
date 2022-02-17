@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/17 00:45:49 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/17 17:14:46 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	merge_ramp_spot(t_all *all, t_elem *firstinramp)
 	all->pred_cmds.ra += all->a.ramp.best_cmds.rr;
 	all->pred_cmds.rra = all->a.ramp.best_cmds.rra;
 	all->pred_cmds.rra += all->a.ramp.best_cmds.rrr;
-	place_in_b(all->b.head, all, all->a.ramp.off_nbr);
+	place_in_b(all->b.head, all, all->a.ramp.off_nbr, &all->pred_cmds);
 }
 
 /*
@@ -61,7 +61,7 @@ void	merge_ramp_spot(t_all *all, t_elem *firstinramp)
 	talvez preciso acrescentar mais uma verificacao
 */
 
-void	place_in_b(t_elem *b, t_all *all, t_elem *tobemoved)
+void	place_in_b(t_elem *b, t_all *all, t_elem *tobemoved, t_cmds *cmds)
 {
 	int	closer_fwd;
 	int	closer_bwd;
@@ -75,12 +75,12 @@ void	place_in_b(t_elem *b, t_all *all, t_elem *tobemoved)
 	all->b.rev = b->prev->prev;
 	while (!closer_fwd && !closer_bwd && all->b.forw)
 	{
-		add_double_rots_a(&all->pred_cmds);
+		add_double_rots_a(cmds);
 		check_if_found_rot(all, tobemoved, &closer_fwd, &closer_bwd);
 		all->b.forw = (all->b.forw)->next;
 		all->b.rev = (all->b.rev)->prev;
 	}
-	calculate_initial_pushmoves(closer_fwd, closer_bwd, &all->pred_cmds);
+	calculate_initial_pushmoves(closer_fwd, closer_bwd, cmds);
 }
 
 void	swap_a(t_all *all, t_elem *a)

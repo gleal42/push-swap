@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/17 00:44:09 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/17 19:03:11 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,15 @@ void	pred_lims_update(t_elem *first_nbr, t_elem *b, t_all *all, t_all *pred);
 void	pred_push_orig_lims(t_elem *ori_head, t_stack *cur_ori, t_stack *end);
 void	pred_lims_check_pushed(int *has_lim,
 			t_elem *ori_head, t_stack *cur_ori);
-void	pred_lims_check_b(int *has_lim, t_lims *lims, t_stack *end);
+void	pred_lims_check_end(int *has_lim, t_lims *lims, t_stack *end);
 int		did_find_limit(t_elem *anal, t_lims *lims);
 
 // predict_ramps.c
 
 int		pred_ramp_moves(t_all *all, t_elem *fst);
-void	pred_fst_ramp_rots(t_all *pred, t_all *all, t_elem *fst);
-void	pred_scd_ramp_rots(t_all *pred, t_all *all, t_elem *fst);
+void	pred_ramp_rots(t_all *pred, t_all *all, t_elem *ref, int (*valid)(t_elem *, t_elem *, t_lims *));
+int		fst_ramp_val(t_elem *head, t_elem *start_secramp, t_lims *lims);
+int		scd_ramp_val(t_elem *head, t_elem *start_fstramp, t_lims *lims);
 
 //int		pred_ramp_moves(t_elem *first_nbr,
 //			t_elem *firstinramp, t_elem *a, t_elem *b,
@@ -61,8 +62,7 @@ void	pred_scd_ramp_rots(t_all *pred, t_all *all, t_elem *fst);
 // prepare_moves.c
 
 void	merge_ramp_spot(t_all *all, t_elem *firstinramp);
-void	place_in_b(t_elem *b, t_all *temp,
-			t_elem *tobemoved);
+void	place_in_b(t_elem *b, t_all *all, t_elem *tobemoved, t_cmds *cmds);
 void	swap_a(t_all *all, t_elem *a);
 void	min_push_b_to_a_moves(t_elem *a, t_elem *b, t_all *off);
 

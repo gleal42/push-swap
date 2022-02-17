@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 00:40:49 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/17 00:43:21 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/17 00:54:24 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	pred_push_orig_lims(t_elem *ori_head, t_stack *cur_ori, t_stack *end)
 		if (end->head
 			&& (end->lims.max >= cur_ori->lims.max
 				|| end->lims.min <= cur_ori->lims.min))
-			pred_lims_check_b(&has_lim, &cur_ori->lims, end);
+			pred_lims_check_end(&has_lim, &cur_ori->lims, end);
 	}
 }
 
@@ -85,7 +85,7 @@ void	pred_lims_check_pushed(int *has_lim, t_elem *ori_head, t_stack *cur_ori)
 	}
 }
 
-void	pred_lims_check_b(int *has_lim, t_lims *lims, t_stack *end)
+void	pred_lims_check_end(int *has_lim, t_lims *lims, t_stack *end)
 {
 	int	found;
 

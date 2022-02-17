@@ -6,80 +6,39 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:22:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 19:05:24 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/17 19:06:58 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
 /* 
-* Basically the same as place_in_b but for prediction (check)
+* Same as place_in_b but updating
  */
 
-void	pred_ini_rots(t_cmds *cmds, t_elem *b,
+/* void	pred_ini_rots(t_cmds *cmds, t_elem *b,
 		t_elem *tobemoved, t_elem **cur_b, t_all *pred)
 {
-	int	has_rb;
-	int	has_rrb;
+	int	closer_fwd;
+	int	closer_bwd;
 
-	has_rb = 0;
-	has_rrb = 0;
+	closer_fwd = 0;
+	closer_bwd = 0;
 	cmds->total = count_moves(cmds);
-	if (!b)
+	if (is_good_to_place_wo_rot_b(b, tobemoved, pred->b.lims))
 		return ;
-	if (!b->next)
+	init_stacks_iteration(&pred->b, b);	
+	while (!closer_fwd && !closer_bwd)
 	{
-		has_rb++;
-		predict_initial_pushmoves(has_rb, has_rrb, cmds);
-		return ;
-	}
-	if (is_next_nbr_bigger(tobemoved, b->prev, pred->b.lims.min,
-			pred->b.lims.max) && is_prev_nbr_smaller(tobemoved, b,
-			pred->b.lims.min, pred->b.lims.max))
-	{
-		if (cmds->ra || (!cmds->ra && !cmds->rra))
-			has_rb++;
-		else if (cmds->rra)
-			has_rrb++;
-	}
-	pred->b.forw = b->next;
-	pred->b.rev = b->prev->prev;
-	while (!has_rb && !has_rrb)
-	{
-		if (cmds->ra > 0)
-		{
-			cmds->ra--;
-			cmds->rr++;
-		}
-		else
-			cmds->rb++;
-		if (cmds->rra > 0)
-		{
-			cmds->rra--;
-			cmds->rrr++;
-		}
-		else
-			cmds->rrb++;
-		if (is_next_nbr_bigger(tobemoved, pred->b.forw->prev,
-				pred->b.lims.min, pred->b.lims.max)
-			&& is_prev_nbr_smaller(tobemoved, pred->b.forw,
-				pred->b.lims.min, pred->b.lims.max))
-			has_rb++;
-		if (is_next_nbr_bigger(tobemoved, pred->b.rev,
-				pred->b.lims.min, pred->b.lims.max)
-			&& is_prev_nbr_smaller(tobemoved, pred->b.rev->next,
-				pred->b.lims.min, pred->b.lims.max))
-			has_rrb++;
-		if (!pred->b.forw->next)
-			pred->b.forw = b;
-		else
-			pred->b.forw = (pred->b.forw)->next;
+		add_double_rots_a(cmds);
+		check_if_found_rot(pred, tobemoved, &closer_fwd, &closer_bwd);
+		iterate_stack(pred->b.forw, b);
 		pred->b.rev = (pred->b.rev)->prev;
 	}
-	predict_initial_pushmoves(has_rb, has_rrb, cmds);
+	predict_initial_pushmoves(closer_fwd, closer_bwd, cmds);
 	update_cur_b(cmds, cur_b, pred->b.forw, pred->b.rev);
 	cmds->total = count_moves(cmds);
-}
+} */
 
 /* We need:
 * To have something to update the

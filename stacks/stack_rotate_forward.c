@@ -23,16 +23,3 @@ void	stack_rotate_forward(t_elem **stack)
 	(*stack)->next = second_stack;
 	(*stack)->prev->next = 0;
 }
-
-/* void	stack_rotate_forward(t_elem **stack)
-{
-	t_elem	*last_stack;
-	t_elem	*first_stack;
-
-	last_stack = stack_second_to_last(*stack);
-	first_stack = last_stack->next;
-	last_stack->next = 0;
-	first_stack->next = *stack;
-	*stack = first_stack;
-}
- */
