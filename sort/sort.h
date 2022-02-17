@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 19:27:50 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/17 00:44:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,19 +39,20 @@ void	pb_adjust_min_a(t_elem *b, t_lims *lims_a, t_lims *lims_b);
 void	pa_adjust_max_b(t_elem *a, t_all *temp);
 void	pa_adjust_min_b(t_elem *a, t_all *temp);
 
-// predict_limits_max_min.c
+// predict_limits.c
 
-void	pred_push_orig_max(t_elem *ori_head, t_stack *ori, t_stack *end);
-void	pred_push_orig_min(t_elem *ori_head, t_stack *ori, t_stack *end);
-void	predict_pb_max_b(t_elem *a, t_elem *b, t_lims *lims_a, t_lims *lims_b);
-void	predict_pb_min_b(t_elem *a, t_elem *cur_a,
-			t_lims *lims_a, t_lims *lims_b);
+void	pred_lims_update(t_elem *first_nbr, t_elem *b, t_all *all, t_all *pred);
+void	pred_push_orig_lims(t_elem *ori_head, t_stack *cur_ori, t_stack *end);
+void	pred_lims_check_pushed(int *has_lim,
+			t_elem *ori_head, t_stack *cur_ori);
+void	pred_lims_check_b(int *has_lim, t_lims *lims, t_stack *end);
+int		did_find_limit(t_elem *anal, t_lims *lims);
 
 // predict_ramps.c
 
-int		pred_ramp_moves(t_all *all, t_elem *firstinramp);
-void	pred_fst_ramp_rots(t_all *pred, t_all *all, t_elem *firstinramp);
-void	pred_scd_ramp_rots(t_all *pred, t_all *all);
+int		pred_ramp_moves(t_all *all, t_elem *fst);
+void	pred_fst_ramp_rots(t_all *pred, t_all *all, t_elem *fst);
+void	pred_scd_ramp_rots(t_all *pred, t_all *all, t_elem *fst);
 
 //int		pred_ramp_moves(t_elem *first_nbr,
 //			t_elem *firstinramp, t_elem *a, t_elem *b,

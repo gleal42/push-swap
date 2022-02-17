@@ -6,13 +6,13 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:07:10 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 00:49:33 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/16 22:33:33 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	rotate_bwd(t_cmds *cmds)
+void	ramp_start_before(t_cmds *cmds)
 {
 	if (cmds->ra)
 		cmds->ra--;

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 17:58:02 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/17 00:19:12 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,11 @@ void	init_all(t_all *temp, t_all *all, int n);
 void	init_rots(t_all *all);
 void	init_lims(t_all *all, int n);
 
-// init_utils2.c
+// stack_utils.c
 
 void	init_stacks_iteration(t_stack *tobeinit, t_elem *ref);
+void	iterate_fwd_rev(t_stack *to_iter);
+void	iterate_stack(t_elem **to_iter, t_elem *stack_head);
 
 // other_utils.c
 
@@ -48,17 +50,16 @@ void	delete_stack(int *content);
 
 // predict_ramps_utils.c
 
-void	pred_lims_update(t_elem *first_nbr, t_elem *b, t_all *pred);
 void	pred_ini_rots(t_cmds *cmds, t_elem *b,
 		t_elem *tobemoved, t_elem **cur_b, t_all *pred);
-int	pred_other_rots(t_cmds *temp_cmd, t_elem *a,
+int		pred_other_rots(t_cmds *temp_cmd, t_elem *a,
 		t_elem *b, t_elem *first_nbr, t_elem *cur_stack,
 		t_elem **cur_b, t_all *all, t_lims *lims_b);
 void	predict_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
 
 // prepare_moves_utils.c
 
-void	rotate_bwd(t_cmds *cmds);
+void	ramp_start_before(t_cmds *cmds);
 void	init_push_b(t_all *temp);
 int	is_good_to_place_wo_rot_b(t_elem *b, t_elem *tobemoved, t_lims lims);
 void	add_double_rots_a(t_cmds *cmds);

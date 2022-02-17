@@ -47,7 +47,7 @@ SRCS := push_swap.c \
 		operations/operations_rotate_fwd.c \
 		sort/execute_moves.c \
 		sort/execute_moves2.c \
-		sort/limits_max_min.c \
+		sort/limits.c \
 		sort/predict_limits.c \
 		sort/predict_ramps.c \
 		sort/prepare_moves.c \
@@ -58,7 +58,7 @@ SRCS := push_swap.c \
 		utils/execute_moves_utils2.c \
 		utils/get_info.c \
 		utils/init_utils.c \
-		utils/init_utils2.c \
+		utils/stacks_utils.c \
 		utils/other_utils.c \
 		utils/predict_ramps_utils.c \
 		utils/prepare_moves_utils.c \
