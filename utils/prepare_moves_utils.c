@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:07:10 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/17 16:42:54 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/18 01:21:54 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ void	init_push_b(t_all *all)
 		+ all->pred_cmds.rrr + all->pred_cmds.pb;
 }
 
-int	is_good_to_place_wo_rot_b(t_elem *b, t_elem *tobemoved, t_lims lims_b)
+int	is_good_to_place_wo_rot_b(t_elem *b, t_elem *move, t_lims lims_b)
 {
 	if (!b || !b->next)
 		return (1);
-	if (is_next_nbr_bigger(tobemoved, b->prev, lims_b.min, lims_b.max)
-		&& is_prev_nbr_smaller(tobemoved, b, lims_b.min, lims_b.max))
+	if (is_next_nbr_bigger(move, b->prev, lims_b.min, lims_b.max)
+		&& is_prev_nbr_smaller(move, b, lims_b.min, lims_b.max))
 		return (1);
 	return (0);
 }
@@ -60,16 +60,16 @@ void	add_double_rots_a(t_cmds *cmds)
 		cmds->rrb++;
 }
 
-void	check_if_found_rot(t_all *all, t_elem *tobemoved, int *fwd, int *bwd)
+void	check_if_found_rot(t_elem *move, t_stack *stack, t_rot *near_rot, t_lims lims)
 {
-	if (is_next_nbr_bigger(tobemoved, all->b.forw->prev,
-			all->b.lims.min, all->b.lims.max)
-		&& is_prev_nbr_smaller(tobemoved, all->b.forw,
-			all->b.lims.min, all->b.lims.max))
-		(*fwd)++;
-	if (is_next_nbr_bigger(tobemoved, all->b.rev,
-			all->b.lims.min, all->b.lims.max)
-		&& is_prev_nbr_smaller(tobemoved, all->b.rev->next,
-			all->b.lims.min, all->b.lims.max))
-		(*bwd)++;
+	if (is_next_nbr_bigger(move, stack->forw->prev,
+			lims.min, lims.max)
+		&& is_prev_nbr_smaller(move, stack->forw,
+			lims.min, lims.max))
+		near_rot->r++;
+	if (is_next_nbr_bigger(move, stack->rev,
+			lims.min, lims.max)
+		&& is_prev_nbr_smaller(move, stack->rev->next,
+			lims.min, lims.max))
+		near_rot->rrev++;
 }

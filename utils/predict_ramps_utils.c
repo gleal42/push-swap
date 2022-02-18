@@ -6,39 +6,11 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:22:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/17 19:06:58 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/18 01:41:34 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
-
-/* 
-* Same as place_in_b but updating
- */
-
-/* void	pred_ini_rots(t_cmds *cmds, t_elem *b,
-		t_elem *tobemoved, t_elem **cur_b, t_all *pred)
-{
-	int	closer_fwd;
-	int	closer_bwd;
-
-	closer_fwd = 0;
-	closer_bwd = 0;
-	cmds->total = count_moves(cmds);
-	if (is_good_to_place_wo_rot_b(b, tobemoved, pred->b.lims))
-		return ;
-	init_stacks_iteration(&pred->b, b);	
-	while (!closer_fwd && !closer_bwd)
-	{
-		add_double_rots_a(cmds);
-		check_if_found_rot(pred, tobemoved, &closer_fwd, &closer_bwd);
-		iterate_stack(pred->b.forw, b);
-		pred->b.rev = (pred->b.rev)->prev;
-	}
-	predict_initial_pushmoves(closer_fwd, closer_bwd, cmds);
-	update_cur_b(cmds, cur_b, pred->b.forw, pred->b.rev);
-	cmds->total = count_moves(cmds);
-} */
 
 /* We need:
 * To have something to update the
@@ -46,100 +18,63 @@
 * To keep track of the numbers we have
 * already pushed (in case we need to go backwards)
 */
-/* After first return (0);
-	if (!b->next)
-	{
-		if (cur_stack->pos == first_nbr->pos 
-			&& temp_cmd 
-			&& is_prev_nbr_smaller(cur_stack, cur_b, limits->min_b, limits->max_b))
-			nbr_rot_pred.rb++;
-		add_new_rotatesb(b, has_rb, has_rrb, &nbr_rot_pred, cur_stack, &cur_b, limits);
-		return (0);
-} */
 
-int	pred_other_rots(t_cmds *temp_cmd, t_elem *a,
-		t_elem *b, t_elem *first_nbr, t_elem *cur_stack,
-		t_elem **cur_b, t_all *all, t_lims *lims_b)
+int	pred_other_rots(t_all *pred, t_all *all, t_lims *lims_b, t_cmds *temp_cmd)
 {
-	t_cmds	nbr_rot_pred;
-	int		has_rb;
-	int		has_rrb;
+	t_cmds	rot_pred;
 
-	(void)a;
-	ft_bzero(&nbr_rot_pred, sizeof(t_cmds));
-	has_rb = 0;
-	has_rrb = 0;
-	if (!b || !b->next)
-		return (0);
-	if (is_next_nbr_bigger(cur_stack, (*cur_b)->prev,
-			lims_b->min, lims_b->max)
-		&& is_prev_nbr_smaller(cur_stack, (*cur_b),
-			lims_b->min, lims_b->max))
-		return (0);
-	if (!(*cur_b)->next)
-		all->b.forw = b;
-	else
-		all->b.forw = (*cur_b)->next;
-	all->b.rev = (*cur_b)->prev->prev;
-	while (!has_rb && !has_rrb)
+	pred->b.near_rot.r = 0;
+	pred->b.near_rot.rrev = 0;
+	ft_bzero(&rot_pred, sizeof(t_cmds));
+	if (pred_good_wo_rot_b(all->b.head, pred->a.head, all->b.lims));
 	{
-		if (!has_rb)
-		{
-			add_rbs(a, first_nbr, cur_stack,
-				all->b.forw, &nbr_rot_pred, lims_b);
-			if (is_next_nbr_bigger(cur_stack, all->b.forw->prev,
-					lims_b->min, lims_b->max)
-				&& is_prev_nbr_smaller(cur_stack, all->b.forw,
-					lims_b->min, lims_b->max))
-				has_rb++;
-		}
-		if (!has_rrb)
-		{
-			add_rrbs(a, first_nbr, cur_stack,
-				all->b.rev, &nbr_rot_pred, lims_b);
-			if (all->b.rev->next)
-			{
-				if (is_next_nbr_bigger(cur_stack, all->b.rev,
-						lims_b->min, lims_b->max)
-					&& is_prev_nbr_smaller(cur_stack,
-						all->b.rev->next, lims_b->min, lims_b->max))
-					has_rrb++;
-			}
-			else
-			{
-				if (is_next_nbr_bigger(cur_stack, all->b.rev,
-						lims_b->min, lims_b->max)
-					&& is_prev_nbr_smaller(cur_stack, b,
-						lims_b->min, lims_b->max))
-					has_rrb++;
-			}
-		}
-		if (!has_rb)
-		{
-			if (all->b.forw->next)
-				all->b.forw = all->b.forw->next;
-			else
-				all->b.forw = b;
-		}
-		if (!has_rrb)
-			all->b.rev = (all->b.rev)->prev;
+		pred_min_rots();
+		return (0);
 	}
-	update_cur_b(&nbr_rot_pred, cur_b, all->b.forw, all->b.rev);
-	add_new_rotatesb(has_rb, has_rrb, &nbr_rot_pred);
-	temp_cmd->rb += nbr_rot_pred.rb;
-	temp_cmd->rrb += nbr_rot_pred.rrb;
+	iterate_stack(&pred->b.head, all->b.head);
+	all->b.rev = (pred->b.head)->prev->prev;
+	while (!pred->b.near_rot.r || !pred->b.near_rot.rrev)
+	{
+		add_rbs(all->a.head, all->a.ramp.first_nbr, pred->a.head,
+			all->b.forw, &rot_pred, lims_b);
+		iterate_stack(&all->b.forw, all->b.head);
+		add_rrbs(all->a.head, all->a.ramp.first_nbr, pred->a.head,
+			all->b.rev, &rot_pred, lims_b);
+		all->b.rev = (all->b.rev)->prev;
+		check_if_found_rot(pred->a.head, &all->b, &pred->b.near_rot, all->b.lims);
+	}
+	calculate_initial_pushmoves(pred->b.near_rot.r, pred->b.near_rot.rrev, &rot_pred);
+	if (rot_pred.rb)
+		pred->b.head = all->b.forw;
+	else if (rot_pred.rrb)
+		pred->b.head = all->b.rev;
+	update_cur_b(&rot_pred, &pred->b.head, all->b.forw, all->b.rev);
+	temp_cmd->rb += rot_pred.rb;
+	temp_cmd->rrb += rot_pred.rrb;
 	return (0);
 }
 
-void	predict_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds)
+/* Continuar aqui, e talvez por pred min rots dentro desta para poupar linhas */
+
+int		pred_good_wo_rot_b()
 {
-	if ((cmds->rb && cmds->rb <= cmds->rrb) || !has_rrb)
+	if (!b || !b->next)
+		return (1);
+	if (is_next_nbr_bigger(move, b->prev, lims_b.min, lims_b.max)
+		&& is_prev_nbr_smaller(move, b, lims_b.min, lims_b.max))
+		return (1);
+	return (0);
+}
+
+void	predict_initial_pushmoves(int closer_fwd, int closer_bwd, t_cmds *cmds)
+{
+	if ((cmds->rb && cmds->rb <= cmds->rrb) || !closer_bwd)
 	{
 		cmds->rrb = 0;
 		cmds->rra += cmds->rrr;
 		cmds->rrr = 0;
 	}
-	else if ((cmds->rrb && cmds->rb > cmds->rrb) || !has_rb)
+	else if ((cmds->rrb && cmds->rb > cmds->rrb) || !closer_fwd)
 	{
 		cmds->rb = 0;
 		cmds->ra += cmds->rr;

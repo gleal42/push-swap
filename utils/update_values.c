@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:13:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 00:49:33 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/18 00:02:29 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,39 +60,6 @@ void	add_rrbs(t_elem *a, t_elem *first_nbr,
 		else
 			sent_stack = sent_stack->next;
 	}
-}
-
-/* Have to check if this is actually working
-(updating cur_b for every prediction) */
-
-void	update_cur_b(t_cmds *cmds, t_elem **cur_b_head,
-		t_elem *fwd_b, t_elem *bwd_b)
-{
-	int	fwd_total;
-	int	rev_total;
-
-	rev_total = 0;
-	fwd_total = 0;
-	fwd_total = cmds->ra + cmds->rr + cmds->rb;
-	rev_total = cmds->rra + cmds->rrr + cmds->rrb;
-	if ((fwd_total && fwd_total <= rev_total) || !rev_total)
-	{
-		cmds->rrb = 0;
-		cmds->rra += cmds->rrr;
-		cmds->rrr = 0;
-		cmds->total = fwd_total;
-	}
-	else if ((rev_total && fwd_total > rev_total) || !fwd_total)
-	{
-		cmds->rb = 0;
-		cmds->ra += cmds->rr;
-		cmds->rr = 0;
-		cmds->total = rev_total;
-	}
-	if (cmds->rb <= cmds->rrb)
-		*cur_b_head = fwd_b;
-	else
-		*cur_b_head = bwd_b;
 }
 
 /* Add compare rbs and rrbs and don't forget to take r and rrs 

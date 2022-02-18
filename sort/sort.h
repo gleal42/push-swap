@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/17 19:03:11 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/17 21:48:40 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,13 @@ void	pa_adjust_min_b(t_elem *a, t_all *temp);
 
 // predict_limits.c
 
+
 void	pred_lims_update(t_elem *first_nbr, t_elem *b, t_all *all, t_all *pred);
-void	pred_push_orig_lims(t_elem *ori_head, t_stack *cur_ori, t_stack *end);
-void	pred_lims_check_pushed(int *has_lim,
-			t_elem *ori_head, t_stack *cur_ori);
+void	pred_push_orig_lims(t_elem *fst_ramp, t_elem *ori_head, t_stack *cur_ori, t_stack *end);
+void	pred_lims_check_pushed(int *has_lim, t_elem *fst_ramp, t_elem *ori_head, t_stack *cur_ori);
 void	pred_lims_check_end(int *has_lim, t_lims *lims, t_stack *end);
 int		did_find_limit(t_elem *anal, t_lims *lims);
+
 
 // predict_ramps.c
 

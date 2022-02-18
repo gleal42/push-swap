@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 00:40:49 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/17 00:54:24 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/17 21:46:55 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	pred_lims_update(t_elem *first_nbr, t_elem *b, t_all *all, t_all *pred)
 	if (first_nbr->prev->pos == pred->a.head->pos)
 		set_both_lims_as(&pred->a.lims, 0);
 	else
-		pred_push_orig_lims(all->a.head, &pred->a, &pred->b);
+		pred_push_orig_lims(first_nbr, all->a.head, &pred->a, &pred->b);
 	if (!b)
 	{
 		if (first_nbr->pos == pred->a.head->pos)
@@ -45,7 +45,7 @@ void	pred_lims_update(t_elem *first_nbr, t_elem *b, t_all *all, t_all *pred)
 ** end is b
 */
 
-void	pred_push_orig_lims(t_elem *ori_head, t_stack *cur_ori, t_stack *end)
+void	pred_push_orig_lims(t_elem *fst_ramp, t_elem *ori_head, t_stack *cur_ori, t_stack *end)
 {
 	t_elem	*pushed;
 	int		has_lim;
@@ -55,7 +55,7 @@ void	pred_push_orig_lims(t_elem *ori_head, t_stack *cur_ori, t_stack *end)
 	while (has_lim)
 	{
 		has_lim = 0;
-		pred_lims_check_pushed(&has_lim, ori_head, cur_ori);
+		pred_lims_check_pushed(&has_lim, fst_ramp, ori_head, cur_ori);
 		if (end->head
 			&& (end->lims.max >= cur_ori->lims.max
 				|| end->lims.min <= cur_ori->lims.min))
@@ -65,13 +65,13 @@ void	pred_push_orig_lims(t_elem *ori_head, t_stack *cur_ori, t_stack *end)
 
 /* check if we should analyze head every time */
 
-void	pred_lims_check_pushed(int *has_lim, t_elem *ori_head, t_stack *cur_ori)
+void	pred_lims_check_pushed(int *has_lim, t_elem *fst_ramp, t_elem *ori_head, t_stack *cur_ori)
 {
 	t_elem	*check;
 	int		found;
 
-	check = cur_ori->head;
-	while (check->pos != ori_head->pos)
+	check = fst_ramp;
+	while (check->pos != cur_ori->head->pos)
 	{
 		found = 0;
 		found = did_find_limit(check, &cur_ori->lims);

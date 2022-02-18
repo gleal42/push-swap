@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:49:21 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 01:42:40 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/18 01:12:54 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_stack
 	t_elem		*forw;
 	t_elem		*rev;
 	t_rot		ini_rot;
+	t_rot		near_rot;
 	t_lims		lims;
 	t_ramp		ramp;
 }				t_stack;

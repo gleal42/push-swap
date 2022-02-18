@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/17 17:14:46 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/18 01:23:16 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,26 +61,23 @@ void	merge_ramp_spot(t_all *all, t_elem *firstinramp)
 	talvez preciso acrescentar mais uma verificacao
 */
 
-void	place_in_b(t_elem *b, t_all *all, t_elem *tobemoved, t_cmds *cmds)
+void	place_in_b(t_elem *b, t_all *all, t_elem *move, t_cmds *cmds)
 {
-	int	closer_fwd;
-	int	closer_bwd;
-
-	closer_fwd = 0;
-	closer_bwd = 0;
+	all->b.near_rot.r = 0;
+	all->b.near_rot.rrev = 0;
 	init_push_b(all);
-	if (is_good_to_place_wo_rot_b(b, tobemoved, all->b.lims))
+	if (is_good_to_place_wo_rot_b(b, move, all->b.lims))
 		return ;
 	all->b.forw = b->next;
 	all->b.rev = b->prev->prev;
-	while (!closer_fwd && !closer_bwd && all->b.forw)
+	while (!all->b.near_rot.r && !all->b.near_rot.rrev && all->b.forw)
 	{
 		add_double_rots_a(cmds);
-		check_if_found_rot(all, tobemoved, &closer_fwd, &closer_bwd);
+		check_if_found_rot(move, &all->b, &all->b.near_rot, all->b.lims);
 		all->b.forw = (all->b.forw)->next;
 		all->b.rev = (all->b.rev)->prev;
 	}
-	calculate_initial_pushmoves(closer_fwd, closer_bwd, cmds);
+	calculate_initial_pushmoves(all->b.near_rot.r, all->b.near_rot.rrev, cmds);
 }
 
 void	swap_a(t_all *all, t_elem *a)
