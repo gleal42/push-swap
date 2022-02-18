@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 01:42:34 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/18 16:39:08 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	init_lims(t_all *all, int n);
 // stack_utils.c
 
 void	init_stacks_iteration(t_stack *tobeinit, t_elem *ref);
-void	iterate_fwd_rev(t_stack *to_iter);
+void	iterate_fwd_rev_toend(t_stack *to_iter);
 void	iterate_stack(t_elem **to_iter, t_elem *stack_head);
 
 // other_utils.c
@@ -52,6 +52,8 @@ void	delete_stack(int *content);
 
 int		pred_other_rots(t_all *pred, t_all *all, t_lims *lims_b, t_cmds *temp_cmd);
 void	predict_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
+void	add_rbs(t_all *all, t_all *pred, t_cmds *rot_pred);
+void	add_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred);
 
 // prepare_moves_utils.c
 
@@ -78,15 +80,5 @@ void	analyze_bwd(t_all **all);
 
 // update_values.c
 
-void	add_rbs(t_elem *a, t_elem *first_nbr,
-			t_elem *cur_stack, t_elem *forw_b,
-			t_cmds *nbr_rot_pred, t_lims *limits);
-void	add_rrbs(t_elem *a, t_elem *first_nbr,
-			t_elem *cur_stack, t_elem *rev_b,
-			t_cmds *nbr_rot_pred, t_lims *limits);
-void	update_cur_b(t_cmds *cmds, t_elem **cur_b_head,
-			t_elem *fwd_b, t_elem *bwd_b);
-void	add_new_rotatesb(int has_rb,
-		int has_rrb, t_cmds *cmds);
 
 #endif

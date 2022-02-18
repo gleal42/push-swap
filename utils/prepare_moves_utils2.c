@@ -6,13 +6,14 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:30:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/14 23:36:08 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/18 17:01:47 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	calculate_initial_pushmoves(int closer_fwd, int closer_bwd, t_cmds *cmds)
+void	calculate_initial_pushmoves(int closer_fwd,
+	int closer_bwd, t_cmds *cmds)
 {
 	int	fwd_total;
 	int	rev_total;
@@ -69,8 +70,8 @@ void	find_closest_b_spot(t_elem *cur_b, t_elem *a, t_all *all, int max)
 		else
 			good_spot_reverse++;
 	}
-	if (is_next_nbr_bigger(cur_b, a, all->a.lims.min, all->a.lims.max)
-		&& is_prev_nbr_smaller(cur_b, a->prev,
+	if (is_smaller_than(cur_b, a, all->a.lims.min, all->a.lims.max)
+		&& is_bigger_than(cur_b, a->prev,
 			all->a.lims.min, all->a.lims.max))
 		return ;
 	all->a.forw = a->next;
@@ -104,24 +105,24 @@ void	find_closest_b_spot(t_elem *cur_b, t_elem *a, t_all *all, int max)
 			ft_bzero(&all->pred_cmds, sizeof(t_cmds));
 			return ;
 		}
-		if (is_next_nbr_bigger(cur_b, all->a.forw,
+		if (is_smaller_than(cur_b, all->a.forw,
 				all->a.lims.min, all->a.lims.max)
-			&& is_prev_nbr_smaller(cur_b, all->a.forw->prev,
+			&& is_bigger_than(cur_b, all->a.forw->prev,
 				all->a.lims.min, all->a.lims.max))
 			good_spot_forward++;
 		if (all->a.rev->next)
 		{
-			if (is_prev_nbr_smaller(cur_b, all->a.rev,
+			if (is_bigger_than(cur_b, all->a.rev,
 					all->a.lims.min, all->a.lims.max)
-				&& is_next_nbr_bigger(cur_b, all->a.rev->next,
+				&& is_smaller_than(cur_b, all->a.rev->next,
 					all->a.lims.max, all->a.lims.max))
 				good_spot_reverse++;
 		}
 		else
 		{
-			if (is_prev_nbr_smaller(cur_b, all->a.rev,
+			if (is_bigger_than(cur_b, all->a.rev,
 					all->a.lims.max, all->a.lims.max)
-				&& is_next_nbr_bigger(cur_b, a, all->a.lims.min,
+				&& is_smaller_than(cur_b, a, all->a.lims.min,
 					all->a.lims.max))
 				good_spot_reverse++;
 		}

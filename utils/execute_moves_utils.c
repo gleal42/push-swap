@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/11 20:14:27 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/11 21:08:25by gleal            ###   ########.fr       */
+/*   Created: 2022/02/18 01:53:47 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/18 01:54:19 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	set_lims_stack_a_pb(t_elem **a, t_elem **b, t_all *all)
 	else
 	{
 		if ((*a)->pos == all->a.lims.max)
-			pb_adjust_max_a(*b , &(all->a.lims), &(all->b.lims));
+			pb_adjust_max_a(*b, &(all->a.lims), &(all->b.lims));
 		if ((*a)->pos == all->a.lims.min)
 			pb_adjust_min_a(*b, &(all->a.lims), &(all->b.lims));
 	}

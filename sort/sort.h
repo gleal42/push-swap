@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/17 21:48:40 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/18 17:01:47 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ int		have_analyzed_enough(t_cmds off, t_rot ini_rot_a,
 int		is_temp_better(t_cmds temp, t_cmds off);
 int		is_good_for_swap(t_elem *first, t_elem *to_be_swaped,
 			int min_stack, int max_stack);
-int		is_next_nbr_bigger(t_elem *cur, t_elem *next_one,
+int		is_smaller_than(t_elem *cur, t_elem *next_one,
 			int min_stack, int max_stack);
-int		is_prev_nbr_smaller(t_elem *cur, t_elem *prev_one,
+int		is_bigger_than(t_elem *cur, t_elem *prev_one,
 			int min_stack, int max_stack);
 int		is_stack_sorted(t_elem **a, int n);
 

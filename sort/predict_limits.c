@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 00:40:49 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/17 21:46:55 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/18 15:52:14 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	pred_lims_check_end(int *has_lim, t_lims *lims, t_stack *end)
 			(*has_lim) = 1;
 		}
 		else
-			iterate_fwd_rev(end);
+			iterate_fwd_rev_toend(end);
 	}
 }
 

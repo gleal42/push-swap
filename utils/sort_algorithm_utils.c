@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/08 19:01:10 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 00:06:05 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/18 17:01:47 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	find_rotation_direction(t_all *all, int *rotation_direction)
 
 void	analyze_fwd(t_all **all)
 {
-	if (is_next_nbr_bigger((*all)->a.forw, ((*all)->a.forw)->next,
+	if (is_smaller_than((*all)->a.forw, ((*all)->a.forw)->next,
 			(*all)->a.lims.min, (*all)->a.lims.max))
 	{
 		(*all)->a.ini_rot.r++;
@@ -80,7 +80,7 @@ void	analyze_fwd(t_all **all)
 
 void	analyze_bwd(t_all **all)
 {
-	if (is_prev_nbr_smaller((*all)->a.rev, (*all)->a.rev->prev,
+	if (is_bigger_than((*all)->a.rev, (*all)->a.rev->prev,
 			(*all)->a.lims.min, (*all)->a.lims.max))
 	{
 		(*all)->a.ini_rot.rrev++;

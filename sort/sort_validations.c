@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 18:54:02 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/14 21:35:24 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/18 17:01:56 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,37 +61,37 @@ int	is_good_for_swap(t_elem *stack_top, t_elem *to_swap,
 		frth = sec->next;
 	else
 		frth = stack_top;
-	if (is_next_nbr_bigger(to_swap->prev, sec, min, max)
-		&& is_next_nbr_bigger(to_swap, frth, min, max))
+	if (is_smaller_than(to_swap->prev, sec, min, max)
+		&& is_smaller_than(to_swap, frth, min, max))
 		return (1);
 	else
 		return (0);
 }
 
-int	is_next_nbr_bigger(t_elem *cur, t_elem *next_one,
+int	is_smaller_than(t_elem *cur, t_elem *other,
 		int min_stack, int max_stack)
 {
-	if (!next_one)
+	if (!other)
 		return (1);
-	if (cur->pos <= min_stack && next_one->pos >= max_stack)
+	if (cur->pos <= min_stack && other->pos >= max_stack)
 		return (0);
-	if (next_one->pos > cur->pos)
+	if (other->pos > cur->pos)
 		return (1);
-	if (cur->pos >= max_stack && next_one->pos <= min_stack)
+	if (cur->pos >= max_stack && other->pos <= min_stack)
 		return (1);
 	return (0);
 }
 
-int	is_prev_nbr_smaller(t_elem *cur, t_elem *prev_one,
+int	is_bigger_than(t_elem *cur, t_elem *other,
 		int min_stack, int max_stack)
 {
-	if (!prev_one)
+	if (!other)
 		return (1);
-	if (cur->pos >= max_stack && prev_one->pos <= min_stack)
+	if (cur->pos >= max_stack && other->pos <= min_stack)
 		return (0);
-	if (prev_one->pos < cur->pos)
+	if (other->pos < cur->pos)
 		return (1);
-	if (cur->pos <= min_stack && prev_one->pos >= max_stack)
+	if (cur->pos <= min_stack && other->pos >= max_stack)
 		return (1);
 	return (0);
 }
@@ -105,11 +105,11 @@ int	is_stack_sorted(t_elem **a, int n)
 	temp = *a;
 	while (temp->next)
 	{
-		if (!is_next_nbr_bigger(temp, temp->next, 1, n))
+		if (!is_smaller_than(temp, temp->next, 1, n))
 			return (0);
 		temp = temp->next;
 	}
-	if (!is_next_nbr_bigger(temp, *a, 1, n))
+	if (!is_smaller_than(temp, *a, 1, n))
 		return (0);
 	else
 		return (1);
