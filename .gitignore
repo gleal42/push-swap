@@ -57,3 +57,4 @@ dkms.conf
 # Other Annoying files
 .DS_Store
 .vscode/
+push_swap

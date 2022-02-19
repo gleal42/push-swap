@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:02:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 23:25:54 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/19 19:46:21 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	pred_ramp_moves(t_all *all, t_elem *fst)
 	pred = *all;
 	pred.a.head = all->a.ramp.first_nbr;
 	pred.b.head = all->b.head;
+	all->a.ramp.init_cmds = all->pred_cmds;
 	pred_ramp_rots(&pred, all, fst, &fst_ramp_val);
 	pred_ramp_rots(&pred, all, all->a.ramp.first_nbr->prev, &scd_ramp_val);
 	(&all->a.ramp.init_cmds)->total = count_moves(&all->a.ramp.init_cmds);
@@ -45,7 +46,7 @@ int	fst_ramp_val(t_elem *head, t_elem *start_secramp, t_lims *lims)
 
 int	scd_ramp_val(t_elem *head, t_elem *start_fstramp, t_lims *lims)
 {
-	if (!is_smaller_than(start_fstramp, head,
+	if (is_bigger_than(start_fstramp, head,
 			lims->min, lims->max))
 			return (1);
 	else

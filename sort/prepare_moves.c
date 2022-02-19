@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 01:23:16 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/19 19:27:36 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,25 @@ void	merge_ramp_spot(t_all *all, t_elem *firstinramp)
 /*
 	quando chega ao final do loop (aquilo que aconteceu no rotate basico)
 	talvez preciso acrescentar mais uma verificacao
+	while (!all->b.near_rot.r && !all->b.near_rot.rrev && all->b.forw)
+	retirar break se deixar de funcionar
 */
 
 void	place_in_b(t_elem *b, t_all *all, t_elem *move, t_cmds *cmds)
 {
 	all->b.near_rot.r = 0;
 	all->b.near_rot.rrev = 0;
-	init_push_b(all);
+	init_push_b(cmds);
 	if (is_good_to_place_wo_rot_b(b, move, all->b.lims))
 		return ;
 	all->b.forw = b->next;
 	all->b.rev = b->prev->prev;
-	while (!all->b.near_rot.r && !all->b.near_rot.rrev && all->b.forw)
+	while (all->b.forw)
 	{
 		add_double_rots_a(cmds);
 		check_if_found_rot(move, &all->b, &all->b.near_rot, all->b.lims);
+		if (all->b.near_rot.r || all->b.near_rot.rrev)
+			break ;
 		all->b.forw = (all->b.forw)->next;
 		all->b.rev = (all->b.rev)->prev;
 	}

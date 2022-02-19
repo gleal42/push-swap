@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/19 00:26:52 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/19 19:30:12 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	predict_all_ini_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred);
 // prepare_moves_utils.c
 
 void	ramp_start_before(t_cmds *cmds);
-void	init_push_b(t_all *temp);
-int	is_good_to_place_wo_rot_b(t_elem *b, t_elem *tobemoved, t_lims lims);
+void	init_push_b(t_cmds *cmds);
+int		is_good_to_place_wo_rot_b(t_elem *b, t_elem *tobemoved, t_lims lims);
 void	add_double_rots_a(t_cmds *cmds);
 void	check_if_found_rot(t_elem *move, t_stack *stack, t_rot *near_rot, t_lims lims);
 

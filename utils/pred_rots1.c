@@ -19,9 +19,15 @@ void	pred_ramp_rots(t_all *pred, t_all *all, t_elem *ref, int (*valid)(t_elem *,
 		(&all->a.ramp.init_cmds)->pb++;
 		pred_lims_update(all->a.ramp.first_nbr, all->b.head, all, pred);
 		if (pred->a.head->pos == all->a.ramp.first_nbr->pos)
+		{
 			place_in_b(all->b.head, pred, pred->a.head, &all->a.ramp.init_cmds);
+			if (all->a.ramp.init_cmds.rb || all->a.ramp.init_cmds.rr)
+				pred->b.head = pred->b.forw;
+			else if (all->a.ramp.init_cmds.rrb || all->a.ramp.init_cmds.rrr)
+				pred->b.head = pred->b.rev;
+		}
 		else
-			pred_other_rots(pred, all, &all->a.ramp.init_cmds);
+			pred_other_rots(pred, all, &all->a.ramp.init_cmds);	
 		iterate_stack(&pred->a.head, all->a.head);
 	}
 }
@@ -43,6 +49,9 @@ int	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd)
 	if (!all->b.head || !all->b.head->next)
 	{
 		pred_all_inirotsb(all, pred, &rot_pred);
+		calculate_initial_pushmoves(pred->b.near_rot.r, pred->b.near_rot.rrev, &rot_pred);
+		temp_cmd->rb += rot_pred.rb;
+		temp_cmd->rrb += rot_pred.rrb;
 		return (0);
 	}
 	init_stacks_iteration(&pred->b, pred->b.head);
@@ -55,6 +64,7 @@ int	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd)
 		check_if_found_rot(pred->a.head, &all->b, &pred->b.near_rot, pred->b.lims);
 	}
 	calculate_initial_pushmoves(pred->b.near_rot.r, pred->b.near_rot.rrev, &rot_pred);
+	iterate_stack(&pred->a.head, all->a.head);
 	if (rot_pred.rb)
 		pred->b.head = pred->b.forw;
 	else if (rot_pred.rrb)

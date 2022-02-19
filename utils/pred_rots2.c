@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 23:28:06 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/19 00:30:36 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/19 20:55:58 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,44 +24,72 @@ void	pred_all_inirotsb(t_all *all, t_all *pred, t_cmds *rot_pred)
 
 void	predict_all_ini_rbs(t_all *all, t_all *pred, t_cmds *rot_pred)
 {
-	t_elem	*check_fwd;
+	t_elem	*temp;
+	t_elem	*prev_temp;
 	t_elem	*sent_stack;
 
 	sent_stack = all->a.ramp.first_nbr;
+	temp = sent_stack;
+	prev_temp = temp;
+	iterate_stack(&sent_stack, all->a.head);
+	if (sent_stack->pos == pred->a.head->pos)
+		return ;
+	sent_stack = all->a.ramp.first_nbr;
+	pred->b.forw = sent_stack;
 	while (pred->b.forw->pos != pred->a.head->pos)
 	{
 		iterate_stack(&sent_stack, all->a.head);
 		if (is_bigger_than(pred->b.rev, sent_stack,
 				pred->b.lims.min, pred->b.lims.max)
-				&& sent_stack->pos > check_fwd->pos)
-			check_fwd = sent_stack;
+				&& (sent_stack->pos >= temp->pos))
+			temp = sent_stack;
 		if(sent_stack->pos == pred->a.head->pos)
 		{
-			pred->b.forw = check_fwd;
-			rot_pred->rb++;
-			sent_stack = all->a.ramp.first_nbr;
+			if (temp->pos == prev_temp->pos)
+				break ;
+			else
+			{
+				prev_temp = temp;
+				pred->b.forw = temp;
+				rot_pred->rb++;
+				sent_stack = all->a.ramp.first_nbr;
+			}
 		}
 	}
 }
 
 void	predict_all_ini_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred)
 {
-	t_elem	*check_bwd;
+	t_elem	*temp;
+	t_elem	*prev_temp;
 	t_elem	*sent_stack;
 
 	sent_stack = all->a.ramp.first_nbr;
+	temp = sent_stack;
+	prev_temp = temp;
+	iterate_stack(&sent_stack, all->a.head);
+	if (sent_stack->pos == pred->a.head->pos)
+		return ;
+	sent_stack = all->a.ramp.first_nbr;
+	pred->b.rev = sent_stack;
 	while (pred->b.rev->pos != pred->a.head->pos)
 	{
 		iterate_stack(&sent_stack, all->a.head);
-		if (is_smaller_than(pred->b.forw, sent_stack,
+		if (is_smaller_than(pred->b.rev, sent_stack,
 				pred->b.lims.min, pred->b.lims.max)
-				&& sent_stack->pos < check_bwd->pos)
-			check_bwd = sent_stack;
+				&& (sent_stack->pos >= temp->pos))
+			temp = sent_stack;
 		if(sent_stack->pos == pred->a.head->pos)
 		{
-			pred->b.rev = check_bwd;
-			rot_pred->rrb++;
-			sent_stack = all->a.ramp.first_nbr;
+			if (temp->pos == prev_temp->pos)
+				break ;
+			else
+			{
+				prev_temp = temp;
+				pred->b.rev = temp;
+				rot_pred->rb++;
+				sent_stack = all->a.ramp.first_nbr;
+			}
 		}
 	}
 }

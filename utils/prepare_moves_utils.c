@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:07:10 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 17:01:47 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/19 19:27:13 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@ void	ramp_start_before(t_cmds *cmds)
 		cmds->rra++;
 }
 
-void	init_push_b(t_all *all)
+void	init_push_b(t_cmds *cmds)
 {
-	if (all->pred_cmds.ra)
-		all->pred_cmds.type = PUSH_B_FWD;
+	if (cmds->ra)
+		cmds->type = PUSH_B_FWD;
 	else
-		all->pred_cmds.type = PUSH_B_BWD;
-	all->pred_cmds.pb++;
-	all->pred_cmds.total = all->pred_cmds.ra + all->pred_cmds.rb
-		+ all->pred_cmds.rr + all->pred_cmds.rra + all->pred_cmds.rrb
-		+ all->pred_cmds.rrr + all->pred_cmds.pb;
+		cmds->type = PUSH_B_BWD;
+	cmds->pb++;
+	cmds->total = cmds->ra + cmds->rb
+		+ cmds->rr + cmds->rra + cmds->rrb
+		+ cmds->rrr + cmds->pb;
 }
 
 int	is_good_to_place_wo_rot_b(t_elem *b, t_elem *move, t_lims lims_b)
