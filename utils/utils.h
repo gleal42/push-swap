@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 16:39:08 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/19 00:26:52 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,26 @@ void	init_lims(t_all *all, int n);
 
 void	init_stacks_iteration(t_stack *tobeinit, t_elem *ref);
 void	iterate_fwd_rev_toend(t_stack *to_iter);
+void	iterate_fwd_rev_noend(t_stack *to_iter, t_elem *stack_head);
 void	iterate_stack(t_elem **to_iter, t_elem *stack_head);
 
 // other_utils.c
 
 void	delete_stack(int *content);
 
-// predict_ramps_utils.c
+// predict_rots1.c
 
-int		pred_other_rots(t_all *pred, t_all *all, t_lims *lims_b, t_cmds *temp_cmd);
-void	predict_initial_pushmoves(int has_rb, int has_rrb, t_cmds *cmds);
+void	pred_ramp_rots(t_all *pred, t_all *all, t_elem *ref, int (*valid)(t_elem *, t_elem *, t_lims *));
+int		pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd);
+void	pred_start_rotsb(t_all *all, t_all *pred, t_cmds *rot_pred);
 void	add_rbs(t_all *all, t_all *pred, t_cmds *rot_pred);
 void	add_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred);
+
+// predict_rots2.c
+
+void	pred_all_inirotsb(t_all *all, t_all *pred, t_cmds *rot_pred);
+void	predict_all_ini_rbs(t_all *all, t_all *pred, t_cmds *rot_pred);
+void	predict_all_ini_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred);
 
 // prepare_moves_utils.c
 

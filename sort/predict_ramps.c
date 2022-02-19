@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:02:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 17:00:30 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/18 23:25:54 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,6 @@ int	pred_ramp_moves(t_all *all, t_elem *fst)
 	pred_ramp_rots(&pred, all, all->a.ramp.first_nbr->prev, &scd_ramp_val);
 	(&all->a.ramp.init_cmds)->total = count_moves(&all->a.ramp.init_cmds);
 	return (0);
-}
-
-void	pred_ramp_rots(t_all *pred, t_all *all, t_elem *ref, int (*valid)(t_elem *, t_elem *, t_lims *))
-{
-	while (valid(pred->a.head, ref, &pred->a.lims))
-	{
-		(&all->a.ramp.init_cmds)->pb++;
-		pred_lims_update(all->a.ramp.first_nbr, all->b.head, all, pred);
-		if (pred->a.head->pos == all->a.ramp.first_nbr->pos)
-			place_in_b(all->b.head, pred, pred->a.head, &all->a.ramp.init_cmds);
-		else
-			pred_other_rots(pred, all, &pred->b.lims, &all->a.ramp.init_cmds);
-		update_cur_b(&all->a.ramp.init_cmds, &pred->b.head, pred->b.forw, pred->b.rev);
-		iterate_stack(&pred->a.head, all->a.head);
-	}
 }
 
 int	fst_ramp_val(t_elem *head, t_elem *start_secramp, t_lims *lims)

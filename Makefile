@@ -60,7 +60,8 @@ SRCS := push_swap.c \
 		utils/init_utils.c \
 		utils/stacks_utils.c \
 		utils/other_utils.c \
-		utils/predict_ramps_utils.c \
+		utils/pred_rots1.c \
+		utils/pred_rots2.c \
 		utils/prepare_moves_utils.c \
 		utils/prepare_moves_utils2.c \
 		utils/sort_algorithm_utils.c \
