@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/19 19:30:12 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/20 21:11:23 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,10 @@ void	delete_stack(int *content);
 
 void	pred_ramp_rots(t_all *pred, t_all *all, t_elem *ref, int (*valid)(t_elem *, t_elem *, t_lims *));
 int		pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd);
-void	pred_start_rotsb(t_all *all, t_all *pred, t_cmds *rot_pred);
-void	add_rbs(t_all *all, t_all *pred, t_cmds *rot_pred);
-void	add_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred);
+void	pred_start_rbs(t_all *all, t_all *pred, t_cmds *rot_pred);
+void	pred_start_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred);
+void	add_rbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred);
+void	add_rrbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred);
 
 // predict_rots2.c
 

@@ -38,10 +38,14 @@ void	pred_ramp_rots(t_all *pred, t_all *all, t_elem *ref, int (*valid)(t_elem *,
 * To keep track of the numbers we have
 * already pushed (in case we need to go backwards)
 */
+/*		check_if_found_rot(pred->a.head, &all->b, &pred->b.near_rot, pred->b.lims);
+		iterate_fwd_rev_noend(&pred->b, all->b.head);*/
 
 int	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd)
 {
 	t_cmds	rot_pred;
+	t_elem	*target_fwd;
+	t_elem	*target_bwd;
 
 	pred->b.near_rot.r = 0;
 	pred->b.near_rot.rrev = 0;
@@ -54,99 +58,76 @@ int	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd)
 		temp_cmd->rrb += rot_pred.rrb;
 		return (0);
 	}
-	init_stacks_iteration(&pred->b, pred->b.head);
-	pred_start_rotsb(all, pred, &rot_pred);
-	while (!pred->b.near_rot.r || !pred->b.near_rot.rrev)
+	init_stacks_iteration(&pred->b, pred->a.head->prev);
+	target_fwd = pred->b.head;
+	target_bwd = pred->b.head->prev;
+	while (pred->b.forw->pos != pred->a.head->pos || pred->b.rev->pos != pred->a.head->pos)
 	{
-		iterate_fwd_rev_noend(&pred->b, all->b.head);
-		add_rbs(all, pred, &rot_pred);
-		add_rrbs(all, pred, &rot_pred);
-		check_if_found_rot(pred->a.head, &all->b, &pred->b.near_rot, pred->b.lims);
+		if (pred->b.forw->pos != pred->a.head->pos)
+		{
+			add_rbs(all, pred, &target_fwd, &rot_pred);
+			if (target_fwd->pos != pred->b.head->pos)
+				rot_pred.rb++;
+		}
+		if (pred->b.rev->pos != pred->a.head->pos)
+		{
+			add_rrbs(all, pred, &target_bwd, &rot_pred);
+			rot_pred.rrb++;
+		}
+	}
+	if (rot_pred.rb <= rot_pred.rrb)
+	{
+		pred->b.near_rot.r = 1;
+		pred->b.head = target_fwd;
+	}
+	else
+	{
+		pred->b.near_rot.rrev = 1;
+		iterate_stack(&target_bwd, all->a.head);
+		pred->b.head = target_bwd;
 	}
 	calculate_initial_pushmoves(pred->b.near_rot.r, pred->b.near_rot.rrev, &rot_pred);
-	iterate_stack(&pred->a.head, all->a.head);
-	if (rot_pred.rb)
-		pred->b.head = pred->b.forw;
-	else if (rot_pred.rrb)
-		pred->b.head = pred->b.rev;
 	temp_cmd->rb += rot_pred.rb;
 	temp_cmd->rrb += rot_pred.rrb;
 	return (0);
 }
 
-void	pred_start_rotsb(t_all *all, t_all *pred, t_cmds *rot_pred)
+void	add_rbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred)
 {
 	t_elem	*check_fwd;
-	t_elem	*check_bwd;
+	t_elem	*prev_fwd;
 	t_elem	*sent_stack;
 
 	sent_stack = all->a.ramp.first_nbr;
-	while (pred->b.forw->pos != pred->b.head->pos
-		|| pred->b.rev->pos != pred->b.head->prev->pos)
+	check_fwd = pred->b.forw;
+	prev_fwd = check_fwd;
+	while (pred->b.forw->pos != pred->a.head->pos
+		&& pred->b.forw->pos != (*target)->pos)
 	{
-		iterate_stack(&sent_stack, all->a.head);
-		if (is_bigger_than(pred->b.rev, sent_stack,
-			pred->b.lims.min, pred->b.lims.max)
-				&& sent_stack->pos > check_fwd->pos)
-			check_fwd = sent_stack;
-		if (is_smaller_than(pred->b.forw, sent_stack,
+		if (is_smaller_than(sent_stack, pred->b.forw,
 				pred->b.lims.min, pred->b.lims.max)
-				&& sent_stack->pos < check_bwd->pos)
-			check_bwd = sent_stack;
-		if(sent_stack->pos == pred->a.head->pos)
-		{
-			if (is_bigger_than(sent_stack, pred->b.head,
-			pred->b.lims.min, pred->b.lims.max))
-			{
-				pred->b.forw = check_fwd;
-				rot_pred->rb++;
-			}
-			if (is_smaller_than(sent_stack, pred->b.head->prev,
-				pred->b.lims.min, pred->b.lims.max))
-			{
-				pred->b.rev = check_bwd;
-				rot_pred->rrb++;
-			}
-			sent_stack = all->a.ramp.first_nbr;
-		}
-	}
-}
-
-/*
-* Consider the numbers that were already pushed in case the next number
-* Check if it is considering the right numbers
-*/
-
-void	add_rbs(t_all *all, t_all *pred, t_cmds *rot_pred)
-{
-	t_elem	*check_fwd;
-	t_elem	*min;
-	t_elem	*sent_stack;
-
-	sent_stack = all->a.ramp.first_nbr;
-	min = sent_stack;
-	while (min->pos != pred->b.forw->pos)
-	{
-		iterate_stack(&sent_stack, all->a.head);
-		if (is_bigger_than(pred->b.rev, sent_stack,
-			pred->b.lims.min, pred->b.lims.max)
 				&& sent_stack->pos > check_fwd->pos)
 			check_fwd = sent_stack;
-		if(sent_stack->pos == pred->a.head->pos)
+		if (sent_stack->pos == pred->a.head->prev->pos)
 		{
-			if (is_bigger_than(sent_stack, pred->b.forw,
-			pred->b.lims.min, pred->b.lims.max)
-			&& is_bigger_than(pred->b.forw->prev, sent_stack, 
-			pred->b.lims.min, pred->b.lims.max))
+			if (check_fwd->pos == prev_fwd->pos)
 			{
-				pred->b.forw = check_fwd;
-				rot_pred->rb++;
+				if (is_bigger_than(check_fwd, *target, pred->b.lims.min, pred->b.lims.max))
+					pred->b.forw = *target;
+				else
+					pred->b.forw = pred->a.head;
 			}
 			else
-				min = pred->b.forw;
-			sent_stack = all->a.ramp.first_nbr;
+			{
+				pred->b.forw = check_fwd;
+				prev_fwd = check_fwd;
+				rot_pred->rb++;
+				sent_stack = all->a.ramp.first_nbr;
+			}
 		}
+		iterate_stack(&sent_stack, all->a.head);
 	}
+	iterate_stack(target, all->b.head);
 }
 
 /* este foi copiado de cima, ver se faz sentido
@@ -154,34 +135,116 @@ ou que modificações é preciso fazer.
 utilizar os prev era top
  */
 
-void	add_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred)
+void	add_rrbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred)
 {
 	t_elem	*check_bwd;
-	t_elem	*max;
+	t_elem	*prev_bwd;
 	t_elem	*sent_stack;
 
 	sent_stack = all->a.ramp.first_nbr;
-	max = sent_stack;
-	while (max->pos != pred->b.rev->pos)
+	check_bwd = pred->b.forw;
+	prev_bwd = check_bwd;
+	while (pred->b.rev->pos != pred->a.head->pos
+		&& pred->b.rev->pos != (*target)->pos)
 	{
-		iterate_stack(&sent_stack, all->a.head);
-		if (is_bigger_than(pred->b.rev, sent_stack,
-			pred->b.lims.min, pred->b.lims.max)
+		if (is_bigger_than(sent_stack, pred->b.rev,
+				pred->b.lims.min, pred->b.lims.max)
 				&& sent_stack->pos > check_bwd->pos)
 			check_bwd = sent_stack;
-		if(sent_stack->pos == pred->a.head->pos)
+		if (sent_stack->pos == pred->a.head->prev->pos)
 		{
-			if (is_bigger_than(sent_stack, pred->b.forw,
-			pred->b.lims.min, pred->b.lims.max)
-			&& is_bigger_than(pred->b.forw->prev, sent_stack, 
-			pred->b.lims.min, pred->b.lims.max))
+			if (check_bwd->pos == prev_bwd->pos)
 			{
-				pred->b.forw = check_bwd;
-				rot_pred->rb++;
+				if (is_smaller_than(check_bwd, *target, pred->b.lims.min, pred->b.lims.max))
+					pred->b.rev = *target;
+				else
+					pred->b.rev = pred->a.head;
 			}
 			else
-				max = pred->b.forw;
-			sent_stack = all->a.ramp.first_nbr;
+			{
+				pred->b.rev = check_bwd;
+				prev_bwd = check_bwd;
+				rot_pred->rrb++;
+				sent_stack = all->a.ramp.first_nbr;
+			}
 		}
+		iterate_stack(&sent_stack, all->a.head);
+	}
+	(*target) = (*target)->prev;
+}
+
+/*void	pred_start_rbs(t_all *all, t_all *pred, t_cmds *rot_pred)
+{
+	t_elem	*check_fwd;
+	t_elem	*prev_fwd;
+	t_elem	*sent_stack;
+
+	sent_stack = all->a.ramp.first_nbr;
+	check_fwd = pred->b.forw;
+	prev_fwd = check_fwd;
+	while (pred->b.forw->pos != pred->a.head->pos
+		&& pred->b.forw->pos != pred->b.head->pos)
+	{
+		if (is_smaller_than(sent_stack, pred->b.forw,
+				pred->b.lims.min, pred->b.lims.max)
+				&& sent_stack->pos > check_fwd->pos)
+			check_fwd = sent_stack;
+		if (sent_stack->pos == pred->a.head->prev->pos)
+		{
+			if (check_fwd->pos == prev_fwd->pos)
+			{
+				if (is_bigger_than(check_fwd, pred->b.head, pred->b.lims.min, pred->b.lims.max))
+					pred->b.forw = pred->b.head;
+				else
+					pred->b.forw = pred->a.head;
+			}
+			else
+			{
+				pred->b.forw = check_fwd;
+				rot_pred->rb++;
+				sent_stack = all->a.ramp.first_nbr;
+			}
+		}
+		iterate_stack(&sent_stack, all->a.head);
 	}
 }
+
+void	pred_start_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred)
+{
+	t_elem	*check_bwd;
+	t_elem	*prev_bwd;
+	t_elem	*sent_stack;
+
+	sent_stack = all->a.ramp.first_nbr;
+	check_bwd = pred->b.forw;
+	prev_bwd = check_bwd;
+	while (pred->b.rev->pos != pred->a.head->pos
+		&& pred->b.rev->pos != pred->b.head->pos)
+	{
+		if (is_bigger_than(sent_stack, pred->b.rev,
+				pred->b.lims.min, pred->b.lims.max)
+				&& sent_stack->pos > check_bwd->pos)
+			check_bwd = sent_stack;
+		if (sent_stack->pos == pred->a.head->prev->pos)
+		{
+			if (check_bwd->pos == prev_bwd->pos)
+			{
+				if (is_smaller_than(check_bwd, pred->b.head, pred->b.lims.min, pred->b.lims.max))
+					pred->b.rev = pred->b.head->prev;
+				else
+					pred->b.rev = pred->a.head;
+			}
+			else
+			{
+				pred->b.rev = check_bwd;
+				rot_pred->rrb++;
+				sent_stack = all->a.ramp.first_nbr;
+			}
+		}
+		iterate_stack(&sent_stack, all->a.head);
+	}
+}*/
+/*
+* Consider the numbers that were already pushed in case the next number
+* Check if it is considering the right numbers
+*/
