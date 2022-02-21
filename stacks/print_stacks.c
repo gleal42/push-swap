@@ -32,18 +32,12 @@ void	print_char(char *str, int start, int len)
 	printf("%d\n", counter);
 	return ; */
 
-
- int counter = 0;
-
-
 void	print_both_stacks(t_elem *a, t_elem *b)
 {
 	int	i;
 	int	prt;
 
-	counter++;
-	printf("%d\n", counter);
-	return ;
+	//return ;
 	print_char("_", 0, max_len);
 	print_char("_", 1, max_len);
 	printf("__");

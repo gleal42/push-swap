@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 17:01:47 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/21 23:02:46 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ void	execute_merge_ab(t_cmds *cmds, t_elem **a,
 
 // limits_max_min.c
 
-void	pb_adjust_max_a(t_elem *b, t_lims *lims_a, t_lims *lims_b);
-void	pb_adjust_min_a(t_elem *b, t_lims *lims_a, t_lims *lims_b);
+void	pb_adjust_lims(t_all *all);
 void	pa_adjust_max_b(t_elem *a, t_all *temp);
 void	pa_adjust_min_b(t_elem *a, t_all *temp);
 

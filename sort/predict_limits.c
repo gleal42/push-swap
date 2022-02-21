@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 00:40:49 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 15:52:14 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/21 22:57:51 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,8 @@ void	pred_lims_update(t_elem *first_nbr, t_elem *b, t_all *all, t_all *pred)
 
 void	pred_push_orig_lims(t_elem *fst_ramp, t_elem *ori_head, t_stack *cur_ori, t_stack *end)
 {
-	t_elem	*pushed;
 	int		has_lim;
 
-	pushed = cur_ori->head;
 	has_lim = 1;
 	while (has_lim)
 	{

@@ -1,96 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   limits_max_min.c                                   :+:      :+:    :+:   */
+/*   limits.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/08/07 17:25:03 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 00:49:33 by gleal            ###   ########.fr       */
+/*   Created: 2022/02/21 23:04:05 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/21 23:04:26 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
 
-void	pb_adjust_max_a(t_elem *b, t_lims *lims_a, t_lims *lims_b)
+void	pb_adjust_lims(t_all *all)
 {
-	t_elem	*check_fwd;
-	t_elem	*check_bckd;
-	int		repeat;
+	int		has_lim;
+	t_stack	temp;
 
-	lims_a->max--;
-	if (!b)
-		return ;
-	if (lims_b->max < lims_a->max)
-		return ;
-	else
+	temp = all->b;
+	has_lim = 1;
+	while (has_lim)
 	{
-		repeat = 1;
-		while (repeat)
-		{
-			if (b->pos == lims_a->max)
-				lims_a->max--;
-			else
-				repeat = 0;
-			check_fwd = b->next;
-			check_bckd = b->prev;
-			while (check_fwd)
-			{
-				if (check_fwd->pos == lims_a->max)
-				{
-					lims_a->max--;
-					repeat++;
-				}
-				else if (check_bckd->pos == lims_a->max)
-				{
-					lims_a->max--;
-					repeat++;
-				}
-				check_fwd = check_fwd->next;
-				check_bckd = check_bckd->prev;
-			}
-		}
-	}
-}
-
-void	pb_adjust_min_a(t_elem *b, t_lims *lims_a, t_lims *lims_b)
-{
-	t_elem	*check_fwd;
-	t_elem	*check_bckd;
-	int		repeat;
-
-	lims_a->min++;
-	if (!b)
-		return ;
-	if (lims_b->min > lims_a->min)
-		return ;
-	else
-	{
-		repeat = 1;
-		while (repeat)
-		{
-			if (b->pos == lims_a->min)
-				lims_a->min++;
-			else
-				repeat = 0;
-			check_fwd = b->next;
-			check_bckd = b->prev;
-			while (check_fwd)
-			{
-				if (check_fwd->pos == lims_a->min)
-				{
-					lims_a->min++;
-					repeat++;
-				}
-				else if (check_bckd->pos == lims_a->min)
-				{
-					lims_a->min++;
-					repeat++;
-				}
-				check_fwd = check_fwd->next;
-				check_bckd = check_bckd->prev;
-			}
-		}
+		has_lim = 0;
+		if (temp.head
+			&& (temp.lims.max >= all->a.lims.max
+				|| temp.lims.min <= all->a.lims.min))
+			pred_lims_check_end(&has_lim, &all->a.lims, &temp);
 	}
 }
 
