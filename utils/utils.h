@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/20 21:11:23 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/21 17:03:45 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	pred_start_rbs(t_all *all, t_all *pred, t_cmds *rot_pred);
 void	pred_start_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred);
 void	add_rbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred);
 void	add_rrbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred);
+void	update_pred_lims_b(t_all *all, t_lims *lims_b, t_elem *check);
 
 // predict_rots2.c
 

@@ -58,21 +58,21 @@ int	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd)
 		temp_cmd->rrb += rot_pred.rrb;
 		return (0);
 	}
-	init_stacks_iteration(&pred->b, pred->a.head->prev);
+	init_stacks_iteration(&pred->b, pred->a.head);
 	target_fwd = pred->b.head;
 	target_bwd = pred->b.head->prev;
 	while (pred->b.forw->pos != pred->a.head->pos || pred->b.rev->pos != pred->a.head->pos)
 	{
 		if (pred->b.forw->pos != pred->a.head->pos)
 		{
-			add_rbs(all, pred, &target_fwd, &rot_pred);
 			if (target_fwd->pos != pred->b.head->pos)
 				rot_pred.rb++;
+			add_rbs(all, pred, &target_fwd, &rot_pred);
 		}
 		if (pred->b.rev->pos != pred->a.head->pos)
 		{
-			add_rrbs(all, pred, &target_bwd, &rot_pred);
 			rot_pred.rrb++;
+			add_rrbs(all, pred, &target_bwd, &rot_pred);
 		}
 	}
 	if (rot_pred.rb <= rot_pred.rrb)
@@ -106,14 +106,18 @@ void	add_rbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred)
 	{
 		if (is_smaller_than(sent_stack, pred->b.forw,
 				pred->b.lims.min, pred->b.lims.max)
-				&& sent_stack->pos > check_fwd->pos)
+				&& is_smaller_than(check_fwd, sent_stack, pred->b.lims.min, pred->b.lims.max))
 			check_fwd = sent_stack;
-		if (sent_stack->pos == pred->a.head->prev->pos)
+		iterate_stack(&sent_stack, all->a.head);
+		if (sent_stack->pos == pred->a.head->pos)
 		{
 			if (check_fwd->pos == prev_fwd->pos)
 			{
 				if (is_bigger_than(check_fwd, *target, pred->b.lims.min, pred->b.lims.max))
+				{
 					pred->b.forw = *target;
+					iterate_stack(target, all->b.head);
+				}
 				else
 					pred->b.forw = pred->a.head;
 			}
@@ -125,9 +129,7 @@ void	add_rbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred)
 				sent_stack = all->a.ramp.first_nbr;
 			}
 		}
-		iterate_stack(&sent_stack, all->a.head);
 	}
-	iterate_stack(target, all->b.head);
 }
 
 /* este foi copiado de cima, ver se faz sentido
@@ -142,21 +144,25 @@ void	add_rrbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred)
 	t_elem	*sent_stack;
 
 	sent_stack = all->a.ramp.first_nbr;
-	check_bwd = pred->b.forw;
+	check_bwd = pred->b.rev;
 	prev_bwd = check_bwd;
 	while (pred->b.rev->pos != pred->a.head->pos
 		&& pred->b.rev->pos != (*target)->pos)
 	{
 		if (is_bigger_than(sent_stack, pred->b.rev,
 				pred->b.lims.min, pred->b.lims.max)
-				&& sent_stack->pos > check_bwd->pos)
+				&& is_bigger_than(check_bwd, sent_stack, pred->b.lims.min, pred->b.lims.max))
 			check_bwd = sent_stack;
-		if (sent_stack->pos == pred->a.head->prev->pos)
+		iterate_stack(&sent_stack, all->a.head);
+		if (sent_stack->pos == pred->a.head->pos)
 		{
 			if (check_bwd->pos == prev_bwd->pos)
 			{
 				if (is_smaller_than(check_bwd, *target, pred->b.lims.min, pred->b.lims.max))
+				{
 					pred->b.rev = *target;
+					(*target) = (*target)->prev;
+				}
 				else
 					pred->b.rev = pred->a.head;
 			}
@@ -168,9 +174,40 @@ void	add_rrbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred)
 				sent_stack = all->a.ramp.first_nbr;
 			}
 		}
-		iterate_stack(&sent_stack, all->a.head);
 	}
-	(*target) = (*target)->prev;
+}
+
+//update_pred_lims_b(&lims_b, all->a.ramp.first_nbr, check_fwd, all->b.head);
+
+void	update_pred_lims_b(t_all *all, t_lims *lims_b, t_elem *check)
+{
+	int min;
+	int max;
+	t_elem	*temp;
+
+	temp = all->b.head;
+	min = 0;
+	max = 0;
+	while (temp)
+	{
+		if (!min || temp->pos < min)
+			min = temp->pos;
+		if (!max || temp->pos > max)
+			max = temp->pos;
+		temp = temp->next;
+	}
+	temp = all->a.ramp.first_nbr;
+	while (temp && temp->pos != check->pos)
+	{
+		if (!min || temp->pos < min)
+			min = temp->pos;
+		if (!max || temp->pos > max)
+			max = temp->pos;
+		
+		temp = temp->next;
+	}
+	lims_b->max = max;
+	lims_b->min = min;
 }
 
 /*void	pred_start_rbs(t_all *all, t_all *pred, t_cmds *rot_pred)
