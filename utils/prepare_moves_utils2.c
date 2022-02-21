@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:30:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 17:01:47 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/21 21:26:53 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	find_closest_b_spot(t_elem *cur_b, t_elem *a, t_all *all, int max)
 			if (is_bigger_than(cur_b, all->a.rev,
 					all->a.lims.min, all->a.lims.max)
 				&& is_smaller_than(cur_b, all->a.rev->next,
-					all->a.lims.max, all->a.lims.max))
+					all->a.lims.min, all->a.lims.max))
 				good_spot_reverse++;
 		}
 		else
