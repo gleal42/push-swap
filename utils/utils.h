@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/23 23:28:23 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/24 16:38:43 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,10 @@ void	update_pred_lims_b(t_all *all, t_lims *lims_b, t_elem *check);
 void	pred_all_inirotsb(t_all *all, t_all *pred, t_cmds *rot_pred);
 void	predict_all_ini_rbs(t_all *all, t_all *pred, t_cmds *rot_pred);
 void	predict_all_ini_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred);
+void	predict_next_ini_rb_nbr(t_all *pred, t_elem *sent_stack, t_elem **temp);
+void	predict_next_ini_rrb_nbr(t_all *pred, t_elem *sent_stack, t_elem **temp);
+int		update_pred_rbs_reset(t_all *all, t_all *pred, t_elem **sent_stack, t_elem *temp, t_elem **prev_temp, int *rot_pred);
+int	update_pred_rrbs_reset(t_all *all, t_all *pred, t_elem **sent_stack, t_elem *temp, t_elem **prev_temp, int *rot_pred);
 
 // prepare_moves_utils.c
 
