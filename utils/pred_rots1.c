@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   predict_ramps_utils.c                              :+:      :+:    :+:   */
+/*   pred_rots1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/12 18:22:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 18:45:08by gleal            ###   ########.fr       */
+/*   Created: 2022/02/23 23:25:04 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/23 23:38:57 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	pred_ramp_rots(t_all *pred, t_all *all, t_elem *ref, int (*valid)(t_elem *, t_elem *, t_lims *))
+void	pred_ramp_rots(t_all *pred, t_all *all,
+		t_elem *ref, int (*valid)(t_elem *, t_elem *, t_lims *))
 {
 	while (valid(pred->a.head, ref, &pred->a.lims))
 	{
@@ -27,7 +28,7 @@ void	pred_ramp_rots(t_all *pred, t_all *all, t_elem *ref, int (*valid)(t_elem *,
 				pred->b.head = pred->b.rev;
 		}
 		else
-			pred_other_rots(pred, all, &all->a.ramp.init_cmds);	
+			pred_other_rots(pred, all, &all->a.ramp.init_cmds);
 		iterate_stack(&pred->a.head, all->a.head);
 	}
 }
@@ -53,7 +54,8 @@ int	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd)
 	if (!all->b.head || !all->b.head->next)
 	{
 		pred_all_inirotsb(all, pred, &rot_pred);
-		calculate_initial_pushmoves(pred->b.near_rot.r, pred->b.near_rot.rrev, &rot_pred);
+		calculate_initial_pushmoves(pred->b.near_rot.r,
+			pred->b.near_rot.rrev, &rot_pred);
 		temp_cmd->rb += rot_pred.rb;
 		temp_cmd->rrb += rot_pred.rrb;
 		return (0);
@@ -61,7 +63,8 @@ int	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd)
 	init_stacks_iteration(&pred->b, pred->a.head);
 	target_fwd = pred->b.head;
 	target_bwd = pred->b.head->prev;
-	while (pred->b.forw->pos != pred->a.head->pos || pred->b.rev->pos != pred->a.head->pos)
+	while (pred->b.forw->pos != pred->a.head->pos
+		|| pred->b.rev->pos != pred->a.head->pos)
 	{
 		if (pred->b.forw->pos != pred->a.head->pos)
 		{
@@ -86,7 +89,8 @@ int	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd)
 		iterate_stack(&target_bwd, all->a.head);
 		pred->b.head = target_bwd;
 	}
-	calculate_initial_pushmoves(pred->b.near_rot.r, pred->b.near_rot.rrev, &rot_pred);
+	calculate_initial_pushmoves(pred->b.near_rot.r,
+		pred->b.near_rot.rrev, &rot_pred);
 	temp_cmd->rb += rot_pred.rb;
 	temp_cmd->rrb += rot_pred.rrb;
 	return (0);
@@ -106,14 +110,16 @@ void	add_rbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred)
 	{
 		if (is_smaller_than(sent_stack, pred->b.forw,
 				pred->b.lims.min, pred->b.lims.max)
-				&& is_smaller_than(check_fwd, sent_stack, pred->b.lims.min, pred->b.lims.max))
+			&& is_smaller_than(check_fwd, sent_stack,
+				pred->b.lims.min, pred->b.lims.max))
 			check_fwd = sent_stack;
 		iterate_stack(&sent_stack, all->a.head);
 		if (sent_stack->pos == pred->a.head->pos)
 		{
 			if (check_fwd->pos == prev_fwd->pos)
 			{
-				if (is_bigger_than(check_fwd, *target, pred->b.lims.min, pred->b.lims.max))
+				if (is_bigger_than(check_fwd, *target,
+						pred->b.lims.min, pred->b.lims.max))
 				{
 					pred->b.forw = *target;
 					iterate_stack(target, all->b.head);
@@ -151,14 +157,16 @@ void	add_rrbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred)
 	{
 		if (is_bigger_than(sent_stack, pred->b.rev,
 				pred->b.lims.min, pred->b.lims.max)
-				&& is_bigger_than(check_bwd, sent_stack, pred->b.lims.min, pred->b.lims.max))
+			&& is_bigger_than(check_bwd, sent_stack,
+				pred->b.lims.min, pred->b.lims.max))
 			check_bwd = sent_stack;
 		iterate_stack(&sent_stack, all->a.head);
 		if (sent_stack->pos == pred->a.head->pos)
 		{
 			if (check_bwd->pos == prev_bwd->pos)
 			{
-				if (is_smaller_than(check_bwd, *target, pred->b.lims.min, pred->b.lims.max))
+				if (is_smaller_than(check_bwd, *target,
+						pred->b.lims.min, pred->b.lims.max))
 				{
 					pred->b.rev = *target;
 					(*target) = (*target)->prev;
@@ -177,12 +185,10 @@ void	add_rrbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred)
 	}
 }
 
-//update_pred_lims_b(&lims_b, all->a.ramp.first_nbr, check_fwd, all->b.head);
-
 void	update_pred_lims_b(t_all *all, t_lims *lims_b, t_elem *check)
 {
-	int min;
-	int max;
+	int		min;
+	int		max;
 	t_elem	*temp;
 
 	temp = all->b.head;
@@ -203,14 +209,14 @@ void	update_pred_lims_b(t_all *all, t_lims *lims_b, t_elem *check)
 			min = temp->pos;
 		if (!max || temp->pos > max)
 			max = temp->pos;
-		
 		temp = temp->next;
 	}
 	lims_b->max = max;
 	lims_b->min = min;
 }
 
-/*void	pred_start_rbs(t_all *all, t_all *pred, t_cmds *rot_pred)
+/*void	pred_start_rbs(t_all *all,
+t_all *pred, t_cmds *rot_pred)
 {
 	t_elem	*check_fwd;
 	t_elem	*prev_fwd;
@@ -230,7 +236,8 @@ void	update_pred_lims_b(t_all *all, t_lims *lims_b, t_elem *check)
 		{
 			if (check_fwd->pos == prev_fwd->pos)
 			{
-				if (is_bigger_than(check_fwd, pred->b.head, pred->b.lims.min, pred->b.lims.max))
+				if (is_bigger_than(check_fwd, pred->b.head,
+				pred->b.lims.min, pred->b.lims.max))
 					pred->b.forw = pred->b.head;
 				else
 					pred->b.forw = pred->a.head;
@@ -266,7 +273,8 @@ void	pred_start_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred)
 		{
 			if (check_bwd->pos == prev_bwd->pos)
 			{
-				if (is_smaller_than(check_bwd, pred->b.head, pred->b.lims.min, pred->b.lims.max))
+				if (is_smaller_than(check_bwd, pred->b.head,
+				pred->b.lims.min, pred->b.lims.max))
 					pred->b.rev = pred->b.head->prev;
 				else
 					pred->b.rev = pred->a.head;
@@ -282,6 +290,7 @@ void	pred_start_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred)
 	}
 }*/
 /*
-* Consider the numbers that were already pushed in case the next number
+* Consider the numbers that were already pushed
+in case the next number
 * Check if it is considering the right numbers
 */

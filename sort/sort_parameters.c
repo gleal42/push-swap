@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:07:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 17:01:47 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/23 23:23:30 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,6 @@ int	is_better_ramp(t_cmds temp_cmd, t_cmds off_cmd)
 	temp_rotates_per_push = temp_cmd.total / temp_cmd.pb;
 	off_rotates_per_push = off_cmd.total / off_cmd.pb;
 	if (temp_cmd.total < off_cmd.total)
-		return (1);
-	else
-		return (0);
-}
-
-int	continue_ramp_analysis(t_elem *a, t_elem *first_nbr, t_all *all)
-{
-	(void)a;
-	if (is_bigger_than(first_nbr, first_nbr->prev,
-			all->a.lims.min, all->a.lims.max))
 		return (1);
 	else
 		return (0);

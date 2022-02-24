@@ -5,109 +5,58 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/21 23:04:05 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/21 23:04:26 by gleal            ###   ########.fr       */
+/*   Created: 2022/02/23 22:48:22 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/23 23:06:43 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
 
-void	pb_adjust_lims(t_all *all)
+void	set_lims_ori_push(t_stack *ori, t_stack *other)
+{
+	if (!(ori->head->next))
+		set_both_lims_as(&ori->lims, 0);
+	else
+	{
+		if ((other->head)
+			&& (other->lims.max >= ori->lims.max
+				|| other->lims.min <= ori->lims.min))
+			adj_lims_ori_push(ori, other);
+	}
+}
+
+void	set_lims_other_push(t_stack *ori, t_stack *other)
+{
+	if (!(other->head))
+		set_both_lims_as(&other->lims, ori->head->pos);
+	else
+	{
+		if (ori->head->pos > other->lims.max)
+			other->lims.max = ori->head->pos;
+		else if (ori->head->pos < other->lims.min)
+			other->lims.min = ori->head->pos;
+	}
+}
+
+void	set_both_lims_as(t_lims *lims, int value)
+{
+	lims->min = value;
+	lims->max = value;
+}
+
+void	adj_lims_ori_push(t_stack *origin, t_stack *other)
 {
 	int		has_lim;
 	t_stack	temp;
 
-	temp = all->b;
+	temp = *other;
 	has_lim = 1;
 	while (has_lim)
 	{
 		has_lim = 0;
 		if (temp.head
-			&& (temp.lims.max >= all->a.lims.max
-				|| temp.lims.min <= all->a.lims.min))
-			pred_lims_check_end(&has_lim, &all->a.lims, &temp);
-	}
-}
-
-void	pa_adjust_max_b(t_elem *a, t_all *all)
-{
-	t_elem	*check_fwd;
-	t_elem	*check_bckd;
-	int		repeat;
-
-	all->b.lims.max--;
-	if (!a)
-		return ;
-	if (all->a.lims.max < all->b.lims.max)
-		return ;
-	else
-	{
-		repeat = 1;
-		while (repeat)
-		{
-			if (a->pos == all->b.lims.max)
-				all->b.lims.max--;
-			else
-				repeat = 0;
-			check_fwd = a->next;
-			check_bckd = a->prev;
-			while (check_fwd)
-			{
-				if (check_fwd->pos == all->b.lims.max)
-				{
-					all->b.lims.max--;
-					repeat++;
-				}
-				else if (check_bckd->pos == all->b.lims.max)
-				{
-					all->b.lims.max--;
-					repeat++;
-				}
-				check_fwd = check_fwd->next;
-				check_bckd = check_bckd->prev;
-			}
-		}
-	}
-}
-
-void	pa_adjust_min_b(t_elem *a, t_all *all)
-{
-	t_elem	*check_fwd;
-	t_elem	*check_bckd;
-	int		repeat;
-
-	all->b.lims.min++;
-	if (!a)
-		return ;
-	if (all->a.lims.min > all->b.lims.min)
-		return ;
-	else
-	{
-		repeat = 1;
-		while (repeat)
-		{
-			if (a->pos == all->b.lims.min)
-				all->b.lims.min++;
-			else
-				repeat = 0;
-			check_fwd = a->next;
-			check_bckd = a->prev;
-			while (check_fwd)
-			{
-				if (check_fwd->pos == all->b.lims.min)
-				{
-					all->b.lims.min++;
-					repeat++;
-				}
-				else if (check_bckd->pos == all->b.lims.min)
-				{
-					all->b.lims.min++;
-					repeat++;
-				}
-				check_fwd = check_fwd->next;
-				check_bckd = check_bckd->prev;
-			}
-			repeat = 0;
-		}
+			&& (temp.lims.max >= origin->lims.max
+				|| temp.lims.min <= origin->lims.min))
+			pred_lims_check_end(&has_lim, &origin->lims, &temp);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 00:40:49 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/21 22:57:51 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/23 22:46:43 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@ void	pred_lims_update(t_elem *first_nbr, t_elem *b, t_all *all, t_all *pred)
 ** end is b
 */
 
-void	pred_push_orig_lims(t_elem *fst_ramp, t_elem *ori_head, t_stack *cur_ori, t_stack *end)
+void	pred_push_orig_lims(t_elem *fst_ramp, t_elem *ori_head,
+	t_stack *cur_ori, t_stack *end)
 {
-	int		has_lim;
+	int	has_lim;
 
 	has_lim = 1;
 	while (has_lim)
@@ -63,7 +64,8 @@ void	pred_push_orig_lims(t_elem *fst_ramp, t_elem *ori_head, t_stack *cur_ori, t
 
 /* check if we should analyze head every time */
 
-void	pred_lims_check_pushed(int *has_lim, t_elem *fst_ramp, t_elem *ori_head, t_stack *cur_ori)
+void	pred_lims_check_pushed(int *has_lim, t_elem *fst_ramp,
+		t_elem *ori_head, t_stack *cur_ori)
 {
 	t_elem	*check;
 	int		found;

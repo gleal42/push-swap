@@ -50,12 +50,11 @@ SRCS := push_swap.c \
 		sort/limits.c \
 		sort/predict_limits.c \
 		sort/predict_ramps.c \
-		sort/prepare_moves.c \
+		sort/sort_a_b_mvs.c \
+		sort/merge_a_b_mvs.c \
 		sort/sort_algorithm.c \
 		sort/sort_validations.c \
 		sort/sort_parameters.c \
-		utils/execute_moves_utils.c \
-		utils/execute_moves_utils2.c \
 		utils/get_info.c \
 		utils/init_utils.c \
 		utils/stacks_utils.c \

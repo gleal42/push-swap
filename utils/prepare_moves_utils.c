@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:07:10 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/19 19:27:13 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/23 23:38:46 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ void	add_double_rots_a(t_cmds *cmds)
 		cmds->rrb++;
 }
 
-void	check_if_found_rot(t_elem *move, t_stack *stack, t_rot *near_rot, t_lims lims)
+void	check_if_found_rot(t_elem *move, t_stack *stack,
+		t_rot *near_rot, t_lims lims)
 {
 	if (is_smaller_than(move, stack->forw->prev,
 			lims.min, lims.max)

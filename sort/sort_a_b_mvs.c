@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prepare_moves.c                                    :+:      :+:    :+:   */
+/*   sort_a_b_mvs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/21 20:29:38 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/24 00:30:38 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
 
 /* 
-	existe um commit anterior em que merge ramp spot
-	estava diferente (ver nome dos commits e ver se vale a pena voltar)
-	Adicionar o predict_a só para o primeiro numero 
-	(para ter conta os ra e rra substituirem por rr e rrr)
-	Mandou mal o maior número (pôs num sitio aleatório)
 	tinha isto a seguir ao
 	(...)
 	best_cmds = init_cmds;
@@ -96,40 +91,5 @@ void	swap_a(t_all *all, t_elem *a)
 	{
 		all->pred_cmds.sa = 0;
 		all->pred_cmds.ss = 1;
-	}
-}
-
-void	min_push_b_to_a_moves(t_elem *a, t_elem *b, t_all *off)
-{
-	t_all	temp;
-
-	temp = *off;
-	ft_bzero(&temp.b.ini_rot, sizeof(t_rot));
-	if (!b)
-		return ;
-	find_closest_b_spot(b, a, &temp, off->pred_cmds.total);
-	off->pred_cmds = temp.pred_cmds;
-	off->b.forw = b->next;
-	off->b.rev = b->prev;
-	while (off->b.forw && (temp.b.ini_rot.r < off->pred_cmds.total
-			|| temp.b.ini_rot.rrev < off->pred_cmds.total))
-	{
-		ft_bzero(&temp.pred_cmds, sizeof(t_cmds));
-		temp.b.ini_rot.rrev = 0;
-		temp.b.ini_rot.r++;
-		find_closest_b_spot(off->b.forw, a, &temp, off->pred_cmds.total);
-		if (temp.pred_cmds.total
-			&& (temp.pred_cmds.total < off->pred_cmds.total))
-			off->pred_cmds = temp.pred_cmds;
-		off->b.forw = off->b.forw->next;
-		ft_bzero(&temp.pred_cmds, sizeof(t_cmds));
-		temp.b.ini_rot.rrev = temp.b.ini_rot.r;
-		temp.b.ini_rot.r = 0;
-		find_closest_b_spot(off->b.rev, a, &temp, off->pred_cmds.total);
-		if (temp.pred_cmds.total
-			&& (temp.pred_cmds.total < off->pred_cmds.total))
-			off->pred_cmds = temp.pred_cmds;
-		temp.b.ini_rot.r = temp.b.ini_rot.rrev;
-		off->b.rev = off->b.rev->prev;
 	}
 }

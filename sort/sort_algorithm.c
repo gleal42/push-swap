@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:45:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/15 02:05:23 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/23 23:59:41 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	sort_a_b(t_all *all)
 		if (have_analyzed_enough(all->exec_cmds, all->a.ini_rot,
 				all->a.forw, all->a.rev))
 		{
-			execute_moves(&all->exec_cmds, &all->a, &all->b, all);
+			execute_moves(&all->exec_cmds, &all->a, &all->b);
 			init_stacks_iteration(&all->a, all->a.head);
 			ft_bzero(&(all->a.ini_rot), sizeof(t_rot));
 			ft_bzero(&all->pred_cmds, sizeof(t_cmds));
@@ -105,8 +105,8 @@ void	merge_a_b(t_all **all)
 	while ((*all)->b.head)
 	{
 		ft_bzero(&(*all)->pred_cmds, sizeof(t_cmds));
-		min_push_b_to_a_moves((*all)->a.head, (*all)->b.head, *all);
-		execute_merge_ab(&(*all)->pred_cmds, &(*all)->a.head,
-			&(*all)->b.head, *all);
+		ft_bzero(&(*all)->b.ini_rot, sizeof(t_rot));
+		place_in_a((*all)->a.head, (*all)->b.head, *all);
+		execute_merge_ab(&(*all)->pred_cmds, &(*all)->a, &(*all)->b);
 	}
 }

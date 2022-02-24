@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:02:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/19 19:46:21 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/23 22:47:49 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,8 @@ int	fst_ramp_val(t_elem *head, t_elem *start_secramp, t_lims *lims)
 
 int	scd_ramp_val(t_elem *head, t_elem *start_fstramp, t_lims *lims)
 {
-	if (is_bigger_than(start_fstramp, head,
-			lims->min, lims->max))
-			return (1);
+	if (is_bigger_than(start_fstramp, head, lims->min, lims->max))
+		return (1);
 	else
 		return (0);
 }

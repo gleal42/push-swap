@@ -6,18 +6,18 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 15:48:55 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 23:41:22 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/23 22:22:10 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
 
-void	execute_moves(t_cmds *cmds, t_stack *a, t_stack *b, t_all *temp)
+void	execute_moves(t_cmds *cmds, t_stack *a, t_stack *b)
 {
 	if (cmds->type == PUSH_B_FWD)
-		execute_pb_forward(cmds, &a->head, &b->head, temp);
+		execute_pb_forward(cmds, a, b);
 	else if (cmds->type == PUSH_B_BWD)
-		execute_pb_backward(cmds, &a->head, &b->head, temp);
+		execute_pb_backward(cmds, a, b);
 	else if (cmds->type == SWAP_FWD)
 		execute_swap_forward(cmds, &a->head, &b->head);
 	else if (cmds->type == SWAP_BWD)
@@ -31,46 +31,43 @@ void	execute_moves(t_cmds *cmds, t_stack *a, t_stack *b, t_all *temp)
 		printf("Didn't execute all the commands!\n");
 */
 
-void	execute_pb_backward(t_cmds *cmds, t_elem **a,
-		t_elem **b, t_all *temp)
+void	execute_pb_backward(t_cmds *cmds, t_stack *a, t_stack *b)
 {
 	while (cmds->rrr-- > 0)
-		op_rrr(a, b);
+		op_rrr(&a->head, &b->head);
 	while (cmds->rra-- > 0)
-		op_rra(a, b);
+		op_rra(&a->head, &b->head);
 	while (cmds->rb-- > 0)
-		op_rb(a, b);
+		op_rb(&a->head, &b->head);
 	while (cmds->rrb-- > 0)
-		op_rrb(a, b);
+		op_rrb(&a->head, &b->head);
 	if (cmds->pb-- > 0)
 	{
-		set_lims_stack_a_pb(a, b, temp);
-		set_lims_stack_b_pb(a, b, temp);
-		op_pb(a, b);
+		set_lims_ori_push(a, b);
+		set_lims_other_push(a, b);
+		op_pb(&a->head, &b->head);
 	}
 }
 
-void	execute_pb_forward(t_cmds *cmds, t_elem **a,
-		t_elem **b, t_all *temp)
+void	execute_pb_forward(t_cmds *cmds, t_stack *a, t_stack *b)
 {
 	while (cmds->rr-- > 0)
-		op_rr(a, b);
+		op_rr(&a->head, &b->head);
 	while (cmds->ra-- > 0)
-		op_ra(a, b);
+		op_ra(&a->head, &b->head);
 	while (cmds->rb-- > 0)
-		op_rb(a, b);
+		op_rb(&a->head, &b->head);
 	while (cmds->rrb-- > 0)
-		op_rrb(a, b);
+		op_rrb(&a->head, &b->head);
 	if (cmds->pb-- > 0)
 	{
-		set_lims_stack_a_pb(a, b, temp);
-		set_lims_stack_b_pb(a, b, temp);
-		op_pb(a, b);
+		set_lims_ori_push(a, b);
+		set_lims_other_push(a, b);
+		op_pb(&a->head, &b->head);
 	}
 }
 
-void	execute_swap_forward(t_cmds *cmds, t_elem **a,
-		t_elem **b)
+void	execute_swap_forward(t_cmds *cmds, t_elem **a, t_elem **b)
 {
 	while (cmds->ra)
 	{
@@ -89,8 +86,7 @@ void	execute_swap_forward(t_cmds *cmds, t_elem **a,
 	}
 }
 
-void	execute_swap_backward(t_cmds *cmds, t_elem **a,
-		t_elem **b)
+void	execute_swap_backward(t_cmds *cmds, t_elem **a, t_elem **b)
 {
 	while (cmds->rra)
 	{
