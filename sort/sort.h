@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/24 00:27:31 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/25 17:40:59 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int		scd_ramp_val(t_elem *head, t_elem *start_fstramp, t_lims *lims);
 void	merge_ramp_spot(t_all *all, t_elem *firstinramp);
 void	place_in_b(t_elem *b, t_all *all, t_elem *tobemoved, t_cmds *cmds);
 void	swap_a(t_all *all, t_elem *a);
-void	place_in_a(t_elem *a, t_elem *b, t_all *off);
+void	place_in_a(t_all *all);
 void	place_in_a_fwd(t_elem *a, t_all *all, t_all *temp);
 void	place_in_a_bwd(t_elem *a, t_all *all, t_all *temp);
 

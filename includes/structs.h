@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:49:21 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 01:12:54 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/25 18:19:35 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,9 @@ typedef struct s_ramp
 	t_cmds		init_cmds;
 	t_cmds		best_cmds;
 	t_elem		*first_nbr;
+	t_elem		*sent;
 	t_elem		*off_nbr;
+	t_elem		*prev_nbr;
 }				t_ramp;
 
 typedef struct s_stack

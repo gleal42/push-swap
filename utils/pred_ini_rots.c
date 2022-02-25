@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pred_rots2.c                                       :+:      :+:    :+:   */
+/*   pred_ini_rots.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 23:28:06 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/24 16:38:56 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/25 18:20:22 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,21 @@ void	pred_all_inirotsb(t_all *all, t_all *pred, t_cmds *rot_pred)
 
 void	predict_all_ini_rbs(t_all *all, t_all *pred, t_cmds *rot_pred)
 {
-	t_elem	*temp;
 	t_elem	*prev_temp;
-	t_elem	*sent_stack;
 
-	sent_stack = all->a.ramp.first_nbr;
-	temp = sent_stack;
-	prev_temp = temp;
-	iterate_stack(&sent_stack, all->a.head);
-	if (sent_stack->pos == pred->a.head->pos)
+	pred->a.ramp.sent = all->a.ramp.first_nbr;
+	pred->a.ramp.off_nbr = pred->a.ramp.sent;
+	pred->a.ramp.prev_nbr = pred->a.ramp.off_nbr;
+	iterate_stack(&pred->a.ramp.sent, all->a.head);
+	if (pred->a.ramp.sent->pos == pred->a.head->pos)
 		return ;
-	sent_stack = all->a.ramp.first_nbr;
-	pred->b.forw = sent_stack;
+	pred->a.ramp.sent = all->a.ramp.first_nbr;
+	pred->b.forw = pred->a.ramp.sent;
 	while (pred->b.forw->pos != pred->a.head->pos)
 	{
-		iterate_stack(&sent_stack, all->a.head);
-		predict_next_ini_rb_nbr(pred, sent_stack, &temp);
-		if (update_pred_rbs_reset(all, pred, &sent_stack, temp, &prev_temp, &rot_pred->rb))
+		iterate_stack(&pred->a.ramp.sent, all->a.head);
+		predict_next_ini_rb_nbr(pred, pred->a.ramp.sent, &pred->a.ramp.off_nbr);
+		if (update_pred_rbs_reset(all, pred, &pred->a.ramp.sent, pred->a.ramp.off_nbr, &prev_temp, &rot_pred->rb))
 			break;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:45:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/23 23:59:41 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/25 17:45:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	merge_a_b(t_all **all)
 	{
 		ft_bzero(&(*all)->pred_cmds, sizeof(t_cmds));
 		ft_bzero(&(*all)->b.ini_rot, sizeof(t_rot));
-		place_in_a((*all)->a.head, (*all)->b.head, *all);
+		place_in_a(*all);
 		execute_merge_ab(&(*all)->pred_cmds, &(*all)->a, &(*all)->b);
 	}
 }
