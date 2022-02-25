@@ -60,7 +60,10 @@ SRCS := push_swap.c \
 		utils/stacks_utils.c \
 		utils/other_utils.c \
 		utils/pred_rots.c \
-		utils/pred_ini_rots.c \
+		utils/pred_other_rots.c \
+		utils/pred_rots_empty_b.c \
+		utils/pred_rots_multi_nbr_b.c \
+		utils/pred_ini_rots2.c \
 		utils/prepare_moves_utils.c \
 		utils/prepare_moves_utils2.c \
 		utils/sort_algorithm_utils.c \

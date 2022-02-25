@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 16:13:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/24 16:38:43 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/25 22:40:47 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,26 +43,40 @@ void	iterate_stack(t_elem **to_iter, t_elem *stack_head);
 
 void	delete_stack(int *content);
 
-// predict_rots1.c
+
+// pred_rots.c
 
 void	pred_ramp_rots(t_all *pred, t_all *all,
 			t_elem *ref, int (*valid)(t_elem *, t_elem *, t_lims *));
-int		pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd);
-void	pred_start_rbs(t_all *all, t_all *pred, t_cmds *rot_pred);
-void	pred_start_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred);
+void	update_pred_lims_b(t_all *all, t_lims *lims_b, t_elem *check);
+void	update_max_min(t_elem	*temp, int *min, int *max);
+
+// pred_other_rots.c
+
+void	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd);
+void	pred_rots_empty_b(t_all *pred, t_all *all, t_cmds *temp_cmd, t_cmds *rot_pred);
+void	pred_rots_multi_b(t_all *pred, t_all *all, t_cmds *rot_pred);
 void	add_rbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred);
 void	add_rrbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred);
-void	update_pred_lims_b(t_all *all, t_lims *lims_b, t_elem *check);
+void	reset_moves_targets(t_all *pred, t_all *all, t_cmds *rot_pred, t_elem **target_fwd, t_elem **target_bwd);
+
+
+// pred_rots_multi_nbr_b.c
+
+void	add_rbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred);
+void	find_next_pred_lower(t_all *all, t_all *pred, t_elem	**check_fwd);
+void	update_pred_b_head(t_all *all, t_all *pred, t_elem **target, t_elem	*check_fwd);
+void	add_rrbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred);
 
 // predict_rots2.c
 
 void	pred_all_inirotsb(t_all *all, t_all *pred, t_cmds *rot_pred);
 void	predict_all_ini_rbs(t_all *all, t_all *pred, t_cmds *rot_pred);
 void	predict_all_ini_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred);
-void	predict_next_ini_rb_nbr(t_all *pred, t_elem *sent_stack, t_elem **temp);
-void	predict_next_ini_rrb_nbr(t_all *pred, t_elem *sent_stack, t_elem **temp);
-int		update_pred_rbs_reset(t_all *all, t_all *pred, t_elem **sent_stack, t_elem *temp, t_elem **prev_temp, int *rot_pred);
-int	update_pred_rrbs_reset(t_all *all, t_all *pred, t_elem **sent_stack, t_elem *temp, t_elem **prev_temp, int *rot_pred);
+void	predict_next_ini_rb_nbr(t_all *pred);
+void	predict_next_ini_rrb_nbr(t_all *pred);
+int		update_pred_rbs_reset(t_all *all, t_all *pred, int *rot_pred);
+int		update_pred_rrbs_reset(t_all *all, t_all *pred, int *rot_pred);
 
 // prepare_moves_utils.c
 

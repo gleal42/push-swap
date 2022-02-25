@@ -6,14 +6,13 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 18:30:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/24 00:12:51 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/25 21:16:31 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	calculate_initial_pushmoves(int closer_fwd,
-	int closer_bwd, t_cmds *cmds)
+void	calculate_initial_pushmoves(int closer_fwd, int closer_bwd, t_cmds *cmds)
 {
 	int	fwd_total;
 	int	rev_total;
