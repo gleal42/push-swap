@@ -16,22 +16,24 @@ LIBRARIES := -Llibft -lft -Lmlc -lmlc
 INCLUDE_DIRS := libft \
 				mlc \
 				operations \
-				sort \
 				stacks \
-				utils \
+				sort \
+				execute \
+				predict \
+				general_utils \
 				includes \
-				validations \
 				.
 INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := push_swap
 SRCS := push_swap.c \
+		stacks/iterate_stacks_utils.c \
 		stacks/prepare_stacks.c \
 		stacks/print_stacks.c \
 		stacks/stack_last.c \
 		stacks/stack_push.c \
 		stacks/stack_rotate_backward.c \
 		stacks/stack_rotate_forward.c \
-		stacks/stack_seccond_to_last.c \
+		stacks/stack_second_to_last.c \
 		stacks/stack_size.c \
 		stacks/stack_swap.c \
 		stacks/stackadd_back.c \
@@ -41,32 +43,32 @@ SRCS := push_swap.c \
 		stacks/stackmap.c \
 		stacks/stacknew.c \
 		stacks/stacks_clear.c \
-		validations/input_validations.c \
+		stacks/other_stacks_utils.c \
 		operations/operations_push_swap.c \
 		operations/operations_rotate_bwd.c \
 		operations/operations_rotate_fwd.c \
-		sort/execute_moves.c \
-		sort/execute_moves2.c \
-		sort/limits.c \
-		sort/predict_limits.c \
-		sort/predict_ramps.c \
-		sort/sort_a_b_mvs.c \
-		sort/merge_a_b_mvs.c \
+		sort/cmds_utils.c \
 		sort/sort_algorithm.c \
+		sort/sort_a_b_utils.c \
+		sort/sort_a_b.c \
+		sort/merge_a_b.c \
+		sort/limits.c \
 		sort/sort_validations.c \
 		sort/sort_parameters.c \
-		utils/get_info.c \
-		utils/init_utils.c \
-		utils/stacks_utils.c \
-		utils/other_utils.c \
-		utils/pred_rots.c \
-		utils/pred_other_rots.c \
-		utils/pred_rots_empty_b.c \
-		utils/pred_rots_multi_nbr_b.c \
-		utils/pred_ini_rots2.c \
-		utils/prepare_moves_utils.c \
-		utils/prepare_moves_utils2.c \
-		utils/sort_algorithm_utils.c \
+		predict/predict_limits.c \
+		predict/predict_ramps.c \
+		predict/pred_rots.c \
+		predict/pred_ini_rbs.c \
+		predict/pred_ini_rrbs.c \
+		predict/pred_other_rots.c \
+		predict/pred_rots_fwd.c \
+		predict/pred_rots_bwd.c \
+		general_utils/good_push_validation.c \
+		general_utils/input.c \
+		general_utils/init_utils.c \
+		execute/execute_moves.c \
+		execute/execute_moves2.c \
+		execute/execute_utils.c
 
 OBJS := $(SRCS:.c=.o)
 

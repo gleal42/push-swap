@@ -6,11 +6,11 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 21:45:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/14 23:55:22 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/26 21:50:42 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "general_utils.h"
 
 void	init_all(t_all *temp, t_all *all, int n)
 {
@@ -34,4 +34,24 @@ void	init_lims(t_all *all, int n)
 	all->a.lims.max = n;
 	all->b.lims.min = 0;
 	all->b.lims.max = 0;
+}
+
+void	init_push_b(t_cmds *cmds)
+{
+	if (cmds->ra)
+		cmds->type = PUSH_B_FWD;
+	else
+		cmds->type = PUSH_B_BWD;
+	cmds->pb++;
+	cmds->total = cmds->ra + cmds->rb
+		+ cmds->rr + cmds->rra + cmds->rrb
+		+ cmds->rrr + cmds->pb;
+}
+
+void	init_find_closest_b_spot(t_all *temp)
+{
+	temp->a.near_rot.r = 0;
+	temp->a.near_rot.rrev = 0;
+	temp->pred_cmds.pa++;
+	temp->pred_cmds.total = count_moves(&temp->pred_cmds);
 }

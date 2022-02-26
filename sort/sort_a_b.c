@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/24 00:30:38 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/26 19:46:17 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,17 @@ void	place_in_b(t_elem *b, t_all *all, t_elem *move, t_cmds *cmds)
 	init_push_b(cmds);
 	if (is_good_to_place_wo_rot_b(b, move, all->b.lims))
 		return ;
-	all->b.forw = b->next;
-	all->b.rev = b->prev->prev;
+	init_stacks_iteration(&all->b, b);
+	iterate_fwd_rev_toend(&all->b);
 	while (all->b.forw)
 	{
 		add_double_rots_a(cmds);
-		check_if_found_rot(move, &all->b, &all->b.near_rot, all->b.lims);
+		check_if_found_rot_a(move, &all->b, &all->b.near_rot, all->b.lims);
 		if (all->b.near_rot.r || all->b.near_rot.rrev)
 			break ;
-		all->b.forw = (all->b.forw)->next;
-		all->b.rev = (all->b.rev)->prev;
+		iterate_fwd_rev_toend(&all->b);
 	}
-	calculate_initial_pushmoves(all->b.near_rot.r, all->b.near_rot.rrev, cmds);
+	calculate_initial_pb_moves(all->b.near_rot.r, all->b.near_rot.rrev, cmds);
 }
 
 void	swap_a(t_all *all, t_elem *a)

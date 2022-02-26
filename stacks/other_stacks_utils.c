@@ -1,35 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_validations.c                                :+:      :+:    :+:   */
+/*   stacks_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/02 23:42:18 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 21:01:30 by gleal            ###   ########.fr       */
+/*   Created: 2022/02/09 17:19:57 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/26 21:47:26 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "validations.h"
-
-int	is_input_integer(char **stack_a_args)
-{
-	int	i;
-
-	i = 0;
-	if (!stack_a_args[0])
-		return (0);
-	while (stack_a_args[i])
-	{
-		if (!is_integer(stack_a_args[i]))
-		{
-			printf("Error\n");
-			return (0);
-		}
-		i++;
-	}
-	return (1);
-}
+#include "stacks.h"
 
 int	is_nbr_in_stack(int nbr, t_elem *a)
 {
@@ -40,4 +21,10 @@ int	is_nbr_in_stack(int nbr, t_elem *a)
 		a = a->next;
 	}
 	return (0);
+}
+
+void	delete_stack(int *content)
+{
+	(*content) = 0;
+	return ;
 }

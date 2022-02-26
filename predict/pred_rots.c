@@ -6,11 +6,11 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 23:25:04 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/25 21:59:33 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/26 21:00:02 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "general_utils.h"
 
 void	pred_ramp_rots(t_all *pred, t_all *all,
 		t_elem *ref, int (*valid)(t_elem *, t_elem *, t_lims *))

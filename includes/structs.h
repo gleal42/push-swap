@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:49:21 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/25 18:19:35 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/26 19:55:36 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ enum	e_moves
 	PUSH_B_BWD,
 	SWAP_FWD,
 	SWAP_BWD,
-	PUSH_BACK
 };
 
 #endif

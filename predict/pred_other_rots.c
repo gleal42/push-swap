@@ -6,11 +6,11 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 21:48:29 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/25 21:50:09 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/26 21:00:08 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "general_utils.h"
 
 /* We need:
 * To have something to update the
@@ -31,7 +31,7 @@ void	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd)
 		pred_all_inirotsb(all, pred, &rot_pred);
 	else
 		pred_rots_multi_b(pred, all, &rot_pred);
-	calculate_initial_pushmoves(rot_pred.rb <= rot_pred.rrb,
+	calculate_initial_pb_moves(rot_pred.rb <= rot_pred.rrb,
 		rot_pred.rrb <= rot_pred.rb, &rot_pred);
 	temp_cmd->rb += rot_pred.rb;
 	temp_cmd->rrb += rot_pred.rrb;

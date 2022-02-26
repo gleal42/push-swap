@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 17:19:15 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/23 23:02:56 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/26 20:37:18 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,22 @@ void	execute_merge_ab(t_cmds *cmds, t_stack *a, t_stack *b)
 		set_lims_ori_push(b, a);
 		set_lims_other_push(b, a);
 		op_pa(&a->head, &b->head);
+	}
+}
+
+void	rotate_until_sorted(t_all *all)
+{
+	int		rotation_direction;
+
+	rotation_direction = 0;
+	all->a.forw = (all->a.head)->next;
+	all->a.rev = (all->a.head)->prev;
+	find_rotation_direction(all, &rotation_direction);
+	while (all->a.head->pos != 1)
+	{
+		if (rotation_direction == RA)
+			op_ra(&all->a.head, &all->b.head);
+		else if (rotation_direction == RRA)
+			op_rra(&all->a.head, &all->b.head);
 	}
 }

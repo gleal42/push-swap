@@ -6,11 +6,11 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 15:48:55 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/23 22:22:10 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/26 20:42:32 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sort.h"
+#include "execute.h"
 
 void	execute_moves(t_cmds *cmds, t_stack *a, t_stack *b)
 {

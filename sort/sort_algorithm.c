@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:45:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/25 17:45:09 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/26 20:06:24 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,6 @@ int	simple_rotate_algorithm(t_all *all, int n)
 ** Line-by-line comments:
 ** @line-line	comment
 */
-
-/* don't forget that good in samne stack doesn't 
-work well for 2 numbers in same stack
-separate same stack from different stacks or add extra validation in if
-*/
-
-// else if (!temp.forw_a || temp.forw_a->pos == temp.rev_a->pos)
-		//printf("WHOOPSIE\n");
 
 void	more_complex_algorithm(t_all *all, int n)
 {

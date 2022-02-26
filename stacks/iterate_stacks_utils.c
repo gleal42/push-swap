@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stacks_utils.c                                     :+:      :+:    :+:   */
+/*   iterate_stacks_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/09 17:19:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 16:42:36 by gleal            ###   ########.fr       */
+/*   Created: 2022/02/26 21:49:26 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/26 21:49:28 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "stacks.h"
 
 void	init_stacks_iteration(t_stack *tobeinit, t_elem *ref)
 {

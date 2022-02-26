@@ -6,11 +6,11 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 18:56:03 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/25 18:58:36 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/26 21:00:33 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "general_utils.h"
 
 void	predict_all_ini_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred)
 {

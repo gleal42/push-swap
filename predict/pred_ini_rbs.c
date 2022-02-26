@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pred_rots_empty_b.c                                :+:      :+:    :+:   */
+/*   pred_ini_rots.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/18 23:28:06 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/25 21:59:39 by gleal            ###   ########.fr       */
+/*   Created: 2022/02/26 21:08:02 by gleal             #+#    #+#             */
+/*   Updated: 2022/02/26 21:08:04 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "general_utils.h"
 
 void	predict_all_ini_rbs(t_all *all, t_all *pred, t_cmds *rot_pred)
 {

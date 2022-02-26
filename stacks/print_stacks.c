@@ -12,15 +12,6 @@
 
 #include "stacks.h"
 
-void	print_single_stack(t_elem *stack)
-{
-	while (stack)
-	{
-		printf("%d\n", stack->nbr);
-		stack = stack->next;
-	}
-}
-
 void	print_char(char *str, int start, int len)
 {
 	while (++start <= len)
@@ -37,7 +28,7 @@ void	print_both_stacks(t_elem *a, t_elem *b)
 	int	i;
 	int	prt;
 
-	return ;
+	//return ;
 	print_char("_", 0, max_len);
 	print_char("_", 1, max_len);
 	printf("__");
