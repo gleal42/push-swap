@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:49:21 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/26 19:55:36 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/28 16:03:20 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,15 @@ typedef struct s_ramp
 	t_elem		*prev_nbr;
 }				t_ramp;
 
+typedef struct s_pred_rots
+{
+	t_elem	*prev;
+	t_elem	*cur;
+	t_elem	*next;
+	t_elem	*off;
+	t_elem	*target;
+}				t_pred_rots;
+
 typedef struct s_stack
 {
 	t_elem		*head;
@@ -69,6 +78,8 @@ typedef struct s_stack
 	t_rot		near_rot;
 	t_lims		lims;
 	t_ramp		ramp;
+	t_pred_rots	fwd;
+	t_pred_rots	bwd;
 }				t_stack;
 
 typedef struct s_all

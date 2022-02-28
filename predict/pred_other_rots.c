@@ -54,25 +54,24 @@ void	pred_all_inirotsb(t_all *all, t_all *pred, t_cmds *rot_pred)
 
 void	pred_rots_multi_b(t_all *pred, t_all *all, t_cmds *rot_pred)
 {
-	t_elem	*target_fwd;
-	t_elem	*target_bwd;
-
 	init_stacks_iteration(&pred->b, pred->a.head->prev);
-	target_fwd = pred->b.head;
-	target_bwd = pred->b.head->prev;
+	pred->b.fwd.target = pred->b.head;
+	pred->b.bwd.target = pred->b.head->prev;
+	pred->b.fwd.prev = NULL;
+	pred->b.bwd.next = NULL;
 	while (pred->b.forw->pos != pred->a.head->pos
 		|| pred->b.rev->pos != pred->a.head->pos)
 	{
 		if (pred->b.forw->pos != pred->a.head->pos)
-			add_rbs(all, pred, &target_fwd, rot_pred);
+			add_rbs(all, pred, &pred->b.fwd.target, rot_pred);
 		if (pred->b.rev->pos != pred->a.head->pos)
-			add_rrbs(all, pred, &target_bwd, rot_pred);
+			add_rrbs(all, pred, &pred->b.bwd.target, rot_pred);
 	}
 	if ((!rot_pred->rb && !rot_pred->rrb) || (rot_pred->rb <= rot_pred->rrb))
-		pred->b.head = target_fwd;
+		pred->b.head = pred->b.fwd.target;
 	else
 	{
-		iterate_stack(&target_bwd, all->b.head);
-		pred->b.head = target_bwd;
+		iterate_stack(&pred->b.bwd.target, all->b.head);
+		pred->b.head = pred->b.bwd.target;
 	}
 }
