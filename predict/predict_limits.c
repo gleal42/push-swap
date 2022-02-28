@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 00:40:49 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/23 22:46:43 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/27 16:52:34 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	pred_lims_update(t_elem *first_nbr, t_elem *b, t_all *all, t_all *pred)
 		set_both_lims_as(&pred->a.lims, 0);
 	else
 		pred_push_orig_lims(first_nbr, all->a.head, &pred->a, &pred->b);
-	if (!b)
+	if (!b && pred->a.head->pos == all->a.ramp.first_nbr->pos)
 	{
 		if (first_nbr->pos == pred->a.head->pos)
 			set_both_lims_as(&pred->b.lims, pred->a.head->pos);

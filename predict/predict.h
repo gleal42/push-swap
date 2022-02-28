@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 21:05:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/26 22:32:27 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/28 00:00:14 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,26 +31,25 @@ void	pred_rots_multi_b(t_all *pred, t_all *all, t_cmds *rot_pred);
 // pred_rots_fwd.c
 
 void	add_rbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred);
-void	find_next_pred_lower(t_all *all, t_all *pred, t_elem	**check_fwd);
-void	update_pred_b_head_fwd(t_all *all, t_all *pred,
-			t_elem **target, t_elem	*check_fwd);
+void	add_rbs_find_next_lower(t_all *all, t_all *pred, t_elem **check_fwd, t_elem **prev_fwd);
+void	update_pred_b_head_fwd(t_all *pred, t_elem **target, t_elem	*check_fwd);
 
 // pred_rots_bwd.c
 
 void	add_rrbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred);
-void	find_next_pred_bigger(t_all *all, t_all *pred, t_elem **check_bwd);
+void	add_rrbs_find_next_bigger(t_all *all, t_all *pred, t_elem **check_bwd, t_elem **prev_fwd);
 void	update_pred_b_head_bwd(t_all *pred, t_elem **target, t_elem	*check_bwd);
 
-// pred_rots_empty_b.c
+// pred_ini_rbs.c
 
 void	predict_all_ini_rbs(t_all *all, t_all *pred, t_cmds *rot_pred);
-void	predict_next_ini_rb_nbr(t_all *pred);
-int		update_pred_rbs_reset(t_all *all, t_all *pred, int *rot_pred);
+void	ini_rbs_find_next_lower(t_all *all, t_all *pred);
+void	ini_update_pred_rbs_elem(t_all *pred, int *rot_pred);
 
-// pred_ini_rots2.c
+// pred_ini_rrbs.c
 
 void	predict_all_ini_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred);
-void	predict_next_ini_rrb_nbr(t_all *pred);
-int		update_pred_rrbs_reset(t_all *all, t_all *pred, int *rot_pred);
+void	ini_rrbs_find_next_bigger(t_all *all, t_all *pred);
+void	ini_update_pred_rrbs_elem(t_all *pred, int *rot_pred);
 
 #endif

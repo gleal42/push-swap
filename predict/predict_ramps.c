@@ -6,11 +6,11 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:02:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/23 22:47:49 by gleal            ###   ########.fr       */
+/*   Updated: 2022/02/27 22:44:15 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sort.h"
+#include "predict.h"
 
 /* 
 considerar fazer apenas predict_rotationsb caso tenha mais que 100 algarismos
@@ -50,4 +50,26 @@ int	scd_ramp_val(t_elem *head, t_elem *start_fstramp, t_lims *lims)
 		return (1);
 	else
 		return (0);
+}
+
+void	pred_ramp_rots(t_all *pred, t_all *all,
+		t_elem *ref, int (*valid)(t_elem *, t_elem *, t_lims *))
+{
+	while (valid(pred->a.head, ref, &pred->a.lims))
+	{
+		(&all->a.ramp.init_cmds)->pb++;
+		if (pred->a.head->pos == all->a.ramp.first_nbr->pos)
+		{
+			place_in_b(all->b.head, pred, pred->a.head, &all->a.ramp.init_cmds);
+			if (all->a.ramp.init_cmds.rb || all->a.ramp.init_cmds.rr)
+				pred->b.head = pred->b.forw;
+			else if (all->a.ramp.init_cmds.rrb || all->a.ramp.init_cmds.rrr)
+				pred->b.head = pred->b.rev;
+			init_stacks_iteration(&pred->b, pred->b.head);
+		}
+		else
+			pred_other_rots(pred, all, &all->a.ramp.init_cmds);
+		pred_lims_update(all->a.ramp.first_nbr, pred->b.head, all, pred);
+		iterate_stack(&pred->a.head, all->a.head);
+	}
 }
