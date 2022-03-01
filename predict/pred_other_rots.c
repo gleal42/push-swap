@@ -5,21 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/25 21:48:29 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/27 16:03:55by gleal            ###   ########.fr       */
+/*   Created: 2022/03/01 19:55:07 by gleal             #+#    #+#             */
+/*   Updated: 2022/03/01 19:55:11 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "general_utils.h"
-
-/* We need:
-* To have something to update the
-* current b (because when we rotate the head changes)
-* To keep track of the numbers we have
-* already pushed (in case we need to go backwards)
-*/
-/*		check_if_found_rot(pred->a.head, &all->b, &pred->b.near_rot, pred->b.lims);
-		iterate_fwd_rev_noend(&pred->b, all->b.head);*/
+#include "predict.h"
 
 void	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd)
 {
@@ -57,8 +48,6 @@ void	pred_rots_multi_b(t_all *pred, t_all *all, t_cmds *rot_pred)
 	init_stacks_iteration(&pred->b, pred->a.head->prev);
 	pred->b.fwd.target = pred->b.head;
 	pred->b.bwd.target = pred->b.head->prev;
-	pred->b.fwd.prev = NULL;
-	pred->b.bwd.next = NULL;
 	while (pred->b.forw->pos != pred->a.head->pos
 		|| pred->b.rev->pos != pred->a.head->pos)
 	{

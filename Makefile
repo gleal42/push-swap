@@ -49,7 +49,6 @@ SRCS := push_swap.c \
 		operations/operations_rotate_fwd.c \
 		sort/cmds_utils.c \
 		sort/sort_algorithm.c \
-		sort/sort_a_b_utils.c \
 		sort/sort_a_b.c \
 		sort/merge_a_b.c \
 		sort/limits.c \
@@ -58,8 +57,7 @@ SRCS := push_swap.c \
 		predict/predict_limits.c \
 		predict/predict_ramps.c \
 		predict/pred_rots.c \
-		predict/pred_ini_rbs.c \
-		predict/pred_ini_rrbs.c \
+		predict/pred_ini_rots.c \
 		predict/pred_other_rots.c \
 		predict/pred_rots_fwd.c \
 		predict/pred_rots_bwd.c \

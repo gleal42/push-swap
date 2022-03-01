@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 21:52:46 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/26 21:52:49 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/01 20:23:19 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,13 @@ void	check_if_found_rot_b(t_elem *cur_b, t_all *temp)
 		&& is_smaller_than(cur_b, temp->a.rev,
 			temp->a.lims.min, temp->a.lims.max))
 		temp->a.near_rot.rrev++;
+}
+
+int	is_inbetween_bigger(t_elem *fst, t_elem *sec, t_elem *thrd, t_lims lims)
+{
+	if (is_bigger_than(fst, sec, lims.min, lims.max)
+		&& is_bigger_than(sec, thrd, lims.min, lims.max))
+		return (1);
+	else
+		return (0);
 }
