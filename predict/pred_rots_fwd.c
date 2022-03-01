@@ -19,34 +19,17 @@ void	add_rbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred)
 {
 	pred->b.fwd.cur = pred->b.forw;
 	pred->b.fwd.next = NULL;
-	add_rbs_find_next(all, pred, &pred->b.fwd.next);
-	if (pred_enough_rots_fwd(pred, pred->b.fwd.prev, pred->b.fwd.cur, pred->b.fwd.next, *target))
-	{
-		update_pred_b_fwd(pred, pred->b.fwd.prev, pred->b.fwd.cur, pred->b.fwd.next, *target); 
-		if (pred->b.forw->pos == (*target)->pos)
-			iterate_stack(target, all->b.head);
-		return ;
-	}
-	else
-	{
-		pred->b.fwd.prev = pred->b.fwd.cur;
-		pred->b.fwd.cur = pred->b.fwd.next;
-		pred->b.forw = pred->b.fwd.cur;
-		pred->b.fwd.next = NULL;
-		rot_pred->rb++;
-	}
 	while (pred->b.forw->pos != pred->a.head->pos
 		&& pred->b.forw->pos != (*target)->pos)
 	{
 		add_rbs_find_next(all, pred, &pred->b.fwd.next);
-		if (pred_enough_rots_fwd(pred, pred->b.fwd.prev, pred->b.fwd.cur, pred->b.fwd.next, *target))
-			update_pred_b_fwd(pred, pred->b.fwd.prev, pred->b.fwd.cur, pred->b.fwd.next, *target); 
+		if (pred_enough_rots_fwd(pred, pred->b.fwd.cur, pred->b.fwd.next))
+			update_pred_b_fwd(pred, pred->b.fwd.cur, pred->b.fwd.next, *target); 
 		else
 		{
-			pred->b.fwd.prev = pred->b.fwd.cur;
 			pred->b.fwd.cur = pred->b.fwd.next;
-			pred->b.forw = pred->b.fwd.cur;
 			pred->b.fwd.next = NULL;
+			pred->b.forw = pred->b.fwd.cur;
 			rot_pred->rb++;
 		}
 	}
@@ -74,22 +57,14 @@ void	add_rbs_find_next(t_all *all, t_all *pred, t_elem **next_fwd)
 	}
 }
 
-int	pred_enough_rots_fwd(t_all *pred, t_elem *prev_fwd, t_elem *cur_fwd, t_elem *next_fwd, t_elem *target)
+int	pred_enough_rots_fwd(t_all *pred, t_elem *cur_fwd, t_elem *next_fwd)
 {
 	if (!next_fwd)
 		return (1);
-	if (!prev_fwd)
-	{
-		if (is_inbetween_bigger(target->prev, pred->a.head, cur_fwd, pred->b.lims))
-			return (1);
-	}
-	else if (is_inbetween_bigger(prev_fwd, pred->a.head, cur_fwd, pred->b.lims))
+	else if (is_inbetween_bigger(cur_fwd, pred->a.head, next_fwd, pred->b.lims))
 			return (1);
 	return (0);
 }
-
-/*if (is_smaller_than(check_fwd, *target,
-		pred->b.lims.min, pred->b.lims.max))*/
 
 int	is_inbetween_bigger(t_elem *fst, t_elem *sec, t_elem *thrd, t_lims lims)
 {
@@ -100,24 +75,16 @@ int	is_inbetween_bigger(t_elem *fst, t_elem *sec, t_elem *thrd, t_lims lims)
 		return (0);
 }
 
-void	update_pred_b_fwd(t_all *pred, t_elem *prev_fwd, t_elem *cur_fwd, t_elem *next_fwd, t_elem *target)
+void	update_pred_b_fwd(t_all *pred, t_elem *cur_fwd, t_elem *next_fwd, t_elem *target)
 {
-	t_elem	*prev;
 	t_elem	*next;
 
-	if (!prev_fwd)
-		prev = target->prev;
-	else
-		prev = prev_fwd;
 	if (!next_fwd)
 		next = target;
 	else
 		next = next_fwd;
-	if (is_inbetween_bigger(prev, pred->a.head, cur_fwd, pred->b.lims))
+	if (is_inbetween_bigger(cur_fwd, pred->a.head, next, pred->b.lims))
 		pred->b.forw = pred->a.head;
 	else
-	{
-		pred->b.fwd.prev = pred->b.forw;
 		pred->b.forw = target;
-	}
 }
