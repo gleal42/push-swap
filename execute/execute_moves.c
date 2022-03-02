@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 15:48:55 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/26 20:42:32 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/01 23:44:46 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,6 @@ void	execute_moves(t_cmds *cmds, t_stack *a, t_stack *b)
 	else if (cmds->type == SWAP_BWD)
 		execute_swap_backward(cmds, &a->head, &b->head);
 }
-
-/* 
-	idea create t_stack_lims with min and max for each one of the stacks 
-	create structs for everything belonging to a and b instead of the big mess
-	if (!is_cmd_table_clean(*cmds))
-		printf("Didn't execute all the commands!\n");
-*/
 
 void	execute_pb_backward(t_cmds *cmds, t_stack *a, t_stack *b)
 {

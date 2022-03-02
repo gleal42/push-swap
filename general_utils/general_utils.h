@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 20:53:53 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/01 20:46:14 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/01 23:16:06 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,10 @@ void	check_if_found_rot_a(t_elem *move, t_stack *stack,
 void	check_if_found_rot_b(t_elem *cur_b, t_all *temp);
 int		is_inbetween_bigger(t_elem *fst, t_elem *sec,
 			t_elem *thrd, t_lims lims);
+
+// other_cmds_utils.c
+
+void	add_update_cmd(int *toupdate, t_cmds *cmds, int value);
+void	subt_update_cmd(int *toupdate, t_cmds *cmds, int value);
 
 #endif

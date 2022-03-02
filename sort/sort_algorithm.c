@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:45:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/26 20:06:24 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/02 02:09:32 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,9 @@ void	sort_a_b(t_all *all)
 {
 	while (all->a.forw)
 	{
-		ft_bzero(&all->pred_cmds, sizeof(t_cmds));
 		analyze_fwd(&all);
 		analyze_bwd(&all);
-		if (have_analyzed_enough(all->exec_cmds, all->a.ini_rot,
-				all->a.forw, all->a.rev))
+		if (have_analyzed_enough(all))
 		{
 			execute_moves(&all->exec_cmds, &all->a, &all->b);
 			init_stacks_iteration(&all->a, all->a.head);
@@ -85,7 +83,7 @@ void	sort_a_b(t_all *all)
 			ft_bzero(&all->pred_cmds, sizeof(t_cmds));
 			ft_bzero(&all->exec_cmds, sizeof(t_cmds));
 		}
-		else if (!all->a.forw || all->a.forw->pos == all->a.rev->pos)
+		else if (all_number_checked(all))
 			break ;
 	}
 }

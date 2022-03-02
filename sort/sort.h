@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/01 20:53:05 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/02 02:19:18 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ void	calculate_initial_pb_moves(int best_fwd, int best_bwd, t_cmds *cmds);
 void	calculate_initial_pa_moves(int best_fwd, int best_bwd, t_cmds *cmds);
 void	ramp_start_before(t_cmds *cmds);
 
+// cmds_utils2.c
+
+void	update_exec_cmds(t_all **all);
+
 // limits.c
 
 void	set_lims_ori_push(t_stack *a, t_stack *b);
@@ -41,7 +45,7 @@ void	analyze_bwd(t_all **all);
 // sort_a_b.c
 
 void	merge_ramp_spot(t_all *all, t_elem *firstinramp);
-void	place_in_b(t_elem *b, t_all *all, t_elem *tobemoved, t_cmds *cmds);
+void	place_in_b_rots(t_elem *b, t_all *all, t_elem *tobemoved, t_cmds *cmds);
 void	swap_a(t_all *all, t_elem *a);
 
 // merge_a_b.c
@@ -74,8 +78,8 @@ int		is_stack_sorted(t_elem **a, int n);
 // sort_parameters.c
 
 int		is_better_ramp(t_cmds temp_cmd, t_cmds off_cmd);
-int		have_analyzed_enough(t_cmds off, t_rot ini_rot_a,
-			t_elem *forw_a, t_elem *rev_a);
-int		is_temp_better(t_cmds temp, t_cmds off);
+int		have_analyzed_enough(t_all *all);
+int		all_number_checked(t_all *all);
+int		is_temp_better(t_all *all);
 
 #endif

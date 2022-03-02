@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/01 20:56:22 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/02 02:20:41 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ void	analyze_fwd(t_all **all)
 			(*all)->pred_cmds.ra = (*all)->a.ini_rot.r;
 			merge_ramp_spot(*all, (*all)->a.forw->next);
 		}
-		if (is_temp_better((*all)->pred_cmds, (*all)->exec_cmds))
-			(*all)->exec_cmds = (*all)->pred_cmds;
+		update_exec_cmds(all);
 	}
 	(*all)->a.forw = (*all)->a.forw->next;
 }
@@ -60,8 +59,7 @@ void	analyze_bwd(t_all **all)
 			merge_ramp_spot(*all, (*all)->a.rev);
 			(*all)->a.ini_rot.rrev++;
 		}
-		if (is_temp_better((*all)->pred_cmds, (*all)->exec_cmds))
-			(*all)->exec_cmds = (*all)->pred_cmds;
+		update_exec_cmds(all);
 	}
 	(*all)->a.rev = (*all)->a.rev->prev;
 }
@@ -90,7 +88,8 @@ void	merge_ramp_spot(t_all *all, t_elem *firstinramp)
 	all->pred_cmds.ra += all->a.ramp.best_cmds.rr;
 	all->pred_cmds.rra = all->a.ramp.best_cmds.rra;
 	all->pred_cmds.rra += all->a.ramp.best_cmds.rrr;
-	place_in_b(all->b.head, all, all->a.ramp.off_nbr, &all->pred_cmds);
+	place_in_b_rots(all->b.head, all, all->a.ramp.off_nbr, &all->pred_cmds);
+	add_update_cmd(&all->pred_cmds.pb, &all->pred_cmds, 1);
 }
 
 /*
@@ -100,7 +99,7 @@ void	merge_ramp_spot(t_all *all, t_elem *firstinramp)
 	retirar break se deixar de funcionar
 */
 
-void	place_in_b(t_elem *b, t_all *all, t_elem *move, t_cmds *cmds)
+void	place_in_b_rots(t_elem *b, t_all *all, t_elem *move, t_cmds *cmds)
 {
 	all->b.near_rot.r = 0;
 	all->b.near_rot.rrev = 0;

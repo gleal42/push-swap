@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 19:55:07 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/01 19:55:11 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/01 23:22:24 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd)
 		pred_rots_multi_b(pred, all, &rot_pred);
 	calculate_initial_pb_moves((rot_pred.rb && (rot_pred.rb <= rot_pred.rrb)),
 		rot_pred.rrb && (rot_pred.rrb <= rot_pred.rb), &rot_pred);
-	temp_cmd->rb += rot_pred.rb;
-	temp_cmd->rrb += rot_pred.rrb;
+	add_update_cmd(&temp_cmd->rb, temp_cmd, rot_pred.rb);
+	add_update_cmd(&temp_cmd->rrb, temp_cmd, rot_pred.rrb);
 }
 
 void	pred_all_inirotsb(t_all *all, t_all *pred, t_cmds *rot_pred)

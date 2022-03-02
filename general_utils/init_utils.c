@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 21:45:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/26 21:50:42 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/02 00:04:26 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	init_all(t_all *temp, t_all *all, int n)
 	init_lims(all, n);
 	ft_bzero(&all->pred_cmds, sizeof(t_cmds));
 	ft_bzero(&all->exec_cmds, sizeof(t_cmds));
+	ft_bzero(&all->ramp_cmds, sizeof(t_cmds));
 	init_stacks_iteration(&all->a, all->a.head);
 	*temp = *all;
 }
@@ -42,7 +43,6 @@ void	init_push_b(t_cmds *cmds)
 		cmds->type = PUSH_B_FWD;
 	else
 		cmds->type = PUSH_B_BWD;
-	cmds->pb++;
 	cmds->total = cmds->ra + cmds->rb
 		+ cmds->rr + cmds->rra + cmds->rrb
 		+ cmds->rrr + cmds->pb;
