@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/02 02:20:41 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/02 23:30:37 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,10 @@ void	merge_ramp_spot(t_all *all, t_elem *firstinramp)
 			all->a.ramp.best_cmds = all->a.ramp.init_cmds;
 			all->a.ramp.off_nbr = all->a.ramp.first_nbr;
 		}
+		if (stop_pred_ramps(all, firstinramp))
+			break ;
 		ramp_start_before(&all->pred_cmds);
 		all->a.ramp.init_cmds = all->pred_cmds;
-		if ((all->a.ramp.first_nbr->prev)->pos == firstinramp->pos)
-			break ;
 		all->a.ramp.first_nbr = all->a.ramp.first_nbr->prev;
 	}
 	all->pred_cmds.ra = all->a.ramp.best_cmds.ra;

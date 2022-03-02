@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/02 02:19:18 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/02 22:08:44 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,6 @@ int		is_better_ramp(t_cmds temp_cmd, t_cmds off_cmd);
 int		have_analyzed_enough(t_all *all);
 int		all_number_checked(t_all *all);
 int		is_temp_better(t_all *all);
+int		stop_pred_ramps(t_all *all, t_elem *firstinramp);
 
 #endif
