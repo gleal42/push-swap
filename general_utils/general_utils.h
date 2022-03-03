@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 20:53:53 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/01 23:16:06 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/03 00:47:43 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ int		is_inbetween_bigger(t_elem *fst, t_elem *sec,
 
 void	add_update_cmd(int *toupdate, t_cmds *cmds, int value);
 void	subt_update_cmd(int *toupdate, t_cmds *cmds, int value);
+t_elem	*next_elem(t_elem *elem, t_elem *head);
 
 #endif

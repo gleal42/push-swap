@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/02 23:30:37 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/03 02:12:27 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ void	merge_ramp_spot(t_all *all, t_elem *firstinramp)
 	while (1)
 	{
 		pred_ramp_moves(all, firstinramp);
-		if (is_better_ramp(all->a.ramp.init_cmds, all->a.ramp.best_cmds))
+		if (is_better_ramp(all, firstinramp))
 		{
 			all->a.ramp.best_cmds = all->a.ramp.init_cmds;
 			all->a.ramp.off_nbr = all->a.ramp.first_nbr;
 		}
-		if (stop_pred_ramps(all, firstinramp))
+		if (stop_pred_ramps(all, all->a.ramp.first_nbr))
 			break ;
 		ramp_start_before(&all->pred_cmds);
 		all->a.ramp.init_cmds = all->pred_cmds;
@@ -91,6 +91,16 @@ void	merge_ramp_spot(t_all *all, t_elem *firstinramp)
 	place_in_b_rots(all->b.head, all, all->a.ramp.off_nbr, &all->pred_cmds);
 	add_update_cmd(&all->pred_cmds.pb, &all->pred_cmds, 1);
 }
+
+/* 		
+		place_in_b_rots(all->b.head, all, all->a.ramp.first_nbr, &all->a.ramp.init_cmds);
+		add_update_cmd(&all->a.ramp.init_cmds.pb, &all->a.ramp.init_cmds, 1); 
+___________________________________________________________________________________________
+		pred_ramp_moves(all, firstinramp);
+		
+*/
+/* 		
+} */
 
 /*
 	quando chega ao final do loop (aquilo que aconteceu no rotate basico)

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:49:21 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/02 00:03:02 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/03 01:50:34 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_cmds
 	int				rrr;
 	int				total;
 	int				type;
+	int				ramp_size;
 }				t_cmds;
 
 typedef struct s_elem

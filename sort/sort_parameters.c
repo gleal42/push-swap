@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:07:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/02 23:49:56 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/03 02:57:08 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,48 @@
 */
 
 /* 
-	if (temp_cmd.total < off_cmd.total)
+	if (all->a.ramp.init_cmds.total < all->a.ramp.best_cmds.total)
+
 	if (temp_cmd.total/temp_cmd.pb < off_cmd.total/off_cmd.pb)
+	if (temp_avg_cmds < off_avg_cmds)
  */
 
-int	is_better_ramp(t_cmds temp_cmd, t_cmds off_cmd)
+// if (is_better_ramp(all, all->a.ramp.init_cmds, all->a.ramp.best_cmds, all->a.ramp.first_nbr, firstinramp))
+
+int	is_better_ramp(t_all *all, t_elem *firstinramp)
 {
 	float	temp_avg_cmds;
 	float	off_avg_cmds;
 
-	if (!off_cmd.total)
+	update_ramp_size(all, all->a.ramp.first_nbr->prev, firstinramp, &all->a.ramp.init_cmds.ramp_size);
+	if (!all->a.ramp.best_cmds.total)
 		return (1);
-	temp_avg_cmds = temp_cmd.total/temp_cmd.pb;
-	off_avg_cmds = off_cmd.total/off_cmd.pb;
-	if (temp_avg_cmds < off_avg_cmds)
+	if (all->a.ramp.init_cmds.ramp_size == 0) 
+		temp_avg_cmds = all->a.ramp.init_cmds.total;
+	else
+		temp_avg_cmds = all->a.ramp.init_cmds.total 
+						* (all->a.ramp.init_cmds.pb/all->a.ramp.init_cmds.ramp_size);
+	off_avg_cmds = all->a.ramp.best_cmds.total 
+					* (all->a.ramp.best_cmds.pb/all->a.ramp.best_cmds.ramp_size);
+	if (all->a.ramp.init_cmds.total < all->a.ramp.best_cmds.total)
 		return (1);
 	else
 		return (0);
+}
+
+void	update_ramp_size(t_all	*all, t_elem *fst_rmp,  t_elem *sec_rmp, int	*size)
+{
+	*size = 0;
+	while (is_smaller_than(fst_rmp->prev, fst_rmp, all->a.lims.min, all->a.lims.max))
+	{
+		fst_rmp = fst_rmp->prev;
+		(*size)++;
+	}
+	while (is_smaller_than(sec_rmp, fst_rmp, all->a.lims.min, all->a.lims.max))
+	{
+		iterate_stack(&sec_rmp, all->a.head);
+		(*size)++;
+	}
 }
 
 /* 
@@ -43,7 +68,10 @@ int	is_better_ramp(t_cmds temp_cmd, t_cmds off_cmd)
 int	stop_pred_ramps(t_all *all, t_elem *firstinramp)
 {
 	(void)firstinramp;
-	if (is_smaller_than(all->a.ramp.first_nbr->prev, all->a.ramp.first_nbr, all->a.lims.min, all->a.lims.max))
+	t_elem	*next_el;
+
+	next_el = next_elem(all->a.ramp.first_nbr, all->a.head);
+	if (is_bigger_than(all->a.ramp.first_nbr, next_el, all->a.lims.min, all->a.lims.max))
 		return (1);
 	return (0);
 }

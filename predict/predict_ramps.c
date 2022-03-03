@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:02:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/02 02:03:16 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/03 02:53:37 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	pred_ramp_rots(t_all *pred, t_all *all,
 		}
 		else
 			pred_other_rots(pred, all, &all->a.ramp.init_cmds);
-		if (all->a.ramp.init_cmds.total > all->a.ramp.best_cmds.total)
+		if (all->a.ramp.best_cmds.total && all->a.ramp.init_cmds.total > all->a.ramp.best_cmds.total)
 			return ;
 		pred_lims_update(all->a.ramp.first_nbr, pred->b.head, all, pred);
 		iterate_stack(&pred->a.head, all->a.head);
