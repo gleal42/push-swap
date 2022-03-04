@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/03 02:13:22 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/03 19:01:46 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,6 @@ int		is_temp_better(t_all *all);
 int		stop_pred_ramps(t_all *all, t_elem *firstinramp);
 
 void	update_ramp_size(t_all	*all, t_elem *fst_rmp,  t_elem *sec_rmp, int *size);
+float	pred_formula(t_cmds cmds, t_elem *firstinramp);
 
 #endif

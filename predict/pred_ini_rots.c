@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 21:08:02 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/01 20:34:12 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/03 23:15:06 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	predict_all_ini_rbs(t_all *all, t_all *pred, t_cmds *rot_pred)
 	while (pred->b.forw->pos != pred->a.head->pos)
 	{
 		add_rbs_find_next(all, pred, &pred->b.fwd.next);
-		if (pred_enough_rots_fwd(pred, pred->b.fwd.cur, pred->b.fwd.next))
+		if (pred_enough_rots_fwd(pred, pred->b.fwd.cur, pred->b.fwd.next, NULL))
 			pred->b.forw = pred->a.head;
 		else
 		{

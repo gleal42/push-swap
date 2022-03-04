@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 21:05:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/01 20:53:01 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/03 23:14:22 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,15 @@ void	predict_all_ini_rrbs(t_all *all, t_all *pred, t_cmds *rot_pred);
 
 void	add_rbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred);
 void	add_rbs_find_next(t_all *all, t_all *pred, t_elem **next_fwd);
-int		pred_enough_rots_fwd(t_all *pred, t_elem *cur_fwd, t_elem *next_fwd);
-void	update_pred_b_fwd(t_all *pred, t_elem *cur_fwd,
-			t_elem *next_fwd, t_elem *target);
+int		pred_enough_rots_fwd(t_all *pred, t_elem *cur_fwd, t_elem *next_fwd, t_elem *target);
+void	update_pred_b_fwd(t_all *pred, t_elem *target);
 
 // pred_rots_bwd.c
 
 void	add_rrbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred);
 int		pred_enough_rots_bwd(t_all *pred, t_elem *prev_fwd, t_elem *cur_fwd);
 void	add_rrbs_find_prev(t_all *all, t_all *pred, t_elem **prev_bwd);
-void	update_pred_b_bwd(t_all *pred, t_elem *prev_bwd,
-			t_elem *cur_bwd, t_elem *target);
+void	update_pred_b_bwd(t_all *pred, t_elem *target);
 
 // predict_limits.c
 
