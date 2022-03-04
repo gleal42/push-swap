@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/03 19:01:46 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 01:16:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ void	adj_lims_ori_push(t_stack *origin, t_stack *other);
 
 // sort_a_b_utils.c
 
-void	analyze_fwd(t_all **all);
-void	analyze_bwd(t_all **all);
+void	analyze_fwd(t_all **all, int n);
+void	analyze_bwd(t_all **all, int n);
 
 // sort_a_b.c
 
-void	merge_ramp_spot(t_all *all, t_elem *firstinramp);
+void	merge_ramp_spot(t_all *all, int n, t_elem *firstinramp);
 void	place_in_b_rots(t_elem *b, t_all *all, t_elem *tobemoved, t_cmds *cmds);
 void	swap_a(t_all *all, t_elem *a);
 
@@ -61,7 +61,7 @@ void	init_find_closest_b_spot(t_all *temp);
 void	ft_sort_stacks(t_all *all, int n);
 int		simple_rotate_algorithm(t_all *all, int n);
 void	more_complex_algorithm(t_all *all, int n);
-void	sort_a_b(t_all *all);
+void	sort_a_b(t_all *all, int n);
 void	merge_a_b(t_all **all);
 
 // sort_validations.c

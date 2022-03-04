@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:07:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/04 00:10:51 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 01:10:56 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,9 @@
 
 /*  
 * See which is best metric for every size of ramp
-*/
-
-/* 
 	if (all->a.ramp.init_cmds.total < all->a.ramp.best_cmds.total)
-	if (temp_cmd.total/temp_cmd.pb < off_cmd.total/off_cmd.pb)
 	if (temp_avg_cmds < off_avg_cmds)
- */
-
-// if (is_better_ramp(all, all->a.ramp.init_cmds, all->a.ramp.best_cmds, all->a.ramp.first_nbr, firstinramp))
+*/
 
 int	is_better_ramp(t_all *all, t_elem *firstinramp)
 {
@@ -69,19 +63,19 @@ int	stop_pred_ramps(t_all *all, t_elem *firstinramp)
 	return (0);
 }
 
-// if (all->exec_cmds.total < all->a.ini_rot.r)
-// 	return (1);
-// if (all->exec_cmds.total < all->a.ini_rot.rrev)
-// 	return (1);
+/*	if (all->exec_cmds.total < all->a.ini_rot.r)
+		return (1);
+	if (all->exec_cmds.total < all->a.ini_rot.rrev)
+		return (1);*/
 
 int	have_analyzed_enough(t_all *all)
 {
 	if (all->exec_cmds.total)
 	{
-	if (all->exec_cmds.total < all->a.ini_rot.r)
-		return (1);
-	if (all->exec_cmds.total < all->a.ini_rot.rrev)
-		return (1);
+		if (all->exec_cmds.total < all->a.ini_rot.r)
+			return (1);
+		if (all->exec_cmds.total < all->a.ini_rot.rrev)
+			return (1);
 		if (all_number_checked(all))
 			return (1);
 	}
@@ -148,5 +142,5 @@ int	is_temp_better(t_all *all)
 float	pred_formula(t_cmds cmds, t_elem *firstinramp)
 {
 	(void)firstinramp;
-	return cmds.total/cmds.pb;
+	return cmds.total;
 }
