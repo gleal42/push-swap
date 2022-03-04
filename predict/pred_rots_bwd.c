@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 16:11:43 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/03 23:38:13 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 16:12:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	add_rrbs_find_prev(t_all *all, t_all *pred, t_elem **prev_bwd)
 		if (is_bigger_than(sent_stack, pred->b.rev,
 				pred->b.lims.min, pred->b.lims.max)
 			&& (*prev_bwd == NULL || is_smaller_than(sent_stack, *prev_bwd,
-				pred->b.lims.min, pred->b.lims.max)))
+					pred->b.lims.min, pred->b.lims.max)))
 		{
 			*prev_bwd = sent_stack;
 			sent_stack = all->a.ramp.first_nbr;
@@ -73,16 +73,19 @@ void	add_rrbs_find_prev(t_all *all, t_all *pred, t_elem **prev_bwd)
 void	update_pred_b_bwd(t_all *pred, t_elem *target)
 {
 	if (!pred->b.bwd.prev
-		|| is_inbetween_bigger(pred->b.bwd.prev, target, pred->b.bwd.cur, pred->b.lims))
+		|| is_inbetween_bigger(pred->b.bwd.prev, target,
+			pred->b.bwd.cur, pred->b.lims))
 	{
-		if (is_inbetween_bigger(target, pred->a.head, pred->b.bwd.cur, pred->b.lims))
+		if (is_inbetween_bigger(target, pred->a.head,
+				pred->b.bwd.cur, pred->b.lims))
 			pred->b.rev = pred->a.head;
 		else
 			pred->b.rev = target;
 	}	
 	else
 	{
-		if (is_inbetween_bigger(pred->b.bwd.prev, pred->a.head, pred->b.bwd.cur, pred->b.lims))
+		if (is_inbetween_bigger(pred->b.bwd.prev, pred->a.head,
+				pred->b.bwd.cur, pred->b.lims))
 			pred->b.rev = pred->a.head;
 		else
 			pred->b.rev = target;

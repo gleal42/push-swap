@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/04 01:16:09 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 16:36:32 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ramp_start_before(t_cmds *cmds);
 
 // cmds_utils2.c
 
-void	update_exec_cmds(t_all **all);
+void	update_exec_cmds(t_all **all, int n);
 
 // limits.c
 
@@ -77,13 +77,13 @@ int		is_stack_sorted(t_elem **a, int n);
 
 // sort_parameters.c
 
-int		is_better_ramp(t_all *all, t_elem *firstinramp);
+int		is_better_ramp(t_all *all, t_elem *firstinramp, int n);
 int		have_analyzed_enough(t_all *all);
 int		all_number_checked(t_all *all);
-int		is_temp_better(t_all *all);
+int		is_temp_better(t_all *all, int n);
 int		stop_pred_ramps(t_all *all, t_elem *firstinramp);
-
-void	update_ramp_size(t_all	*all, t_elem *fst_rmp,  t_elem *sec_rmp, int *size);
-float	pred_formula(t_cmds cmds, t_elem *firstinramp);
+void	update_ramp_size(t_all	*all, t_elem *fst_rmp,
+			t_elem *sec_rmp, int *size);
+float	pred_formula(t_cmds cmds, t_elem *firstinramp, int n);
 
 #endif

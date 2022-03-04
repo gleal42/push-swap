@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 19:55:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/03 23:36:27 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 16:11:40 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	add_rbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred)
 		&& pred->b.forw->pos != (*target)->pos)
 	{
 		add_rbs_find_next(all, pred, &pred->b.fwd.next);
-		if (pred_enough_rots_fwd(pred, pred->b.fwd.cur, pred->b.fwd.next, *target))
+		if (pred_enough_rots_fwd(pred, pred->b.fwd.cur,
+				pred->b.fwd.next, *target))
 			update_pred_b_fwd(pred, *target);
 		else
 		{
@@ -57,7 +58,8 @@ void	add_rbs_find_next(t_all *all, t_all *pred, t_elem **next_fwd)
 	}
 }
 
-int	pred_enough_rots_fwd(t_all *pred, t_elem *cur_fwd, t_elem *next_fwd, t_elem *target)
+int	pred_enough_rots_fwd(t_all *pred, t_elem *cur_fwd,
+	t_elem *next_fwd, t_elem *target)
 {
 	if (!next_fwd)
 		return (1);
@@ -73,16 +75,19 @@ int	pred_enough_rots_fwd(t_all *pred, t_elem *cur_fwd, t_elem *next_fwd, t_elem 
 void	update_pred_b_fwd(t_all *pred, t_elem *target)
 {
 	if (!pred->b.fwd.next
-		|| is_inbetween_bigger(pred->b.fwd.cur, target, pred->b.fwd.next, pred->b.lims))
+		|| is_inbetween_bigger(pred->b.fwd.cur, target,
+			pred->b.fwd.next, pred->b.lims))
 	{
-		if (is_inbetween_bigger(pred->b.fwd.cur, pred->a.head, target, pred->b.lims))
+		if (is_inbetween_bigger(pred->b.fwd.cur, pred->a.head,
+				target, pred->b.lims))
 			pred->b.forw = pred->a.head;
 		else
 			pred->b.forw = target;
 	}
 	else
 	{
-		if (is_inbetween_bigger(pred->b.fwd.cur, pred->a.head, pred->b.fwd.next, pred->b.lims))
+		if (is_inbetween_bigger(pred->b.fwd.cur, pred->a.head,
+				pred->b.fwd.next, pred->b.lims))
 			pred->b.forw = pred->a.head;
 		else
 			pred->b.forw = target;

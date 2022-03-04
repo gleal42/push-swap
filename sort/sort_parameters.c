@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 16:07:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/04 01:10:56 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 17:27:11 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,29 @@
 	if (temp_avg_cmds < off_avg_cmds)
 */
 
-int	is_better_ramp(t_all *all, t_elem *firstinramp)
+int	is_better_ramp(t_all *all, t_elem *firstinramp, int n)
 {
 	float	temp_avg_cmds;
 	float	off_avg_cmds;
 
 	if (!all->a.ramp.best_cmds.total)
 		return (1);
-	temp_avg_cmds = pred_formula(all->a.ramp.init_cmds, firstinramp);
-	off_avg_cmds = pred_formula(all->a.ramp.best_cmds, firstinramp);
+	temp_avg_cmds = 0.8 * all->a.ramp.init_pb.total
+		+ 0.2 * pred_formula(all->a.ramp.init_cmds, firstinramp, n);
+	off_avg_cmds = 0.8 * all->a.ramp.best_pb.total
+		+ 0.2 * pred_formula(all->a.ramp.best_cmds, firstinramp, n);
 	if (temp_avg_cmds < off_avg_cmds)
 		return (1);
 	else
 		return (0);
 }
 
-void	update_ramp_size(t_all	*all, t_elem *fst_rmp,  t_elem *sec_rmp, int	*size)
+void	update_ramp_size(t_all	*all, t_elem *fst_rmp,
+		t_elem *sec_rmp, int *size)
 {
 	*size = 0;
-	while (is_smaller_than(fst_rmp->prev, fst_rmp, all->a.lims.min, all->a.lims.max))
+	while (is_smaller_than(fst_rmp->prev, fst_rmp,
+			all->a.lims.min, all->a.lims.max))
 	{
 		fst_rmp = fst_rmp->prev;
 		(*size)++;
@@ -50,15 +54,17 @@ void	update_ramp_size(t_all	*all, t_elem *fst_rmp,  t_elem *sec_rmp, int	*size)
 
 /* 
 	if ((all->a.ramp.first_nbr->prev)->pos == firstinramp->pos)
-	if (is_smaller_than(all->a.ramp.first_nbr->prev, all->a.ramp.first_nbr, all->a.lims.min, all->a.lims.max))
+	if (is_smaller_than(all->a.ramp.first_nbr->prev,
+	all->a.ramp.first_nbr, all->a.lims.min, all->a.lims.max))
 */
 int	stop_pred_ramps(t_all *all, t_elem *firstinramp)
 {
-	(void)firstinramp;
 	t_elem	*next_el;
 
+	(void)firstinramp;
 	next_el = next_elem(all->a.ramp.first_nbr, all->a.head);
-	if (is_bigger_than(all->a.ramp.first_nbr, next_el, all->a.lims.min, all->a.lims.max))
+	if (is_bigger_than(all->a.ramp.first_nbr, next_el,
+			all->a.lims.min, all->a.lims.max))
 		return (1);
 	return (0);
 }
@@ -90,15 +96,11 @@ int	have_analyzed_enough(t_all *all)
 	off_avg_cmds = pred_formula(all->ramp_cmds, NULL);
 */
 
-int	is_temp_better(t_all *all)
+int	is_temp_better(t_all *all, int n)
 {
-	float	temp_avg_cmds;
-	float	off_avg_cmds;
-
+	(void)n;
 	if (!all->exec_cmds.total)
 		return (1);
-	temp_avg_cmds = pred_formula(all->a.ramp.best_cmds, NULL);
-	off_avg_cmds = pred_formula(all->ramp_cmds, NULL);
 	if (all->pred_cmds.type == SWAP_BWD || all->pred_cmds.type == SWAP_FWD)
 	{
 		if (all->exec_cmds.type == PUSH_B_BWD
@@ -132,15 +134,14 @@ int	is_temp_better(t_all *all)
 						* (all->a.ramp.init_cmds.pb/all->a.ramp.init_cmds.ramp_size);
 	off_avg_cmds = all->a.ramp.best_cmds.total 
 					* (all->a.ramp.best_cmds.pb/all->a.ramp.best_cmds.ramp_size);
-	update_ramp_size(all, all->a.ramp.first_nbr->prev, firstinramp, &all->a.ramp.init_cmds.ramp_size);
+	update_ramp_size(all, all->a.ramp.first_nbr->prev,
+	firstinramp, &all->a.ramp.init_cmds.ramp_size);
 
+	if (n <= 100)
+		return (cmds.total);
+	else
+		return (1 + ((cmds.total - cmds.pb)/cmds.pb));
 
 	return cmds.total + (cmds.pb * -1);
 	return cmds.total;
 */
-
-float	pred_formula(t_cmds cmds, t_elem *firstinramp)
-{
-	(void)firstinramp;
-	return cmds.total;
-}
