@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 19:55:07 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/01 23:22:24 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/03 20:09:18 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	pred_all_inirotsb(t_all *all, t_all *pred, t_cmds *rot_pred)
 	init_stacks_iteration(&pred->b, pred->a.head->prev);
 	if (pred->a.head->prev->pos == all->a.ramp.first_nbr->pos)
 	{
-		if (pred->a.head->pos > pred->a.head->prev->pos)
+		if (pred->a.head->pos < pred->a.head->prev->pos)
 			rot_pred->rb++;
 		return ;
 	}

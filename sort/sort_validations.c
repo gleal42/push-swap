@@ -6,29 +6,11 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 18:54:02 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/18 17:01:56 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 17:27:39 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
-
-int	is_cmd_table_clean(t_cmds cmds)
-{
-	if (cmds.sa <= 0
-		&& cmds.sb <= 0
-		&& cmds.ss <= 0
-		&& cmds.ra <= 0
-		&& cmds.rb <= 0
-		&& cmds.rr <= 0
-		&& cmds.pa <= 0
-		&& cmds.pb <= 0
-		&& cmds.rra <= 0
-		&& cmds.rrr <= 0
-		&& cmds.rrb <= 0)
-		return (1);
-	else
-		return (0);
-}
 
 /*
 ** Checks if both numbers are good for swapping
@@ -113,4 +95,15 @@ int	is_stack_sorted(t_elem **a, int n)
 		return (0);
 	else
 		return (1);
+}
+
+int	all_number_checked(t_all *all)
+{
+	if (!all->a.forw)
+		return (1);
+	if (all->a.forw->pos == all->a.rev->pos)
+		return (1);
+	if (all->a.forw->prev->pos == all->a.rev->pos)
+		return (1);
+	return (0);
 }

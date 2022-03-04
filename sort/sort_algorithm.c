@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:45:17 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/02 02:09:32 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 01:14:47 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,18 @@ void	more_complex_algorithm(t_all *all, int n)
 	t_all	temp;
 
 	init_all(&temp, all, n);
-	sort_a_b(all);
+	sort_a_b(all, n);
 	merge_a_b(&all);
 	if (!simple_rotate_algorithm(all, n))
 		return ;
 }
 
-void	sort_a_b(t_all *all)
+void	sort_a_b(t_all *all, int n)
 {
 	while (all->a.forw)
 	{
-		analyze_fwd(&all);
-		analyze_bwd(&all);
+		analyze_fwd(&all, n);
+		analyze_bwd(&all, n);
 		if (have_analyzed_enough(all))
 		{
 			execute_moves(&all->exec_cmds, &all->a, &all->b);

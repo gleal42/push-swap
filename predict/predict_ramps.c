@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:02:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/02 02:03:16 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 17:23:15 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,26 @@ first prediction pode ser com aquele predictmoves
 
 /* 2nd while line 20 maybe cur_a->next is not
 the best here (for the cases where there is no next) */
+
+void	pred_rot_b_analysis(t_all *all, t_elem *firstinramp, int n)
+{
+	while (1)
+	{
+		pred_ramp_moves(all, firstinramp);
+		if (is_better_ramp(all, firstinramp, n))
+		{
+			all->a.ramp.best_cmds = all->a.ramp.init_cmds;
+			all->a.ramp.off_nbr = all->a.ramp.first_nbr;
+			all->a.ramp.best_pb = all->a.ramp.init_pb;
+		}
+		if (stop_pred_ramps(all, all->a.ramp.first_nbr))
+			break ;
+		ramp_start_before(&all->pred_cmds);
+		all->a.ramp.init_cmds = all->pred_cmds;
+		all->a.ramp.first_nbr = all->a.ramp.first_nbr->prev;
+	}
+	all->pred_cmds = all->a.ramp.best_pb;
+}
 
 int	pred_ramp_moves(t_all *all, t_elem *fst)
 {
@@ -61,6 +81,7 @@ void	pred_ramp_rots(t_all *pred, t_all *all,
 		{
 			place_in_b_rots(all->b.head, pred, pred->a.head,
 				&all->a.ramp.init_cmds);
+			all->a.ramp.init_pb = all->a.ramp.init_cmds;
 			if (all->a.ramp.init_cmds.rb || all->a.ramp.init_cmds.rr)
 				pred->b.head = pred->b.forw;
 			else if (all->a.ramp.init_cmds.rrb || all->a.ramp.init_cmds.rrr)
@@ -69,7 +90,8 @@ void	pred_ramp_rots(t_all *pred, t_all *all,
 		}
 		else
 			pred_other_rots(pred, all, &all->a.ramp.init_cmds);
-		if (all->a.ramp.init_cmds.total > all->a.ramp.best_cmds.total)
+		if (all->a.ramp.best_cmds.total
+			&& all->a.ramp.init_cmds.total > all->a.ramp.best_cmds.total)
 			return ;
 		pred_lims_update(all->a.ramp.first_nbr, pred->b.head, all, pred);
 		iterate_stack(&pred->a.head, all->a.head);
