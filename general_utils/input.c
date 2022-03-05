@@ -6,11 +6,37 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:16:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/05 16:50:03 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/05 17:47:13 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "general_utils.h"
+
+void	add_positions(t_elem	**a, int n)
+{
+	t_elem		*first;
+	t_elem		*next_min;
+	int			i;
+
+	i = 1;
+	first = (*a);
+	while (i <= n)
+	{
+		*a = first;
+		next_min = 0;
+		while (*a)
+		{
+			if (! (*a)->pos
+				&& (next_min == 0 || ((*a)->nbr < next_min->nbr)))
+				next_min = *a;
+			*a = (*a)->next;
+		}
+		*a = next_min;
+		(*a)->pos = i;
+		i++;
+	}
+	*a = first;
+}
 
 int	count_moves(t_cmds *cmds)
 {

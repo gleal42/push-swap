@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 20:53:53 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/04 19:03:23 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/05 17:47:44 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 int		count_moves(t_cmds *cmds);
 int		is_input_integer(char **stack_a_args);
 int		nbr_strs(char **strs);
+void	add_positions(t_elem **a, int n);
 
 // init_utils.c
 

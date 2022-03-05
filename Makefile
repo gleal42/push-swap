@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC := gcc
-FLAGS := -Wall -Wextra -Werror -g 
+FLAGS := -Wall -Wextra -Werror
 LIBRARIES := -Llibft -lft
 INCLUDE_DIRS := libft \
 				operations \
@@ -64,6 +64,8 @@ SRCS := push_swap.c \
 OBJS := $(SRCS:.c=.o)
 NAME_BONUS := checker
 SRCS_BONUS := checker_bonus.c \
+		checker_bonus/checker_utils_bonus.c \
+		checker_bonus/checker_utils2_bonus.c \
 		stacks/other_stacks_utils.c \
 		stacks/prepare_stacks.c \
 		stacks/stackadd_back.c \

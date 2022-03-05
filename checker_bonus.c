@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 19:26:04 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/05 17:01:31 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/05 17:56:46 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	check(t_all *all, int n)
 		if (!is_cmd(str))
 		{
 			write(2, "Error\n", 6);
-			ft_lstclear(&cmd_head, &delete_string);
+			free_checker_memory(&str, &cmd_head);
 			return ;
 		}
 		if (cmd_head == NULL)

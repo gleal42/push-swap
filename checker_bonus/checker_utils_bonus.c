@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/05 16:33:56 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/05 17:02:50 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/05 17:56:52 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,11 @@ void	checker_exec_move(t_all *all, char *str)
 		stack_swap(&all->b.head);
 	else if (!ft_strncmp(str, "ss", ft_strlen("ss")))
 		swap_both_stacks(&all->a.head, &all->b.head);
+}
+
+void	free_checker_memory(char **str, t_list **cmd_head)
+{
+	free(*str);
+	*str = NULL;
+	ft_lstclear(cmd_head, &delete_string);
 }

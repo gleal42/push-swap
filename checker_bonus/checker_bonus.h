@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 19:55:06 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/05 16:34:47 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/05 17:57:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,7 @@ void	checker_exec_move(t_all *all, char *str);
 void	rot_back_both_stacks(t_elem **a, t_elem **b);
 void	rot_fwd_both_stacks(t_elem **a, t_elem **b);
 void	swap_both_stacks(t_elem **a, t_elem **b);
+void	init_check_vars(t_list **cmd_head, t_list **cmd_other, char **str);
+void	free_checker_memory(char **str, t_list **cmd_head);
 
 #endif

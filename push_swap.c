@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:54:15 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/05 16:42:50 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/05 17:46:32 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,30 +45,4 @@ void	push_swap(char **stack_a_args)
 	stack_clear(&(all.a.head), delete_stack);
 	stack_clear(&(all.b.head), delete_stack);
 	exit(EXIT_SUCCESS);
-}
-
-void	add_positions(t_elem	**a, int n)
-{
-	t_elem		*first;
-	t_elem		*next_min;
-	int			i;
-
-	i = 1;
-	first = (*a);
-	while (i <= n)
-	{
-		*a = first;
-		next_min = 0;
-		while (*a)
-		{
-			if (! (*a)->pos
-				&& (next_min == 0 || ((*a)->nbr < next_min->nbr)))
-				next_min = *a;
-			*a = (*a)->next;
-		}
-		*a = next_min;
-		(*a)->pos = i;
-		i++;
-	}
-	*a = first;
 }
