@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:49:21 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/03 19:26:22 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 19:27:43 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ typedef struct s_cmds
 	int				rrr;
 	int				total;
 	int				type;
-	int				ramp_size;
 }				t_cmds;
 
 typedef struct s_elem
@@ -51,27 +50,6 @@ typedef struct s_elem
 	struct s_elem	*next;
 }				t_elem;
 
-typedef struct s_ramp
-{
-	t_cmds		init_cmds;
-	t_cmds		best_cmds;
-	t_cmds		init_pb;
-	t_cmds		best_pb;
-	t_elem		*first_nbr;
-	t_elem		*sent;
-	t_elem		*off_nbr;
-	t_elem		*prev_nbr;
-}				t_ramp;
-
-typedef struct s_pred_rots
-{
-	t_elem	*prev;
-	t_elem	*cur;
-	t_elem	*next;
-	t_elem	*off;
-	t_elem	*target;
-}				t_pred_rots;
-
 typedef struct s_stack
 {
 	t_elem		*head;
@@ -80,9 +58,6 @@ typedef struct s_stack
 	t_rot		ini_rot;
 	t_rot		near_rot;
 	t_lims		lims;
-	t_ramp		ramp;
-	t_pred_rots	fwd;
-	t_pred_rots	bwd;
 }				t_stack;
 
 typedef struct s_all
@@ -91,7 +66,6 @@ typedef struct s_all
 	t_stack			b;
 	t_cmds			pred_cmds;
 	t_cmds			exec_cmds;
-	t_cmds			ramp_cmds;
 }					t_all;
 
 enum	e_moves

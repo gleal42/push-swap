@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:16:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/01 23:45:28 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 19:03:11 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,26 +48,6 @@ int	is_input_integer(char **stack_a_args)
 		i++;
 	}
 	return (1);
-}
-
-int	biggest_str_len(char **strs)
-{
-	int	i;
-	int	len;
-	int	temp;
-
-	i = 0;
-	len = 0;
-	if (!strs)
-		return (0);
-	while (strs[i])
-	{
-		temp = ft_strlen(strs[i]);
-		if (temp > len)
-			len = temp;
-		i++;
-	}
-	return (len);
 }
 
 int	nbr_strs(char **strs)

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/23 22:48:22 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/23 23:06:43 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 19:06:56 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,25 +38,22 @@ void	set_lims_other_push(t_stack *ori, t_stack *other)
 	}
 }
 
-void	set_both_lims_as(t_lims *lims, int value)
+void	pred_lims_check_end(int *has_lim, t_lims *lims, t_stack *end)
 {
-	lims->min = value;
-	lims->max = value;
-}
+	int	found;
 
-void	adj_lims_ori_push(t_stack *origin, t_stack *other)
-{
-	int		has_lim;
-	t_stack	temp;
-
-	temp = *other;
-	has_lim = 1;
-	while (has_lim)
+	init_stacks_iteration(end, end->head);
+	while (end->forw)
 	{
-		has_lim = 0;
-		if (temp.head
-			&& (temp.lims.max >= origin->lims.max
-				|| temp.lims.min <= origin->lims.min))
-			pred_lims_check_end(&has_lim, &origin->lims, &temp);
+		found = 0;
+		found += did_find_limit(end->forw, lims);
+		found += did_find_limit(end->rev, lims);
+		if (found)
+		{
+			init_stacks_iteration(end, end->head);
+			(*has_lim) = 1;
+		}
+		else
+			iterate_fwd_rev_toend(end);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 21:09:54 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/04 16:36:32 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 19:16:33 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ramp_start_before(t_cmds *cmds);
 
 // cmds_utils2.c
 
-void	update_exec_cmds(t_all **all, int n);
+void	update_exec_cmds(t_all **all);
 
 // limits.c
 
@@ -36,15 +36,22 @@ void	set_lims_ori_push(t_stack *a, t_stack *b);
 void	set_lims_other_push(t_stack *ori, t_stack *other);
 void	set_both_lims_as(t_lims *lims, int value);
 void	adj_lims_ori_push(t_stack *origin, t_stack *other);
+void	pred_lims_check_end(int *has_lim, t_lims *lims, t_stack *end);
+int		did_find_limit(t_elem *anal, t_lims *lims);
+
+// limits_utils.c
+void	set_both_lims_as(t_lims *lims, int value);
+void	adj_lims_ori_push(t_stack *origin, t_stack *other);
+int		did_find_limit(t_elem *anal, t_lims *lims);
 
 // sort_a_b_utils.c
 
-void	analyze_fwd(t_all **all, int n);
-void	analyze_bwd(t_all **all, int n);
+void	analyze_fwd(t_all **all);
+void	analyze_bwd(t_all **all);
 
 // sort_a_b.c
 
-void	merge_ramp_spot(t_all *all, int n, t_elem *firstinramp);
+void	merge_ramp_spot(t_all *all, t_elem *firstinramp);
 void	place_in_b_rots(t_elem *b, t_all *all, t_elem *tobemoved, t_cmds *cmds);
 void	swap_a(t_all *all, t_elem *a);
 
@@ -61,7 +68,7 @@ void	init_find_closest_b_spot(t_all *temp);
 void	ft_sort_stacks(t_all *all, int n);
 int		simple_rotate_algorithm(t_all *all, int n);
 void	more_complex_algorithm(t_all *all, int n);
-void	sort_a_b(t_all *all, int n);
+void	sort_a_b(t_all *all);
 void	merge_a_b(t_all **all);
 
 // sort_validations.c
@@ -77,10 +84,9 @@ int		is_stack_sorted(t_elem **a, int n);
 
 // sort_parameters.c
 
-int		is_better_ramp(t_all *all, t_elem *firstinramp, int n);
 int		have_analyzed_enough(t_all *all);
 int		all_number_checked(t_all *all);
-int		is_temp_better(t_all *all, int n);
+int		is_temp_better(t_all *all);
 int		stop_pred_ramps(t_all *all, t_elem *firstinramp);
 void	update_ramp_size(t_all	*all, t_elem *fst_rmp,
 			t_elem *sec_rmp, int *size);

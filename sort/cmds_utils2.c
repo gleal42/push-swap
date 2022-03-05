@@ -6,17 +6,14 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 02:16:07 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/04 16:33:55 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 18:43:37 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
 
-void	update_exec_cmds(t_all **all, int n)
+void	update_exec_cmds(t_all **all)
 {
-	if (is_temp_better(*all, n))
-	{
+	if (is_temp_better(*all))
 		(*all)->exec_cmds = (*all)->pred_cmds;
-		(*all)->ramp_cmds = (*all)->a.ramp.best_cmds;
-	}
 }

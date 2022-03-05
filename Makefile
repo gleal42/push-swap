@@ -12,14 +12,12 @@
 
 CC := gcc
 FLAGS := -Wall -Wextra -Werror -g 
-LIBRARIES := -Llibft -lft -Lmlc -lmlc 
+LIBRARIES := -Llibft -lft
 INCLUDE_DIRS := libft \
-				mlc \
 				operations \
 				stacks \
 				sort \
 				execute \
-				predict \
 				general_utils \
 				includes \
 				.
@@ -28,7 +26,6 @@ NAME := push_swap
 SRCS := push_swap.c \
 		stacks/iterate_stacks_utils.c \
 		stacks/prepare_stacks.c \
-		stacks/print_stacks.c \
 		stacks/stack_last.c \
 		stacks/stack_push.c \
 		stacks/stack_rotate_backward.c \
@@ -53,14 +50,9 @@ SRCS := push_swap.c \
 		sort/sort_a_b.c \
 		sort/merge_a_b.c \
 		sort/limits.c \
+		sort/limits_utils.c \
 		sort/sort_validations.c \
 		sort/sort_parameters.c \
-		predict/predict_limits.c \
-		predict/predict_ramps.c \
-		predict/pred_ini_rots.c \
-		predict/pred_other_rots.c \
-		predict/pred_rots_fwd.c \
-		predict/pred_rots_bwd.c \
 		general_utils/good_push_validation.c \
 		general_utils/input.c \
 		general_utils/init_utils.c \
@@ -68,31 +60,42 @@ SRCS := push_swap.c \
 		execute/execute_moves.c \
 		execute/execute_moves2.c \
 		execute/execute_utils.c
-
 OBJS := $(SRCS:.c=.o)
+NAME_BONUS := checker
+SRCS_BONUS := checker_bonus.c \
+		stacks/other_stacks_utils.c \
+		stacks/prepare_stacks.c \
+		stacks/stackadd_back.c \
+		stacks/stacks_clear.c \
+		stacks/stackdelone.c \
+		stacks/stacknew.c \
+		general_utils/input.c
+OBJS_BONUS := $(SRCS_BONUS:.c=.o)
 
 all: libft $(NAME) 
+
+bonus: libft $(NAME_BONUS)
 
 libft:
 	make -C libft/
 
-mlc:
-	make -C mlc/
-
 %.o : %.c
 	$(CC) $(FLAGS) -c $^ -o $@ $(INCLUDES)
+
+$(NAME_BONUS) : $(OBJS_BONUS)
+	$(CC) $(FLAGS) $^ $(LIBRARIES) -o $@ $(INCLUDES)
 
 $(NAME) : $(OBJS) 
 	$(CC) $(FLAGS) $^ $(LIBRARIES) -o $@ $(INCLUDES)
 
 clean:
-	rm -f $(OBJS)
+	rm -f $(OBJS) $(OBJS_BONUS)
 	$(MAKE) -C libft/ clean
 
 fclean: clean
-		rm -f $(NAME)
+		rm -f $(NAME) $(NAME_BONUS)
 	$(MAKE) -C libft/ fclean
 
 re: fclean all
 
-.PHONY: libft minilibx all bonus clean fclean re
+.PHONY: libft all bonus clean fclean re

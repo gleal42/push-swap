@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 15:48:55 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/01 23:44:46 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 19:14:02 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ void	execute_pb_backward(t_cmds *cmds, t_stack *a, t_stack *b)
 	while (cmds->rrr-- > 0)
 		op_rrr(&a->head, &b->head);
 	while (cmds->rra-- > 0)
-		op_rra(&a->head, &b->head);
+		op_rra(&a->head);
 	while (cmds->rb-- > 0)
-		op_rb(&a->head, &b->head);
+		op_rb(&b->head);
 	while (cmds->rrb-- > 0)
-		op_rrb(&a->head, &b->head);
+		op_rrb(&b->head);
 	if (cmds->pb-- > 0)
 	{
 		set_lims_ori_push(a, b);
@@ -47,11 +47,11 @@ void	execute_pb_forward(t_cmds *cmds, t_stack *a, t_stack *b)
 	while (cmds->rr-- > 0)
 		op_rr(&a->head, &b->head);
 	while (cmds->ra-- > 0)
-		op_ra(&a->head, &b->head);
+		op_ra(&a->head);
 	while (cmds->rb-- > 0)
-		op_rb(&a->head, &b->head);
+		op_rb(&b->head);
 	while (cmds->rrb-- > 0)
-		op_rrb(&a->head, &b->head);
+		op_rrb(&b->head);
 	if (cmds->pb-- > 0)
 	{
 		set_lims_ori_push(a, b);
@@ -64,12 +64,12 @@ void	execute_swap_forward(t_cmds *cmds, t_elem **a, t_elem **b)
 {
 	while (cmds->ra)
 	{
-		op_ra(a, b);
+		op_ra(a);
 		cmds->ra--;
 	}
 	while (cmds->sa)
 	{
-		op_sa(a, b);
+		op_sa(a);
 		cmds->sa--;
 	}
 	while (cmds->ss)
@@ -83,12 +83,12 @@ void	execute_swap_backward(t_cmds *cmds, t_elem **a, t_elem **b)
 {
 	while (cmds->rra)
 	{
-		op_rra(a, b);
+		op_rra(a);
 		cmds->rra--;
 	}
 	while (cmds->sa)
 	{
-		op_sa(a, b);
+		op_sa(a);
 		cmds->sa--;
 	}
 	while (cmds->ss)

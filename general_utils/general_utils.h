@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 20:53:53 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/03 00:47:43 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 19:03:23 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 
 int		count_moves(t_cmds *cmds);
 int		is_input_integer(char **stack_a_args);
-int		biggest_str_len(char **strs);
 int		nbr_strs(char **strs);
 
 // init_utils.c
@@ -42,7 +41,5 @@ int		is_inbetween_bigger(t_elem *fst, t_elem *sec,
 // other_cmds_utils.c
 
 void	add_update_cmd(int *toupdate, t_cmds *cmds, int value);
-void	subt_update_cmd(int *toupdate, t_cmds *cmds, int value);
-t_elem	*next_elem(t_elem *elem, t_elem *head);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/04 17:19:02 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 19:40:01 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
 
-void	analyze_fwd(t_all **all, int n)
+void	analyze_fwd(t_all **all)
 {
 	if (is_smaller_than((*all)->a.forw, ((*all)->a.forw)->next,
 			(*all)->a.lims.min, (*all)->a.lims.max))
@@ -31,14 +31,14 @@ void	analyze_fwd(t_all **all, int n)
 		{
 			(*all)->a.ini_rot.r++;
 			(*all)->pred_cmds.ra = (*all)->a.ini_rot.r;
-			merge_ramp_spot(*all, n, (*all)->a.forw->next);
+			merge_ramp_spot(*all, (*all)->a.forw->next);
 		}
-		update_exec_cmds(all, n);
+		update_exec_cmds(all);
 	}
 	(*all)->a.forw = (*all)->a.forw->next;
 }
 
-void	analyze_bwd(t_all **all, int n)
+void	analyze_bwd(t_all **all)
 {
 	if (is_bigger_than((*all)->a.rev, (*all)->a.rev->prev,
 			(*all)->a.lims.min, (*all)->a.lims.max))
@@ -56,42 +56,20 @@ void	analyze_bwd(t_all **all, int n)
 		else
 		{
 			(*all)->pred_cmds.rra = (*all)->a.ini_rot.rrev;
-			merge_ramp_spot(*all, n, (*all)->a.rev);
+			merge_ramp_spot(*all, (*all)->a.rev);
 			(*all)->a.ini_rot.rrev++;
 		}
-		update_exec_cmds(all, n);
+		update_exec_cmds(all);
 	}
 	(*all)->a.rev = (*all)->a.rev->prev;
 }
 
-void	merge_ramp_spot(t_all *all, int n, t_elem *firstinramp)
+void	merge_ramp_spot(t_all *all, t_elem *firstinramp)
 {
-	all->a.ramp.first_nbr = firstinramp;
-	all->a.ramp.init_cmds = all->pred_cmds;
-	all->a.ramp.off_nbr = firstinramp;
-	ft_bzero(&(all->a.ramp.best_cmds), sizeof(t_cmds));
-	if (1)
-	{
-		place_in_b_rots(all->b.head, all, all->a.ramp.first_nbr,
-			&all->pred_cmds);
-		add_update_cmd(&all->pred_cmds.pb, &all->pred_cmds, 1);
-	}
-	else
-		pred_rot_b_analysis(all, firstinramp, n);
+	place_in_b_rots(all->b.head, all, firstinramp,
+		&all->pred_cmds);
+	add_update_cmd(&all->pred_cmds.pb, &all->pred_cmds, 1);
 }
-
-/* 		
-	place_in_b_rots(all->b.head, all, all->a.ramp.first_nbr, &all->pred_cmds);
-	add_update_cmd(&all->pred_cmds.pb, &all->pred_cmds, 1); 
-		
-*/
-
-/*
-	quando chega ao final do loop (aquilo que aconteceu no rotate basico)
-	talvez preciso acrescentar mais uma verificacao
-	while (!all->b.near_rot.r && !all->b.near_rot.rrev && all->b.forw)
-	retirar break se deixar de funcionar
-*/
 
 void	place_in_b_rots(t_elem *b, t_all *all, t_elem *move, t_cmds *cmds)
 {

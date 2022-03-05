@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:42:41 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/26 22:33:28 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/04 19:04:17 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,5 @@ void		iterate_stack(t_elem **to_iter, t_elem *stack_head);
 
 int			is_nbr_in_stack(int nbr, t_elem *a);
 void		delete_stack(int *content);
-
-//Delete
-
-void		print_both_stacks(t_elem *a, t_elem *b);
 
 #endif
