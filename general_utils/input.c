@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 22:16:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/04 19:03:11 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/05 16:50:03 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,11 @@ int	is_input_integer(char **stack_a_args)
 	int	i;
 
 	i = 0;
-	if (!stack_a_args[0])
-		return (0);
 	while (stack_a_args[i])
 	{
 		if (!is_integer(stack_a_args[i]))
 		{
-			ft_putstr_fd("Error\n", 1);
+			ft_putstr_fd("Error\n", 2);
 			return (0);
 		}
 		i++;

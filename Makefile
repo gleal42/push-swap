@@ -20,6 +20,7 @@ INCLUDE_DIRS := libft \
 				execute \
 				general_utils \
 				includes \
+				checker_bonus \
 				.
 INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := push_swap
@@ -69,6 +70,11 @@ SRCS_BONUS := checker_bonus.c \
 		stacks/stacks_clear.c \
 		stacks/stackdelone.c \
 		stacks/stacknew.c \
+		stacks/stack_push.c \
+		stacks/stack_rotate_forward.c \
+		stacks/stack_rotate_backward.c \
+		stacks/stackadd_front.c \
+		stacks/stack_swap.c \
 		general_utils/input.c
 OBJS_BONUS := $(SRCS_BONUS:.c=.o)
 

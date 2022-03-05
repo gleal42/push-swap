@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 19:55:06 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/04 21:49:14 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/05 16:34:47 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,20 @@
 # include "stacks.h"
 # include "general_utils.h"
 
+//root
+
 void	checker(char **stack_a_args);
 void	add_positions(t_elem	**a, int n);
 void	create_cmd_list(const char **all_cmds);
-void	ft_execute_checker(t_all *all, int n);
+void	check(t_all *all, int n);
 void	validate_input_checker(t_list	*cmd_head);
 int		is_cmd(char *str);
 void	delete_string(void *str);
-void	execute_moves_checker(void);
+void	checker_exec_all_moves(t_all *all, t_list *cmd_head);
+void	sorted_checker(t_elem *a, t_elem *b, int max);
+void	checker_exec_move(t_all *all, char *str);
+void	rot_back_both_stacks(t_elem **a, t_elem **b);
+void	rot_fwd_both_stacks(t_elem **a, t_elem **b);
+void	swap_both_stacks(t_elem **a, t_elem **b);
 
 #endif
