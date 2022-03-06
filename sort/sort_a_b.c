@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/06 17:47:22 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/06 17:48:27 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 ** 			so we need to predict the push moves to join these 2 subsections
 ** 			starting in the first number of the 2nd subsection (2)
 */
-
 
 void	analyze_fwd(t_all **all, int n)
 {

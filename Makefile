@@ -12,7 +12,7 @@
 
 CC := gcc
 FLAGS := -Wall -Wextra -Werror -g 
-LIBRARIES := -Llibft -lft -Lmlc -lmlc 
+LIBRARIES := -Llibft -lft
 INCLUDE_DIRS := libft \
 				mlc \
 				operations \
