@@ -3,35 +3,22 @@ Number Stack Sorting algorithm - An approach focused on predicting and reducing 
 
 In this project we are asked to sort a stack of numbers using only a series of operations, which may or may not interact with a second stack b:
 
+![screenshot pushswap](media/simpleswap.png)
+
 #### ra we rotate the next number to the top
-| a |
-| - |
-| 1 |
-| 2 |
-| 3 |
-
-to
-
-| a |
-| - |
-| 2 |
-| 3 |
-| 1 |
+| a | a |
+| - | - |
+| 1 | 2 |
+| 2 | 3 |
+| 3 | 1 |
 
 #### rra we rotate the last number to the top
 
-| a |
-| - |
-| 1 |
-| 2 |
-| 3 |
-
-to
-| a |
-| - |
-| 3 |
-| 1 |
-| 2 |
+| a | a |
+| - | - |
+| 1 | 3 |
+| 2 | 1 |
+| 3 | 2 |
 
 rb and rrb are the same operations as above but for stack b
 
@@ -39,44 +26,28 @@ rr and rrr are the same operations as above for stack a and b at the same time
 
 pb we push the top number from a to b
 
-| a |
-| - |
-| 1 |
-| 2 |
+| a | a | b | 
+| - | - | - |
+| 1 | 2 | 1 | 
+| 2 | 3 |   |
 | 3 |
-
-to
-| a | b | 
-| - | - |
-| 2 | 1 | 
-| 3 |   |
 
 and pa we push the top number from b to a
 
-
 sa sb and ss we swap the first 2 numbers of the stack
 
-| a |
-| - |
-| 1 |
-| 2 |
-| 3 |
+| a | a |
+| - | - |
+| 1 | 2 |
+| 2 | 1 |
+| 3 | 3 |
 
-to
-
-| a |
-| - |
-| 2 |
-| 1 |
-| 3 |
-
-So after we `make` on the project root we can type `./pushswap 2 1 3` and we expect to se a single command being printed out to stdout `sa\n`
+So after we `make` on the project root we can type `./pushswap 2 1 3` and we expect to see a single command being printed out to stdout `sa\n`
 ___
 
 ### Summary
 
 1. [Strategy Summary](#1-strategy-summary)
-
 ___
 
 ### 1. Strategy Summary
