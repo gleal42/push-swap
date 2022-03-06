@@ -6,13 +6,13 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/03 00:21:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/12 21:16:39 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/06 16:04:18 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "stacks.h"
 
-void	prepare_stack_a(t_elem **a, char **stack_a_args)
+int	prepare_stack_a(t_elem **a, char **stack_a_args)
 {
 	t_elem	*next_nbr;
 	int		nbr;
@@ -26,16 +26,17 @@ void	prepare_stack_a(t_elem **a, char **stack_a_args)
 		{
 			stack_clear(a, delete_stack);
 			ft_putstr_fd("Error\n", 2);
-			exit(EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
 		next_nbr = stacknew(nbr);
 		if (!next_nbr)
 		{
 			stack_clear(a, delete_stack);
 			ft_putstr_fd("Error\n", 2);
-			exit(EXIT_FAILURE);
+			return (EXIT_FAILURE);
 		}
 		elem_add_back(a, next_nbr);
 		i++;
 	}
+	return (EXIT_SUCCESS);
 }

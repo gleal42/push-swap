@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:54:15 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/05 17:46:32 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/06 16:05:15 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ int	main(int argc, char **argv)
 ** @param:	- [char **] numbers to be sorted
 **
 ** Line-by-line comments:
-** @8	validation to see if all inputs are valid numbers
-** @10	Validates duplicate numbers
-** 		duplicate validation done inside
-** @12	Might be useful to improve algorithm (sort/parameters.c)
+** @6	validation to see if all inputs are valid numbers
+** @8	Validates duplicate numbers and starts adding them to stack
+** @10	Add final positions for each number
+** (could be useful to improve algorithm (sort/parameters.c)
+** @11	Sorting process
 */
 
 void	push_swap(char **stack_a_args)
@@ -38,11 +39,11 @@ void	push_swap(char **stack_a_args)
 	all.b.head = NULL;
 	if (!is_input_integer(stack_a_args))
 		return ;
-	prepare_stack_a(&(all.a.head), stack_a_args);
+	if (prepare_stack_a(&(all.a.head), stack_a_args))
+		return ;
 	n = nbr_strs(stack_a_args);
 	add_positions(&(all.a.head), n);
 	ft_sort_stacks(&all, n);
 	stack_clear(&(all.a.head), delete_stack);
 	stack_clear(&(all.b.head), delete_stack);
-	exit(EXIT_SUCCESS);
 }
