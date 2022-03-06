@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/10 15:47:22 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/26 21:26:09 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/06 16:10:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int		max_len;
 # include "execute.h"
 # include "general_utils.h"
 
-void				push_swap(char **stack_a_args);
-void				prepare_stack_a(t_elem **a, char **stack_a_args);
-void				add_positions(t_elem	**a, int n);
+void			push_swap(char **stack_a_args);
+int				prepare_stack_a(t_elem **a, char **stack_a_args);
+void			add_positions(t_elem	**a, int n);
 
 #endif

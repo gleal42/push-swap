@@ -6,11 +6,23 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 19:55:07 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/03 20:09:18 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/06 17:29:52 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "predict.h"
+
+
+/*
+** predicts rbs and rrbs depending on previously "pushed" numbers
+** if b is empty we need to take less things into account so i created
+** a separate function for these cases
+** we then choose the option with the least moves and add them to
+** ramp prediction
+** @param:	- [t_all *] copy of all struct for this prediction
+** 			- [t_all *] struct with all the variables
+** 			- [t_elem *] ramp moves prediction
+*/
 
 void	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd)
 {
@@ -28,6 +40,18 @@ void	pred_other_rots(t_all *pred, t_all *all, t_cmds *temp_cmd)
 	add_update_cmd(&temp_cmd->rrb, temp_cmd, rot_pred.rrb);
 }
 
+
+/*
+** predict if there are more numbers above or below the one we pushed previously
+** until we reach the one we are about to push
+** @param:	- [t_all *] copy of all struct for this prediction
+** 			- [t_all *] struct with all the variables
+** 			- [t_elem *] current number rots prediction
+** Line-by-line comments:
+** @8	predict numbers smaller than previous (rbs because b is descending)
+** @9	predict numbers higher than previous (rrbs because b is descending)
+*/
+
 void	pred_all_inirotsb(t_all *all, t_all *pred, t_cmds *rot_pred)
 {
 	init_stacks_iteration(&pred->b, pred->a.head->prev);
@@ -41,7 +65,19 @@ void	pred_all_inirotsb(t_all *all, t_all *pred, t_cmds *rot_pred)
 	predict_all_ini_rrbs(all, pred, rot_pred);
 }
 
-//ver porque est]a mal o pred->b.head em vez do pred.a.head
+
+/*
+** more complex function in my program
+** I create targets so that I can decide if the rb will lead
+** to a previously pushed number or a number that was already in stack b
+** before
+** in add rbs and add rrbs we predict all the moves that will take to
+** place number in correct place in b
+** @param:	- [t_all *] copy of all struct for this prediction
+** 			- [t_all *] struct with all the variables
+** 			- [t_elem *] current number rots prediction
+*/
+
 
 void	pred_rots_multi_b(t_all *pred, t_all *all, t_cmds *rot_pred)
 {

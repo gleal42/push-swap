@@ -6,11 +6,32 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 16:11:43 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/04 16:12:00 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/06 17:42:33 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "predict.h"
+
+/*
+** predicts all rrbs that can be added between the previously pushed number and
+** either the number we will push now or the previous b (target)
+** if we pushed 40 and the previous number in b is 35:
+** if we will now push 37 then we will rotate to 37
+** but if we will now push 32 then we will rotate to 35 so
+** that we can rotate again in the next add_rrbs to 32
+** @param:	- [t_all *] copy of all struct for this prediction
+** 			- [t_all *] struct with all the variables
+** 			- [t_elem **] previous non-predicted b
+** 			- [t_cmds *] current number rots prediction
+** Line-by-line comments:
+** @6	find next smaller number
+** (smaller than current number but the next one so the 
+** biggest of the smallest if that makes sense)
+** so if we have pushed 2 3 4 if we are in 4 the next is 3 and not 2
+** @7	we have reached either a target or the number we will push
+** @8	we add a rb for previously pushed numbers and reset the analysis
+**		for the next number
+*/
 
 void	add_rrbs(t_all *all, t_all *pred, t_elem **target, t_cmds *rot_pred)
 {

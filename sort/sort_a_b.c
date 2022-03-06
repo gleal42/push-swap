@@ -6,11 +6,23 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/11 19:46:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/04 17:19:02 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/06 17:47:22 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "sort.h"
+
+/*
+** Iterate if it is ascending and prepare moves if it is not ascending
+** @param:	- [t_all *] struct with all the variables
+** 			- [int] Number of numbers to sort (e.g. 100 numbers)
+** Line-by-line comments:
+** @10-12	1 2 4 3 5 on 4 we would find that the next is descending and good for swap
+** @16-18	1 3 6 2 4 7 on 6 we would find that the next is descending
+** 			so we need to predict the push moves to join these 2 subsections
+** 			starting in the first number of the 2nd subsection (2)
+*/
+
 
 void	analyze_fwd(t_all **all, int n)
 {
@@ -38,6 +50,20 @@ void	analyze_fwd(t_all **all, int n)
 	(*all)->a.forw = (*all)->a.forw->next;
 }
 
+/*
+** Iterate if it is ascending and prepare moves if it is not ascending
+** @param:	- [t_all *] struct with all the variables
+** 			- [int] Number of numbers to sort (e.g. 100 numbers)
+** Line-by-line comments:
+** @10-12	1 2 4 3 5 on 3 we would find that the previous is descending and good for swap
+** 			we need to rotate one extra before so that we can swap in the right place
+** @16-18	1 3 6 2 4 7 on 2 we would find that the previous is descending
+** 			so we need to predict the push moves to join these 2 subsections
+** 			starting in the first number of the 2nd subsection (2)
+** @20		once we predict the moves we decide if they are better that the previously
+** 			predicted moves
+*/
+
 void	analyze_bwd(t_all **all, int n)
 {
 	if (is_bigger_than((*all)->a.rev, (*all)->a.rev->prev,
@@ -64,6 +90,21 @@ void	analyze_bwd(t_all **all, int n)
 	(*all)->a.rev = (*all)->a.rev->prev;
 }
 
+
+/*
+** here I created 2 hypotheses: 
+** place_in_b_rots for each number we predict the minimum number of moves 
+** (using rr and rrrs) necessary to be placed in b in descending position
+**
+** pred_rot_b_analysis I predict all the moves necessary to join 2 subsections
+** however this 2nd hypothesis didn't work as expected (500 moves 10 seconds
+** to predict and even more moves that place_in_b_rots)
+** @param:	- [t_all *] struct with all the variables
+** 			- [int] Number of numbers to sort (e.g. 100 numbers)
+** 			- [t_elem *] first number in 2nd subsection
+** 			1 3 6 2 4 7 (would be) number 2
+*/
+
 void	merge_ramp_spot(t_all *all, int n, t_elem *firstinramp)
 {
 	all->a.ramp.first_nbr = firstinramp;
@@ -80,17 +121,19 @@ void	merge_ramp_spot(t_all *all, int n, t_elem *firstinramp)
 		pred_rot_b_analysis(all, firstinramp, n);
 }
 
-/* 		
-	place_in_b_rots(all->b.head, all, all->a.ramp.first_nbr, &all->pred_cmds);
-	add_update_cmd(&all->pred_cmds.pb, &all->pred_cmds, 1); 
-		
-*/
 
 /*
-	quando chega ao final do loop (aquilo que aconteceu no rotate basico)
-	talvez preciso acrescentar mais uma verificacao
-	while (!all->b.near_rot.r && !all->b.near_rot.rrev && all->b.forw)
-	retirar break se deixar de funcionar
+** if ra and rb then rr
+** if rra and rrb then rrr
+** if all ra and rra were converted then increase rb and rrb
+** @param:	- [t_elem *] elem on top of b
+**			- [t_all *] struct with all the variables
+**			- [t_elem *] number that will be placed in b
+**			- [t_cmds *] table of commands with the 
+**			correct ra or rra to get to move
+** @return:	[type] return_value
+** Line-by-line comments:
+** @line-line	comment
 */
 
 void	place_in_b_rots(t_elem *b, t_all *all, t_elem *move, t_cmds *cmds)

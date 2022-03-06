@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:54:15 by gleal             #+#    #+#             */
-/*   Updated: 2022/02/14 15:20:39 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/06 16:10:48 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@ int	main(int argc, char **argv)
 ** @param:	- [char **] numbers to be sorted
 **
 ** Line-by-line comments:
-** @8	validation to see if all inputs are valid numbers
-** @10	Validates duplicate numbers
-** 		duplicate validation done inside
-** @12	Might be useful to improve algorithm (sort/parameters.c)
+** @6	  validation to see if all inputs are valid numbers
+** @8	  validates duplicate numbers and starts adding them to stack
+** @10	  add final positions for each number
+** 		  (could be useful to improve algorithm (sort/parameters.c)
+** @11-12 function used to print stacks
+** @13	  sorting algorithm
+** @14-15 free memory
 */
 
 void	push_swap(char **stack_a_args)
@@ -38,7 +41,8 @@ void	push_swap(char **stack_a_args)
 	all.b.head = NULL;
 	if (!is_input_integer(stack_a_args))
 		return ;
-	prepare_stack_a(&(all.a.head), stack_a_args);
+	if (prepare_stack_a(&(all.a.head), stack_a_args))
+		return ;
 	n = nbr_strs(stack_a_args);
 	add_positions(&(all.a.head), n);
 	max_len = biggest_str_len(stack_a_args);
@@ -46,8 +50,6 @@ void	push_swap(char **stack_a_args)
 	ft_sort_stacks(&all, n);
 	stack_clear(&(all.a.head), delete_stack);
 	stack_clear(&(all.b.head), delete_stack);
-	check_leaks();
-	exit(EXIT_SUCCESS);
 }
 
 void	add_positions(t_elem	**a, int n)
